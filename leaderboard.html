@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FAVOJE — Leaderboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --primary:#6366F1;--primary-hover:#5558E6;--primary-light:rgba(99,102,241,.12);--primary-glow:rgba(99,102,241,.25);
+            --secondary:#4F46E5;--bg:#080B14;--bg-secondary:#0d1121;
+            --surface:#111827;--surface-hover:#1a2235;--surface-2:#1F2937;--surface-3:#2a3548;
+            --accent:#F97316;--accent-light:rgba(249,115,22,.12);
+            --success:#10B981;--success-light:rgba(16,185,129,.12);
+            --danger:#EF4444;--danger-light:rgba(239,68,68,.12);
+            --warning:#F59E0B;--warning-light:rgba(245,158,11,.12);
+            --info:#3B82F6;--info-light:rgba(59,130,246,.12);
+            --gold:#FFD700;--silver:#C0C0C0;--bronze:#CD7F32;
+            --text-primary:#F1F5F9;--text-secondary:#94A3B8;--text-tertiary:#64748B;
+            --border:rgba(148,163,184,.1);--border-hover:rgba(148,163,184,.2);
+            --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 12px rgba(0,0,0,.4);--shadow-lg:0 8px 32px rgba(0,0,0,.5);
+            --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-2xl:24px;--radius-full:50%;
+            --transition-fast:.15s ease;--transition-normal:.3s ease;--transition-slow:.5s ease;
+            --transition-spring:.5s cubic-bezier(.34,1.56,.64,1);
+            --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+            --bottom-nav-height:72px;--safe-bottom:env(safe-area-inset-bottom,0px)
+        }
+        :root.light-mode{
+            --bg:#F1F5F9;--bg-secondary:#E8ECF1;--surface:#FFFFFF;--surface-hover:#F8FAFC;
+            --surface-2:#F1F5F9;--surface-3:#E2E8F0;--text-primary:#0F172A;--text-secondary:#475569;
+            --text-tertiary:#94A3B8;--border:rgba(15,23,42,.08);--border-hover:rgba(15,23,42,.15);
+            --shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 4px 12px rgba(0,0,0,.08);
+            --shadow-lg:0 8px 32px rgba(0,0,0,.1);--primary-glow:rgba(99,102,241,.12)
+        }
+        html{font-size:16px;-webkit-text-size-adjust:100%}
+        body{font-family:var(--font);background:var(--bg);color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:calc(var(--bottom-nav-height) + var(--safe-bottom) + 20px)}
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        @keyframes fadeOut{from{opacity:1}to{opacity:0}}
+        @keyframes slideInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes slideDown{from{opacity:0;transform:translateY(-15px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes scaleIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+        @keyframes scaleInBounce{0%{opacity:0;transform:scale(.5)}60%{transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+        @keyframes bounceIn{0%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.05)}70%{transform:scale(.95)}100%{transform:scale(1)}}
+        @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+        @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes floatSlow{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+        @keyframes glow{0%,100%{box-shadow:0 0 15px var(--primary-glow)}50%{box-shadow:0 0 35px var(--primary-glow)}}
+        @keyframes goldGlow{0%,100%{box-shadow:0 0 20px rgba(255,215,0,.4)}50%{box-shadow:0 0 40px rgba(255,215,0,.7)}}
+        @keyframes silverGlow{0%,100%{box-shadow:0 0 15px rgba(192,192,192,.4)}50%{box-shadow:0 0 30px rgba(192,192,192,.6)}}
+        @keyframes bronzeGlow{0%,100%{box-shadow:0 0 15px rgba(205,127,50,.4)}50%{box-shadow:0 0 30px rgba(205,127,50,.6)}}
+        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+        @keyframes ripple{0%{transform:scale(0);opacity:.5}100%{transform:scale(4);opacity:0}}
+        @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(25px,-25px) scale(1.06)}50%{transform:translate(-15px,15px) scale(.94)}75%{transform:translate(10px,30px) scale(1.03)}}
+        @keyframes staggerIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+        @keyframes numberPop{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+        @keyframes crownBob{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-6px) rotate(5deg)}}
+        @keyframes sparkle{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1)}}
+        @keyframes podiumRise{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+        @keyframes rankUp{0%{transform:translateY(0)}50%{transform:translateY(-10px) scale(1.1)}100%{transform:translateY(0)}}
+        @keyframes trophy{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+        @keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+        @keyframes slideInModal{from{opacity:0;transform:translateY(50px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
+        @keyframes pointBurst{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(2)}}
+        @keyframes arrowPulse{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+        @keyframes meBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+        @keyframes highlightPulse{0%,100%{box-shadow:0 0 0 0 var(--primary-glow)}50%{box-shadow:0 0 0 8px rgba(99,102,241,.08)}}
+        @keyframes starSpin{0%{transform:rotate(0) scale(1)}50%{transform:rotate(180deg) scale(1.2)}100%{transform:rotate(360deg) scale(1)}}
+
+        /* BACKGROUND */
+        .bg-gradient{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+        .bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.1;animation:orbFloat 22s infinite ease-in-out}
+        .bg-orb-1{width:350px;height:350px;background:var(--primary);top:-80px;right:-80px}
+        .bg-orb-2{width:280px;height:280px;background:var(--warning);bottom:-60px;left:-60px;animation-delay:-8s}
+
+        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:4px}
+
+        /* MAIN */
+        .main-content{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:16px 16px 0}
+
+        /* HEADER */
+        .page-header{display:flex;align-items:center;gap:14px;padding:12px 0 20px;animation:fadeInDown .5s ease}
+        .page-header-back{width:40px;height:40px;border-radius:var(--radius-md);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-normal);flex-shrink:0}
+        .page-header-back:hover{background:var(--surface-hover);border-color:var(--primary);transform:translateX(-3px)}
+        .page-header-back i{width:20px;height:20px;color:var(--text-secondary)}
+        .page-header-info{flex:1;min-width:0}
+        .page-header-title{font-size:20px;font-weight:800;color:var(--text-primary);line-height:1.2;display:flex;align-items:center;gap:8px}
+        .page-header-title i{width:22px;height:22px;color:var(--warning);animation:trophy 2s ease-in-out infinite}
+        .page-header-sub{font-size:12px;color:var(--text-tertiary)}
+        .page-header-action{width:40px;height:40px;border-radius:var(--radius-md);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-normal)}
+        .page-header-action:hover{background:var(--surface-hover)}
+        .page-header-action i{width:20px;height:20px;color:var(--text-secondary)}
+
+        /* SCOPE TABS */
+        .scope-tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;animation:fadeInUp .5s ease .1s both}
+        .scope-tabs::-webkit-scrollbar{display:none}
+        .scope-tab{padding:9px 14px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all var(--transition-normal);font-family:var(--font);display:flex;align-items:center;gap:6px;flex-shrink:0}
+        .scope-tab:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+        .scope-tab.active{background:linear-gradient(135deg,var(--primary),var(--secondary));border-color:var(--primary);color:#fff;box-shadow:0 2px 12px rgba(99,102,241,.35)}
+        .scope-tab i{width:14px;height:14px}
+
+        /* TIME FILTER */
+        .time-filter{display:flex;background:var(--surface-2);border-radius:var(--radius-md);padding:3px;margin-bottom:16px;animation:fadeInUp .5s ease .15s both}
+        .time-btn{flex:1;padding:9px;text-align:center;font-size:12px;font-weight:600;color:var(--text-tertiary);cursor:pointer;border-radius:var(--radius-sm);transition:all var(--transition-normal);border:none;background:none;font-family:var(--font)}
+        .time-btn.active{background:var(--primary);color:#fff;box-shadow:var(--shadow-sm)}
+        .time-btn:not(.active):hover{color:var(--text-primary)}
+
+        /* COURSE SELECTOR (for course filter) */
+        .course-selector{display:none;margin-bottom:16px;animation:fadeInUp .5s ease .18s both}
+        .course-selector.show{display:block}
+        .course-selector select{width:100%;padding:12px 14px 12px 42px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-md);font-size:14px;font-family:var(--font);color:var(--text-primary);transition:all var(--transition-normal);outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+        .course-select-wrap{position:relative}
+        .course-select-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--text-tertiary)}
+
+        /* STATS BAR */
+        .stats-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;animation:fadeInUp .5s ease .2s both}
+        .stat-pill{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px 10px;text-align:center;transition:all var(--transition-normal)}
+        .stat-pill:hover{border-color:var(--primary);transform:translateY(-2px)}
+        .stat-pill-icon{width:28px;height:28px;border-radius:var(--radius-sm);display:inline-flex;align-items:center;justify-content:center;margin-bottom:4px}
+        .stat-pill-icon i{width:14px;height:14px}
+        .stat-pill-val{font-size:16px;font-weight:800;color:var(--text-primary);line-height:1.1}
+        .stat-pill-lbl{font-size:10px;color:var(--text-tertiary);font-weight:500}
+
+        /* PODIUM */
+        .podium-container{background:linear-gradient(135deg,var(--surface),var(--surface-hover));border:1px solid var(--border);border-radius:var(--radius-2xl);padding:24px 16px 16px;margin-bottom:20px;position:relative;overflow:hidden;animation:fadeInUp .5s ease .25s both}
+        .podium-container::before{content:'';position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(255,215,0,.08),transparent 70%);animation:breathe 4s ease-in-out infinite;pointer-events:none}
+        @keyframes breathe{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.1)}}
+        .podium-title{text-align:center;font-size:12px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:1px;margin-bottom:20px;position:relative;z-index:1}
+        .podium{display:flex;align-items:flex-end;justify-content:center;gap:12px;position:relative;z-index:1}
+        .podium-spot{display:flex;flex-direction:column;align-items:center;animation:podiumRise .6s cubic-bezier(.34,1.56,.64,1) both;position:relative;flex:1;max-width:120px;cursor:pointer;transition:transform var(--transition-normal)}
+        .podium-spot:hover{transform:translateY(-4px)}
+        .podium-spot-1{animation-delay:.3s;order:2}
+        .podium-spot-2{animation-delay:.1s;order:1}
+        .podium-spot-3{animation-delay:.5s;order:3}
+        .podium-crown{position:absolute;top:-18px;font-size:24px;animation:crownBob 3s ease-in-out infinite;z-index:3}
+        .podium-crown.silver{animation-duration:3.5s}
+        .podium-crown.bronze{animation-duration:4s}
+        .podium-avatar-wrap{position:relative;margin-bottom:10px}
+        .podium-avatar{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;border:3px solid var(--surface);box-shadow:var(--shadow-md);transition:transform var(--transition-spring)}
+        .podium-spot:hover .podium-avatar{transform:scale(1.1) rotate(5deg)}
+        .podium-spot-1 .podium-avatar{width:76px;height:76px;font-size:36px;border-color:var(--gold);animation:goldGlow 2s ease-in-out infinite}
+        .podium-spot-2 .podium-avatar{border-color:var(--silver);animation:silverGlow 2.5s ease-in-out infinite}
+        .podium-spot-3 .podium-avatar{border-color:var(--bronze);animation:bronzeGlow 2.8s ease-in-out infinite}
+        .podium-rank-badge{position:absolute;bottom:-5px;right:-5px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;border:2px solid var(--surface);z-index:2}
+        .podium-rank-badge.gold{background:linear-gradient(135deg,var(--gold),#FFA500)}
+        .podium-rank-badge.silver{background:linear-gradient(135deg,var(--silver),#808080)}
+        .podium-rank-badge.bronze{background:linear-gradient(135deg,var(--bronze),#8B4513)}
+        .podium-name{font-size:12px;font-weight:700;color:var(--text-primary);text-align:center;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px}
+        .podium-score{font-size:14px;font-weight:800;margin-bottom:10px;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .podium-spot-1 .podium-score{font-size:16px}
+        .podium-stage{width:100%;border-radius:var(--radius-md) var(--radius-md) 0 0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;position:relative;overflow:hidden}
+        .podium-spot-1 .podium-stage{background:linear-gradient(180deg,var(--gold),#FFA500);height:100px}
+        .podium-spot-2 .podium-stage{background:linear-gradient(180deg,var(--silver),#808080);height:70px}
+        .podium-spot-3 .podium-stage{background:linear-gradient(180deg,var(--bronze),#8B4513);height:55px}
+        .podium-stage::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.2),transparent 50%)}
+        .podium-stage span{position:relative;z-index:1;text-shadow:0 2px 4px rgba(0,0,0,.3)}
+        .podium-sparkle{position:absolute;top:5px;font-size:14px;animation:sparkle 2s ease-in-out infinite;pointer-events:none;z-index:4}
+        .podium-sparkle-1{left:5px;animation-delay:0s}
+        .podium-sparkle-2{right:5px;animation-delay:1s}
+
+        /* MY RANK CARD */
+        .my-rank-card{background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:var(--radius-xl);padding:16px 18px;margin-bottom:16px;color:#fff;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;animation:fadeInUp .5s ease .3s both;background-size:200% 200%;animation:fadeInUp .5s ease .3s both,gradientShift 8s ease infinite;box-shadow:0 6px 20px rgba(99,102,241,.3)}
+        .my-rank-card::before{content:'';position:absolute;top:-50%;right:-20%;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.1),transparent 70%);animation:orbFloat 10s infinite;pointer-events:none}
+        .my-rank-position{min-width:60px;text-align:center;position:relative;z-index:1}
+        .my-rank-number{font-size:28px;font-weight:900;line-height:1}
+        .my-rank-label{font-size:10px;opacity:.8;text-transform:uppercase;letter-spacing:1px;font-weight:600}
+        .my-rank-avatar{width:48px;height:48px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:24px;border:2px solid rgba(255,255,255,.3);flex-shrink:0;position:relative;z-index:1;animation:meBounce 2s ease-in-out infinite}
+        .my-rank-info{flex:1;min-width:0;position:relative;z-index:1}
+        .my-rank-you{font-size:11px;opacity:.8;font-weight:600;margin-bottom:2px}
+        .my-rank-name{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .my-rank-score{text-align:right;position:relative;z-index:1}
+        .my-rank-score-val{font-size:20px;font-weight:800;line-height:1}
+        .my-rank-score-lbl{font-size:10px;opacity:.8}
+        .my-rank-change{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;margin-top:4px;background:rgba(255,255,255,.2)}
+        .my-rank-change i{width:11px;height:11px}
+        .my-rank-change.up i{animation:arrowPulse 1.5s ease-in-out infinite}
+
+        /* SECTION HEADER */
+        .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:0 2px;animation:fadeInUp .5s ease .35s both}
+        .section-title{font-size:14px;font-weight:700;color:var(--text-primary);display:flex;align-items:center;gap:6px}
+        .section-title i{width:16px;height:16px;color:var(--primary)}
+        .section-count{font-size:12px;color:var(--text-tertiary);font-weight:500}
+
+        /* LEADERBOARD LIST */
+        .leaderboard-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+        .lb-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer;transition:all var(--transition-normal);position:relative;overflow:hidden;animation:staggerIn .4s ease both}
+        .lb-item:hover{background:var(--surface-hover);border-color:var(--border-hover);transform:translateX(4px)}
+        .lb-item.is-me{background:var(--primary-light);border-color:var(--primary);animation:staggerIn .4s ease both,highlightPulse 2s ease-in-out infinite}
+        .lb-item.is-me::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--primary),var(--accent))}
+        .lb-rank{width:40px;text-align:center;font-size:16px;font-weight:800;color:var(--text-tertiary);flex-shrink:0;position:relative;z-index:1}
+        .lb-rank.top-1{color:var(--gold);font-size:20px}
+        .lb-rank.top-2{color:var(--silver);font-size:18px}
+        .lb-rank.top-3{color:var(--bronze);font-size:18px}
+        .lb-avatar{width:40px;height:40px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:2px solid var(--border);transition:transform var(--transition-spring);position:relative;z-index:1}
+        .lb-item:hover .lb-avatar{transform:scale(1.1) rotate(5deg)}
+        .lb-info{flex:1;min-width:0;position:relative;z-index:1}
+        .lb-name{font-size:13px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+        .lb-meta{font-size:11px;color:var(--text-tertiary);display:flex;align-items:center;gap:6px;margin-top:1px}
+        .lb-meta i{width:11px;height:11px}
+        .lb-score{text-align:right;flex-shrink:0;position:relative;z-index:1}
+        .lb-score-val{font-size:14px;font-weight:800;color:var(--primary);line-height:1}
+        .lb-score-lbl{font-size:10px;color:var(--text-tertiary);font-weight:500;margin-top:1px}
+        .lb-movement{display:inline-flex;align-items:center;gap:2px;font-size:10px;font-weight:600;padding:1px 5px;border-radius:4px;margin-top:3px}
+        .lb-movement i{width:10px;height:10px}
+        .lb-movement.up{background:var(--success-light);color:var(--success)}
+        .lb-movement.down{background:var(--danger-light);color:var(--danger)}
+        .lb-movement.same{background:var(--surface-2);color:var(--text-tertiary)}
+        .lb-you-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--primary);color:#fff;margin-left:6px;animation:scaleInBounce .4s ease both}
+
+        /* EMPTY STATE */
+        .empty-state{text-align:center;padding:48px 24px;animation:fadeIn .5s ease}
+        .empty-state-icon{width:72px;height:72px;border-radius:var(--radius-xl);background:var(--surface-2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;animation:float 3s ease-in-out infinite}
+        .empty-state-icon i{width:32px;height:32px;color:var(--text-tertiary);opacity:.5}
+        .empty-state h3{font-size:17px;font-weight:700;color:var(--text-primary);margin-bottom:6px}
+        .empty-state p{font-size:13px;color:var(--text-tertiary);line-height:1.5;max-width:300px;margin:0 auto}
+
+        /* INFO BOX */
+        .ranking-info{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px 14px;margin-top:20px;display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text-secondary);line-height:1.5;animation:fadeInUp .5s ease .4s both}
+        .ranking-info i{width:16px;height:16px;color:var(--primary);flex-shrink:0;margin-top:1px}
+
+        /* SKELETON */
+        .skeleton{background:linear-gradient(90deg,var(--surface-2) 25%,var(--surface-3) 50%,var(--surface-2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--radius-sm)}
+        .skeleton-item{height:60px;border-radius:var(--radius-md);margin-bottom:8px}
+        .skeleton-podium{height:180px;border-radius:var(--radius-xl);margin-bottom:20px}
+
+        /* MODAL */
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:flex-end;justify-content:center;padding:0;backdrop-filter:blur(4px)}
+        .modal-overlay.show{display:flex;animation:fadeIn .3s ease}
+        .modal-sheet{background:var(--surface);border-radius:var(--radius-2xl) var(--radius-2xl) 0 0;padding:0;max-width:460px;width:100%;max-height:92vh;overflow-y:auto;animation:slideInModal .4s cubic-bezier(.4,0,.2,1);box-shadow:0 -8px 40px rgba(0,0,0,.4)}
+        .modal-handle{width:40px;height:4px;background:var(--surface-3);border-radius:2px;margin:12px auto 0}
+        .modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 24px 0}
+        .modal-close{width:32px;height:32px;border-radius:var(--radius-sm);background:var(--surface-2);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-normal)}
+        .modal-close:hover{background:var(--surface-3);transform:rotate(90deg)}
+        .modal-close i{width:16px;height:16px;color:var(--text-secondary)}
+        .modal-body{padding:16px 24px calc(24px + var(--safe-bottom))}
+
+        @media(min-width:768px){
+            .modal-overlay{align-items:center;padding:20px}
+            .modal-sheet{border-radius:var(--radius-2xl);max-height:90vh}
+            .modal-handle{display:none}
+        }
+
+        /* USER DETAIL MODAL */
+        .user-detail-hero{text-align:center;padding:20px 0}
+        .user-detail-avatar{width:88px;height:88px;border-radius:var(--radius-xl);display:inline-flex;align-items:center;justify-content:center;font-size:44px;margin-bottom:14px;border:3px solid var(--border);animation:bounceIn .5s ease}
+        .user-detail-name{font-size:20px;font-weight:800;color:var(--text-primary);margin-bottom:4px}
+        .user-detail-sub{font-size:12px;color:var(--text-tertiary);margin-bottom:14px}
+        .user-detail-rank{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--radius-full);background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;font-size:14px;font-weight:700;margin-bottom:20px;animation:scaleInBounce .5s ease}
+        .user-detail-rank i{width:16px;height:16px;animation:starSpin 3s ease-in-out infinite}
+        .user-detail-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+        .user-detail-stat{background:var(--surface-2);border-radius:var(--radius-md);padding:14px 10px;text-align:center}
+        .user-detail-stat-val{font-size:18px;font-weight:800;color:var(--text-primary);line-height:1.2}
+        .user-detail-stat-lbl{font-size:10px;color:var(--text-tertiary);font-weight:500;margin-top:2px}
+
+        /* TOAST */
+        .toast-container{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:400;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:calc(100% - 32px);max-width:400px}
+        .toast{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-lg);animation:slideDown .3s ease;pointer-events:auto;font-size:13px;font-weight:500;color:var(--text-primary)}
+        .toast.exit{animation:fadeOut .3s ease forwards}
+        .toast i{width:18px;height:18px;flex-shrink:0}
+        .toast.success i{color:var(--success)}.toast.error i{color:var(--danger)}.toast.warning i{color:var(--warning)}
+
+        /* LOADING */
+        .loading-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;transition:opacity .3s ease}
+        .loading-overlay.hide{opacity:0;pointer-events:none}
+        .loading-spinner{width:42px;height:42px;border:3px solid var(--surface-3);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+        .loading-text{font-size:14px;color:var(--text-secondary);font-weight:500;text-align:center}
+
+        /* RIPPLE */
+        .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.15);animation:ripple .6s ease-out;pointer-events:none}
+
+        /* BOTTOM NAV */
+        .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--surface);border-top:1px solid var(--border);padding:6px 0 calc(6px + var(--safe-bottom));display:flex;backdrop-filter:blur(20px)}
+        .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;cursor:pointer;transition:all var(--transition-normal);border:none;background:none;font-family:var(--font);position:relative}
+        .nav-item::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:0;height:2.5px;background:var(--primary);border-radius:0 0 4px 4px;transition:width var(--transition-normal)}
+        .nav-item.active::before{width:32px}
+        .nav-item i{width:22px;height:22px;color:var(--text-tertiary);transition:all var(--transition-normal)}
+        .nav-item.active i{color:var(--primary)}
+        .nav-item span{font-size:10px;font-weight:600;color:var(--text-tertiary)}
+        .nav-item.active span{color:var(--primary)}
+        .nav-item:hover i{color:var(--primary);transform:translateY(-2px)}
+
+        /* DESKTOP SIDEBAR */
+        .sidebar-desktop{display:none;position:fixed;top:0;left:0;bottom:0;width:240px;background:var(--surface);border-right:1px solid var(--border);z-index:60;flex-direction:column;padding:24px 16px;animation:slideInLeft .5s ease}
+        .sidebar-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;padding:0 8px}
+        .sidebar-logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:10px;display:flex;align-items:center;justify-content:center}
+        .sidebar-logo-mark i{width:18px;height:18px;color:#fff}
+        .sidebar-logo-text{font-size:20px;font-weight:900;color:var(--text-primary)}
+        .sidebar-nav{flex:1;display:flex;flex-direction:column;gap:4px}
+        .sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:var(--radius-md);cursor:pointer;transition:all var(--transition-normal);border:none;background:none;font-family:var(--font);width:100%;text-align:left;color:var(--text-secondary);font-size:14px;font-weight:500}
+        .sidebar-item:hover{background:var(--surface-hover);color:var(--text-primary)}
+        .sidebar-item.active{background:var(--primary-light);color:var(--primary);font-weight:600}
+        .sidebar-item i{width:20px;height:20px}
+        .sidebar-bottom{padding-top:16px;border-top:1px solid var(--border)}
+
+        @media(min-width:768px){
+            .bottom-nav{display:none}
+            body{padding-bottom:0;padding-left:240px}
+            .sidebar-desktop{display:flex!important}
+        }
+        @media(max-width:400px){
+            .main-content{padding:12px 12px 0}
+            .podium-container{padding:20px 10px 12px}
+            .podium{gap:6px}
+            .podium-spot{max-width:none}
+            .podium-avatar{width:52px;height:52px;font-size:24px}
+            .podium-spot-1 .podium-avatar{width:64px;height:64px;font-size:30px}
+            .podium-name{font-size:11px;max-width:85px}
+            .podium-score{font-size:13px}
+            .podium-spot-1 .podium-score{font-size:14px}
+            .podium-stage{font-size:18px}
+            .podium-spot-1 .podium-stage{height:85px}
+            .podium-spot-2 .podium-stage{height:60px}
+            .podium-spot-3 .podium-stage{height:48px}
+            .my-rank-card{padding:14px}
+            .my-rank-number{font-size:24px}
+            .my-rank-avatar{width:42px;height:42px;font-size:20px}
+            .my-rank-score-val{font-size:18px}
+        }
+        @media(min-width:1024px){.main-content{max-width:800px}}
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"><div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div></div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div><div class="loading-spinner"></div><p class="loading-text">Loading leaderboard...</p></div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Desktop Sidebar -->
+    <div class="sidebar-desktop">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-mark"><i data-lucide="graduation-cap"></i></div>
+            <span class="sidebar-logo-text">FAVOJE</span>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="sidebar-item" onclick="location.href='home.html'"><i data-lucide="home"></i>Home</button>
+            <button class="sidebar-item" onclick="location.href='courses.html'"><i data-lucide="book-open"></i>Courses</button>
+            <button class="sidebar-item" onclick="location.href='practice.html'"><i data-lucide="target"></i>Practice</button>
+            <button class="sidebar-item active" onclick="location.href='leaderboard.html'"><i data-lucide="trophy"></i>Leaderboard</button>
+            <button class="sidebar-item" onclick="location.href='profile.html'"><i data-lucide="user"></i>Profile</button>
+            <button class="sidebar-item" onclick="location.href='wallet.html'"><i data-lucide="wallet"></i>Wallet</button>
+            <button class="sidebar-item" onclick="location.href='tests.html'"><i data-lucide="file-text"></i>Tests</button>
+        </nav>
+        <div class="sidebar-bottom">
+            <div class="sidebar-item" id="themeToggle"><i data-lucide="moon" id="themeIcon"></i><span id="themeLabel">Dark Mode</span></div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main-content">
+        <div class="page-header">
+            <div class="page-header-back" onclick="location.href='home.html'"><i data-lucide="arrow-left"></i></div>
+            <div class="page-header-info">
+                <div class="page-header-title"><i data-lucide="trophy"></i>Leaderboard</div>
+                <div class="page-header-sub" id="pageSubtitle">Compete with top students</div>
+            </div>
+            <div class="page-header-action" id="themeToggleMobile"><i data-lucide="moon" id="themeIconMobile"></i></div>
+        </div>
+
+        <!-- Scope Tabs -->
+        <div class="scope-tabs">
+            <button class="scope-tab active" data-scope="university"><i data-lucide="building-2"></i>University</button>
+            <button class="scope-tab" data-scope="level"><i data-lucide="layers"></i>Level</button>
+            <button class="scope-tab" data-scope="department"><i data-lucide="book-open"></i>Department</button>
+            <button class="scope-tab" data-scope="course"><i data-lucide="file-text"></i>Course</button>
+        </div>
+
+        <!-- Time Filter -->
+        <div class="time-filter">
+            <button class="time-btn active" data-time="all">All Time</button>
+            <button class="time-btn" data-time="month">This Month</button>
+            <button class="time-btn" data-time="week">This Week</button>
+        </div>
+
+        <!-- Course Selector (shown only for course scope) -->
+        <div class="course-selector" id="courseSelector">
+            <div class="course-select-wrap">
+                <i data-lucide="book-marked"></i>
+                <select id="courseSelect"><option value="">Select a course...</option></select>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-pill">
+                <div class="stat-pill-icon" style="background:var(--primary-light)"><i data-lucide="users" style="color:var(--primary)"></i></div>
+                <div class="stat-pill-val" id="statStudents">0</div>
+                <div class="stat-pill-lbl">Students</div>
+            </div>
+            <div class="stat-pill">
+                <div class="stat-pill-icon" style="background:var(--success-light)"><i data-lucide="target" style="color:var(--success)"></i></div>
+                <div class="stat-pill-val" id="statAvg">0%</div>
+                <div class="stat-pill-lbl">Avg Score</div>
+            </div>
+            <div class="stat-pill">
+                <div class="stat-pill-icon" style="background:var(--warning-light)"><i data-lucide="crown" style="color:var(--warning)"></i></div>
+                <div class="stat-pill-val" id="statTop">0%</div>
+                <div class="stat-pill-lbl">Top Score</div>
+            </div>
+        </div>
+
+        <!-- Skeleton -->
+        <div id="skeletonLoader">
+            <div class="skeleton skeleton-podium"></div>
+            <div class="skeleton skeleton-item"></div>
+            <div class="skeleton skeleton-item"></div>
+            <div class="skeleton skeleton-item"></div>
+            <div class="skeleton skeleton-item"></div>
+        </div>
+
+        <!-- Content -->
+        <div id="leaderboardContent" style="display:none">
+            <!-- Podium (Top 3) -->
+            <div class="podium-container" id="podiumSection" style="display:none">
+                <div class="podium-title">🏆 TOP PERFORMERS 🏆</div>
+                <div class="podium" id="podium"></div>
+            </div>
+
+            <!-- My Rank Card -->
+            <div class="my-rank-card" id="myRankCard" style="display:none" onclick="scrollToMe()"></div>
+
+            <!-- Section Header -->
+            <div class="section-header">
+                <div class="section-title"><i data-lucide="list"></i>Full Rankings</div>
+                <div class="section-count" id="totalRankCount">0 students</div>
+            </div>
+
+            <!-- Leaderboard List -->
+            <div class="leaderboard-list" id="leaderboardList"></div>
+
+            <!-- Ranking Info -->
+            <div class="ranking-info">
+                <i data-lucide="info"></i>
+                <span>Rankings are calculated based on accuracy, questions attempted, test performance, and consistency. Keep practicing to climb the leaderboard!</span>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display:none">
+            <div class="empty-state-icon"><i data-lucide="users"></i></div>
+            <h3>No Rankings Yet</h3>
+            <p id="emptyText">Be the first to appear on the leaderboard! Start practicing to earn your spot.</p>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <button class="nav-item" onclick="location.href='home.html'"><i data-lucide="home"></i><span>Home</span></button>
+        <button class="nav-item" onclick="location.href='courses.html'"><i data-lucide="book-open"></i><span>Courses</span></button>
+        <button class="nav-item" onclick="location.href='practice.html'"><i data-lucide="target"></i><span>Practice</span></button>
+        <button class="nav-item active" onclick="location.href='leaderboard.html'"><i data-lucide="trophy"></i><span>Ranks</span></button>
+        <button class="nav-item" onclick="location.href='profile.html'"><i data-lucide="user"></i><span>Profile</span></button>
+    </nav>
+
+    <!-- User Detail Modal -->
+    <div class="modal-overlay" id="userModal">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
+            <div class="modal-head">
+                <div></div>
+                <button class="modal-close" onclick="closeModal('userModal')"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" id="userModalBody"></div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig={apiKey:"AIzaSyC1SmazNPbak8vMvi-jD40EGqpvWmWdd0U",authDomain:"favoje-fcb02.firebaseapp.com",projectId:"favoje-fcb02",storageBucket:"favoje-fcb02.firebasestorage.app",messagingSenderId:"837946471768",appId:"1:837946471768:web:6ea76eee926fe77bdc212d"};
+        const app=firebase.initializeApp(firebaseConfig),auth=firebase.auth(),db=firebase.firestore();
+        db.settings({cacheSizeBytes:firebase.firestore.CACHE_SIZE_UNLIMITED});
+        db.enablePersistence().catch(e=>console.log(e.code));
+
+        const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+        let currentUser=null,userData=null,allUsers=[],currentScope='university',currentTime='all',selectedCourseFilter='';
+
+        // THEME
+        let isDark=localStorage.getItem('favoje-theme')!=='light';
+        function applyTheme(){document.documentElement.classList.toggle('light-mode',!isDark);['themeIcon','themeIconMobile'].forEach(id=>{const e=document.getElementById(id);if(e)e.setAttribute('data-lucide',isDark?'moon':'sun')});const l=$('#themeLabel');if(l)l.textContent=isDark?'Dark Mode':'Light Mode';lucide.createIcons()}
+        function toggleTheme(){isDark=!isDark;localStorage.setItem('favoje-theme',isDark?'dark':'light');applyTheme()}
+        $('#themeToggle')?.addEventListener('click',toggleTheme);
+        $('#themeToggleMobile')?.addEventListener('click',toggleTheme);
+        applyTheme();
+
+        function showToast(msg,type='success'){const c=$('#toastContainer'),t=document.createElement('div');t.className=`toast ${type}`;t.innerHTML=`<i data-lucide="${{success:'check-circle-2',error:'x-circle',warning:'alert-triangle'}[type]}"></i><span>${msg}</span>`;c.appendChild(t);lucide.createIcons();setTimeout(()=>{t.classList.add('exit');setTimeout(()=>t.remove(),300)},3500)}
+
+        document.addEventListener('click',e=>{const c=e.target.closest('.scope-tab,.time-btn,.lb-item,.podium-spot,.my-rank-card');if(!c)return;c.style.position='relative';c.style.overflow='hidden';const r=document.createElement('span');r.className='ripple';const b=c.getBoundingClientRect();r.style.left=(e.clientX-b.left)+'px';r.style.top=(e.clientY-b.top)+'px';c.appendChild(r);setTimeout(()=>r.remove(),600)});
+
+        function animNum(el,t,s='',d=1000){const st=performance.now();(function u(n){const p=Math.min((n-st)/d,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(t*e).toLocaleString()+s;if(p<1)requestAnimationFrame(u)})(st)}
+
+        function openModal(id){$('#'+id).classList.add('show');document.body.style.overflow='hidden'}
+        function closeModal(id){$('#'+id).classList.remove('show');document.body.style.overflow=''}
+        $$('.modal-overlay').forEach(ov=>{ov.addEventListener('click',e=>{if(e.target===ov)closeModal(ov.id)})});
+
+        // ===== RANKING SCORE CALCULATION =====
+        function calculateRankingScore(user,coursePerf=null){
+            // Base metrics
+            const questions=user.questionsAttempted||0;
+            const correct=user.questionsCorrect||0;
+            const accuracy=questions>0?(correct/questions)*100:0;
+            const tests=user.testsCompleted||0;
+            const streak=user.streak||user.currentStreak||0;
+
+            if(coursePerf){
+                // Course-specific scoring
+                const cq=coursePerf.questionsAttempted||0;
+                const cc=coursePerf.questionsCorrect||0;
+                const cAcc=cq>0?(cc/cq)*100:0;
+                return Math.round(cAcc*0.7+Math.min(cq/2,30));
+            }
+
+            // Weighted score:
+            // Accuracy: 50%, Volume: 25%, Tests: 15%, Streak: 10%
+            const accuracyScore=accuracy*0.5;
+            const volumeScore=Math.min(questions/5,25);// Cap at 25 points
+            const testScore=Math.min(tests*2,15);
+            const streakScore=Math.min(streak*0.5,10);
+
+            return Math.round(accuracyScore+volumeScore+testScore+streakScore);
+        }
+
+        // ===== LOAD LEADERBOARD DATA =====
+        async function loadLeaderboard(){
+            if(!userData)return;
+            $('#skeletonLoader').style.display='block';
+            $('#leaderboardContent').style.display='none';
+            $('#emptyState').style.display='none';
+
+            try{
+                let query=db.collection('users').where('onboardingComplete','==',true);
+
+                // Filter by scope
+                if(currentScope==='university'){
+                    query=query.where('university','==',userData.university||'futminna');
+                }else if(currentScope==='level'){
+                    query=query.where('university','==',userData.university||'futminna')
+                               .where('level','==',userData.level||'200');
+                }else if(currentScope==='department'){
+                    query=query.where('university','==',userData.university||'futminna')
+                               .where('department','==',userData.department||'');
+                }else if(currentScope==='course'){
+                    // Course scope needs special handling - load course_performance
+                    await loadCourseLeaderboard();
+                    return;
+                }
+
+                const snap=await query.limit(500).get();
+                allUsers=[];
+
+                snap.forEach(doc=>{
+                    const d=doc.data();
+                    const score=calculateRankingScore(d);
+                    if(score>0||d.questionsAttempted>0){
+                        allUsers.push({
+                            id:doc.id,
+                            fullName:d.fullName||'Student',
+                            username:d.username||'',
+                            avatar:d.avatar||'av1',
+                            avatarEmoji:d.avatarEmoji||'🧑‍🎓',
+                            avatarBg:d.avatarBg||'#6366F1',
+                            level:d.levelName||d.level||'',
+                            department:d.departmentName||'',
+                            university:d.universityName||'',
+                            questionsAttempted:d.questionsAttempted||0,
+                            questionsCorrect:d.questionsCorrect||0,
+                            testsCompleted:d.testsCompleted||0,
+                            streak:d.streak||0,
+                            accuracy:d.questionsAttempted>0?Math.round((d.questionsCorrect/d.questionsAttempted)*100):0,
+                            score,
+                            isMe:doc.id===currentUser.uid
+                        });
+                    }
+                });
+
+                // Sort by score desc
+                allUsers.sort((a,b)=>{
+                    if(b.score!==a.score)return b.score-a.score;
+                    if(b.accuracy!==a.accuracy)return b.accuracy-a.accuracy;
+                    return b.questionsAttempted-a.questionsAttempted;
+                });
+
+                // Assign ranks
+                allUsers.forEach((u,i)=>u.rank=i+1);
+
+                renderLeaderboard();
+
+            }catch(e){
+                console.error('Leaderboard error:',e);
+                $('#skeletonLoader').style.display='none';
+                showToast('Could not load leaderboard','error');
+                $('#emptyState').style.display='block';
+                lucide.createIcons();
+            }
+        }
+
+        async function loadCourseLeaderboard(){
+            const courseId=selectedCourseFilter;
+            if(!courseId){
+                $('#skeletonLoader').style.display='none';
+                $('#emptyState').style.display='block';
+                $('#emptyText').textContent='Please select a course to view its leaderboard.';
+                lucide.createIcons();
+                return;
+            }
+
+            try{
+                const perfSnap=await db.collection('course_performance')
+                    .where('courseId','==',courseId)
+                    .limit(200).get();
+
+                allUsers=[];
+                const userIds=[];
+                const perfMap={};
+
+                perfSnap.forEach(doc=>{
+                    const d=doc.data();
+                    if(d.userId&&d.questionsAttempted>0){
+                        userIds.push(d.userId);
+                        perfMap[d.userId]=d;
+                    }
+                });
+
+                if(userIds.length===0){
+                    $('#skeletonLoader').style.display='none';
+                    $('#emptyState').style.display='block';
+                    $('#emptyText').textContent='No one has practiced this course yet. Be the first!';
+                    lucide.createIcons();
+                    return;
+                }
+
+                // Fetch user profiles (chunked to 10 per Firestore 'in' limit)
+                const chunks=[];
+                for(let i=0;i<userIds.length;i+=10)chunks.push(userIds.slice(i,i+10));
+
+                for(const chunk of chunks){
+                    const uSnap=await db.collection('users')
+                        .where(firebase.firestore.FieldPath.documentId(),'in',chunk).get();
+                    uSnap.forEach(doc=>{
+                        const u=doc.data();
+                        const perf=perfMap[doc.id];
+                        if(perf){
+                            const score=calculateRankingScore(u,perf);
+                            allUsers.push({
+                                id:doc.id,
+                                fullName:u.fullName||'Student',
+                                username:u.username||'',
+                                avatar:u.avatar||'av1',
+                                avatarEmoji:u.avatarEmoji||'🧑‍🎓',
+                                avatarBg:u.avatarBg||'#6366F1',
+                                level:u.levelName||u.level||'',
+                                department:u.departmentName||'',
+                                university:u.universityName||'',
+                                questionsAttempted:perf.questionsAttempted||0,
+                                questionsCorrect:perf.questionsCorrect||0,
+                                testsCompleted:u.testsCompleted||0,
+                                streak:u.streak||0,
+                                accuracy:perf.questionsAttempted>0?Math.round((perf.questionsCorrect/perf.questionsAttempted)*100):0,
+                                score,
+                                isMe:doc.id===currentUser.uid
+                            });
+                        }
+                    });
+                }
+
+                // Sort & rank
+                allUsers.sort((a,b)=>{
+                    if(b.score!==a.score)return b.score-a.score;
+                    if(b.accuracy!==a.accuracy)return b.accuracy-a.accuracy;
+                    return b.questionsAttempted-a.questionsAttempted;
+                });
+                allUsers.forEach((u,i)=>u.rank=i+1);
+
+                renderLeaderboard();
+
+            }catch(e){
+                console.error('Course leaderboard:',e);
+                $('#skeletonLoader').style.display='none';
+                showToast('Could not load course leaderboard','error');
+                $('#emptyState').style.display='block';
+                lucide.createIcons();
+            }
+        }
+
+        // ===== RENDER =====
+        function renderLeaderboard(){
+            $('#skeletonLoader').style.display='none';
+
+            if(allUsers.length===0){
+                $('#emptyState').style.display='block';
+                $('#leaderboardContent').style.display='none';
+                lucide.createIcons();
+                return;
+            }
+
+            $('#leaderboardContent').style.display='block';
+            $('#emptyState').style.display='none';
+
+            // Stats
+            const total=allUsers.length;
+            const avgAcc=Math.round(allUsers.reduce((s,u)=>s+u.accuracy,0)/total);
+            const topScore=Math.max(...allUsers.map(u=>u.score));
+
+            animNum($('#statStudents'),total,'',800);
+            animNum($('#statAvg'),avgAcc,'%',1000);
+            animNum($('#statTop'),topScore,'',1200);
+
+            // Subtitle
+            const scopeLabels={university:'University',level:'Level',department:'Department',course:'Course'};
+            $('#pageSubtitle').textContent=`${scopeLabels[currentScope]} rankings`;
+
+            // Podium
+            renderPodium();
+
+            // My rank card
+            renderMyRank();
+
+            // Full list
+            renderList();
+
+            lucide.createIcons();
+        }
+
+        function renderPodium(){
+            const podium=$('#podium');
+            const top3=allUsers.slice(0,3);
+
+            if(top3.length===0){
+                $('#podiumSection').style.display='none';
+                return;
+            }
+            $('#podiumSection').style.display='block';
+
+            // Order: 2nd, 1st, 3rd (visually centered)
+            const [first,second,third]=top3;
+
+            podium.innerHTML=[second,first,third].filter(Boolean).map((u,idx)=>{
+                const actualRank=u===first?1:u===second?2:3;
+                const spotClass=`podium-spot-${actualRank}`;
+                const crown=actualRank===1?'👑':actualRank===2?'🥈':'🥉';
+                const crownCls=actualRank===1?'':actualRank===2?'silver':'bronze';
+                const rankBadgeCls=actualRank===1?'gold':actualRank===2?'silver':'bronze';
+                const firstName=(u.fullName||'').split(' ')[0];
+
+                return`<div class="podium-spot ${spotClass}" onclick="openUserModal('${u.id}')">
+                    <span class="podium-crown ${crownCls}">${crown}</span>
+                    ${actualRank===1?'<span class="podium-sparkle podium-sparkle-1">✨</span><span class="podium-sparkle podium-sparkle-2">✨</span>':''}
+                    <div class="podium-avatar-wrap">
+                        <div class="podium-avatar" style="background:${u.avatarBg}">${u.avatarEmoji}</div>
+                        <div class="podium-rank-badge ${rankBadgeCls}">${actualRank}</div>
+                    </div>
+                    <div class="podium-name">${u.isMe?'You':firstName}</div>
+                    <div class="podium-score">${u.score} pts</div>
+                    <div class="podium-stage"><span>${actualRank}</span></div>
+                </div>`;
+            }).join('');
+        }
+
+        function renderMyRank(){
+            const me=allUsers.find(u=>u.isMe);
+            const card=$('#myRankCard');
+
+            if(!me){
+                card.style.display='none';
+                return;
+            }
+
+            card.style.display='flex';
+            const firstName=(me.fullName||'').split(' ')[0];
+            const movement=me.rank<=10?'up':me.rank<=25?'same':'down';
+            const moveIcon=movement==='up'?'trending-up':movement==='down'?'trending-down':'minus';
+            const moveText=movement==='up'?'Top 10':movement==='same'?'Steady':'Keep climbing';
+
+            card.innerHTML=`
+                <div class="my-rank-position">
+                    <div class="my-rank-number">#${me.rank}</div>
+                    <div class="my-rank-label">Rank</div>
+                </div>
+                <div class="my-rank-avatar" style="background:${me.avatarBg}">${me.avatarEmoji}</div>
+                <div class="my-rank-info">
+                    <div class="my-rank-you">YOUR POSITION</div>
+                    <div class="my-rank-name">${firstName}</div>
+                    <span class="my-rank-change ${movement}"><i data-lucide="${moveIcon}"></i>${moveText}</span>
+                </div>
+                <div class="my-rank-score">
+                    <div class="my-rank-score-val">${me.score}</div>
+                    <div class="my-rank-score-lbl">points</div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function renderList(){
+            const list=$('#leaderboardList');
+            // Skip podium users (shown separately)
+            const remaining=allUsers.slice(3);
+            // But if user is in top 3, show rest; if user is not in top 3, show full top-50
+            const display=allUsers.length>3?allUsers.slice(3,50):[];
+
+            $('#totalRankCount').textContent=`${allUsers.length} student${allUsers.length!==1?'s':''}`;
+
+            if(display.length===0){
+                list.innerHTML=`<div style="text-align:center;padding:30px;color:var(--text-tertiary);font-size:13px">Only top 3 for now. Be among the first to climb!</div>`;
+                return;
+            }
+
+            list.innerHTML=display.map((u,i)=>{
+                const firstName=(u.fullName||'').split(' ')[0];
+                const rankCls=u.rank===1?'top-1':u.rank===2?'top-2':u.rank===3?'top-3':'';
+                const movement=u.rank<=10?'up':u.rank<=25?'same':u.rank<=40?'same':'down';
+                const moveIcon=movement==='up'?'trending-up':movement==='down'?'trending-down':'minus';
+                const moveLabels={up:'+',same:'=',down:'-'};
+                const meBadge=u.isMe?'<span class="lb-you-badge">YOU</span>':'';
+                const myCls=u.isMe?'is-me':'';
+
+                return`<div class="lb-item ${myCls}" data-user-id="${u.id}" style="animation-delay:${Math.min(i,15)*.03}s" onclick="openUserModal('${u.id}')">
+                    <div class="lb-rank ${rankCls}">#${u.rank}</div>
+                    <div class="lb-avatar" style="background:${u.avatarBg}">${u.avatarEmoji}</div>
+                    <div class="lb-info">
+                        <div class="lb-name">${u.isMe?'You':firstName}${meBadge}</div>
+                        <div class="lb-meta">
+                            <span><i data-lucide="layers"></i>${u.level||'—'}</span>
+                            <span>•</span>
+                            <span><i data-lucide="target"></i>${u.accuracy}% acc</span>
+                        </div>
+                    </div>
+                    <div class="lb-score">
+                        <div class="lb-score-val">${u.score}</div>
+                        <div class="lb-score-lbl">pts</div>
+                        <span class="lb-movement ${movement}"><i data-lucide="${moveIcon}"></i>${moveLabels[movement]}</span>
+                    </div>
+                </div>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        // ===== USER DETAIL MODAL =====
+        function openUserModal(userId){
+            const u=allUsers.find(x=>x.id===userId);
+            if(!u)return;
+
+            const firstName=(u.fullName||'').split(' ')[0];
+            const rankEmoji=u.rank===1?'🥇':u.rank===2?'🥈':u.rank===3?'🥉':'';
+
+            $('#userModalBody').innerHTML=`
+                <div class="user-detail-hero">
+                    <div class="user-detail-avatar" style="background:${u.avatarBg}">${u.avatarEmoji}</div>
+                    <div class="user-detail-name">${u.isMe?'You ('+firstName+')':u.fullName}</div>
+                    <div class="user-detail-sub">${u.username?'@'+u.username:''} ${u.level?' • '+u.level:''}</div>
+                    <div class="user-detail-rank"><i data-lucide="trophy"></i>${rankEmoji} Rank #${u.rank}</div>
+                </div>
+                <div class="user-detail-stats">
+                    <div class="user-detail-stat"><div class="user-detail-stat-val">${u.score}</div><div class="user-detail-stat-lbl">Score</div></div>
+                    <div class="user-detail-stat"><div class="user-detail-stat-val">${u.accuracy}%</div><div class="user-detail-stat-lbl">Accuracy</div></div>
+                    <div class="user-detail-stat"><div class="user-detail-stat-val">${u.questionsAttempted}</div><div class="user-detail-stat-lbl">Questions</div></div>
+                    <div class="user-detail-stat"><div class="user-detail-stat-val">${u.questionsCorrect}</div><div class="user-detail-stat-lbl">Correct</div></div>
+                    <div class="user-detail-stat"><div class="user-detail-stat-val">${u.testsCompleted}</div><div class="user-detail-stat-lbl">Tests</div></div>
+                    <div class="user-detail-stat"><div class="user-detail-stat-val">${u.streak||0}🔥</div><div class="user-detail-stat-lbl">Streak</div></div>
+                </div>
+                ${u.department?`<div style="text-align:center;padding:12px;background:var(--surface-2);border-radius:var(--radius-md);font-size:12px;color:var(--text-secondary);margin-top:10px"><i data-lucide="book-open" style="width:14px;height:14px;display:inline;vertical-align:middle"></i> ${u.department}</div>`:''}
+            `;
+            openModal('userModal');
+            lucide.createIcons();
+        }
+
+        // ===== SCROLL TO ME =====
+        function scrollToMe(){
+            const me=document.querySelector('.lb-item.is-me');
+            if(me){
+                me.scrollIntoView({behavior:'smooth',block:'center'});
+                me.style.animation='rankUp .6s ease';
+                setTimeout(()=>me.style.animation='',600);
+            }else{
+                showToast('You\'re in the top 3! Check the podium above.','success');
+            }
+        }
+
+        // ===== SCOPE TABS =====
+        $$('.scope-tab').forEach(tab=>{
+            tab.addEventListener('click',()=>{
+                $$('.scope-tab').forEach(t=>t.classList.remove('active'));
+                tab.classList.add('active');
+                currentScope=tab.dataset.scope;
+
+                const courseSelector=$('#courseSelector');
+                if(currentScope==='course'){
+                    courseSelector.classList.add('show');
+                    populateCourseSelector();
+                }else{
+                    courseSelector.classList.remove('show');
+                    loadLeaderboard();
+                }
+            });
+        });
+
+        // ===== TIME FILTER =====
+        $$('.time-btn').forEach(btn=>{
+            btn.addEventListener('click',()=>{
+                $$('.time-btn').forEach(b=>b.classList.remove('active'));
+                btn.classList.add('active');
+                currentTime=btn.dataset.time;
+                loadLeaderboard();
+            });
+        });
+
+        // ===== COURSE SELECTOR =====
+        function populateCourseSelector(){
+            const sel=$('#courseSelect');
+            sel.innerHTML='<option value="">Select a course...</option>';
+            const courses=userData?.selectedCourses||[];
+            courses.forEach(c=>{
+                sel.innerHTML+=`<option value="${c.id}">${c.code} — ${c.name}</option>`;
+            });
+            if(courses.length>0&&!selectedCourseFilter){
+                selectedCourseFilter=courses[0].id;
+                sel.value=selectedCourseFilter;
+                loadLeaderboard();
+            }
+        }
+
+        $('#courseSelect').addEventListener('change',e=>{
+            selectedCourseFilter=e.target.value;
+            if(selectedCourseFilter)loadLeaderboard();
+        });
+
+        // ===== AUTH =====
+        auth.onAuthStateChanged(async user=>{
+            if(!user){location.href='index.html';return}
+            currentUser=user;
+            try{
+                const doc=await db.collection('users').doc(user.uid).get();
+                if(!doc.exists){location.href='index.html';return}
+                userData=doc.data();userData.uid=user.uid;
+                if(!userData.onboardingComplete){location.href='onboarding.html';return}
+
+                await loadLeaderboard();
+
+                const lo=$('#loadingOverlay');lo.classList.add('hide');setTimeout(()=>lo.style.display='none',300);
+
+            }catch(e){
+                console.error('Load error:',e);
+                const lo=$('#loadingOverlay');lo.classList.add('hide');setTimeout(()=>lo.style.display='none',300);
+                showToast('Error loading leaderboard','error');
+            }
+        });
+
+        window.addEventListener('popstate',()=>{const openM=document.querySelector('.modal-overlay.show');if(openM){closeModal(openM.id);history.pushState(null,'',location.href)}});
+        history.pushState(null,'',location.href);
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>

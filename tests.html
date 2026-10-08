@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FAVOJE — Tests</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --primary:#6366F1;--primary-hover:#5558E6;--primary-light:rgba(99,102,241,.12);--primary-glow:rgba(99,102,241,.25);
+            --secondary:#4F46E5;--bg:#080B14;--bg-secondary:#0d1121;
+            --surface:#111827;--surface-hover:#1a2235;--surface-2:#1F2937;--surface-3:#2a3548;
+            --accent:#F97316;--accent-light:rgba(249,115,22,.12);
+            --success:#10B981;--success-light:rgba(16,185,129,.12);
+            --danger:#EF4444;--danger-light:rgba(239,68,68,.12);
+            --warning:#F59E0B;--warning-light:rgba(245,158,11,.12);
+            --info:#3B82F6;--info-light:rgba(59,130,246,.12);
+            --text-primary:#F1F5F9;--text-secondary:#94A3B8;--text-tertiary:#64748B;
+            --border:rgba(148,163,184,.1);--border-hover:rgba(148,163,184,.2);
+            --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 12px rgba(0,0,0,.4);--shadow-lg:0 8px 32px rgba(0,0,0,.5);
+            --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-2xl:24px;--radius-full:50%;
+            --transition-fast:.15s ease;--transition-normal:.3s ease;--transition-slow:.5s ease;
+            --transition-spring:.5s cubic-bezier(.34,1.56,.64,1);
+            --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+            --bottom-nav-height:72px;--safe-bottom:env(safe-area-inset-bottom,0px)
+        }
+        :root.light-mode{
+            --bg:#F1F5F9;--bg-secondary:#E8ECF1;--surface:#FFFFFF;--surface-hover:#F8FAFC;
+            --surface-2:#F1F5F9;--surface-3:#E2E8F0;--text-primary:#0F172A;--text-secondary:#475569;
+            --text-tertiary:#94A3B8;--border:rgba(15,23,42,.08);--border-hover:rgba(15,23,42,.15);
+            --shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 4px 12px rgba(0,0,0,.08);
+            --shadow-lg:0 8px 32px rgba(0,0,0,.1);--primary-glow:rgba(99,102,241,.12)
+        }
+        html{font-size:16px;-webkit-text-size-adjust:100%}
+        body{font-family:var(--font);background:var(--bg);color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:calc(var(--bottom-nav-height) + var(--safe-bottom) + 20px)}
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        @keyframes fadeOut{from{opacity:1}to{opacity:0}}
+        @keyframes slideInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes slideDown{from{opacity:0;transform:translateY(-15px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes scaleIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+        @keyframes scaleInBounce{0%{opacity:0;transform:scale(.5)}60%{transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+        @keyframes bounceIn{0%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.05)}70%{transform:scale(.95)}100%{transform:scale(1)}}
+        @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+        @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes glow{0%,100%{box-shadow:0 0 15px var(--primary-glow)}50%{box-shadow:0 0 35px var(--primary-glow)}}
+        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+        @keyframes ripple{0%{transform:scale(0);opacity:.5}100%{transform:scale(4);opacity:0}}
+        @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(25px,-25px) scale(1.06)}50%{transform:translate(-15px,15px) scale(.94)}75%{transform:translate(10px,30px) scale(1.03)}}
+        @keyframes staggerIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+        @keyframes cardFlipIn{from{opacity:0;transform:perspective(600px) rotateY(-20deg) translateX(-20px)}to{opacity:1;transform:perspective(600px) rotateY(0) translateX(0)}}
+        @keyframes slideInModal{from{opacity:0;transform:translateY(50px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
+        @keyframes priceReveal{from{opacity:0;transform:scale(1.5) rotate(10deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+        @keyframes successRing{0%{box-shadow:0 0 0 0 rgba(16,185,129,.5)}70%{box-shadow:0 0 0 20px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+        @keyframes confettiFall{0%{transform:translateY(-100vh) rotate(0)}100%{transform:translateY(100vh) rotate(720deg)}}
+        @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+        @keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+        @keyframes numberPop{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+        @keyframes popIn{0%{transform:scale(0) rotate(-180deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+        @keyframes slideFromRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
+        @keyframes slideToRight{from{transform:translateX(0)}to{transform:translateX(100%)}}
+        @keyframes badgeGlow{0%,100%{box-shadow:0 0 10px rgba(249,115,22,.3)}50%{box-shadow:0 0 20px rgba(249,115,22,.6)}}
+        @keyframes borderFlow{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+        @keyframes zoomIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+        @keyframes slideOutRight{to{opacity:0;transform:translateX(50px)}}
+        @keyframes tilt{0%,100%{transform:rotate(0)}50%{transform:rotate(2deg)}}
+
+        /* BACKGROUND */
+        .bg-gradient{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+        .bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.1;animation:orbFloat 22s infinite ease-in-out}
+        .bg-orb-1{width:350px;height:350px;background:var(--primary);top:-80px;right:-80px}
+        .bg-orb-2{width:280px;height:280px;background:var(--accent);bottom:-60px;left:-60px;animation-delay:-8s}
+
+        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:4px}
+
+        /* MAIN */
+        .main-content{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:16px 16px 0}
+
+        /* HEADER */
+        .page-header{display:flex;align-items:center;gap:14px;padding:12px 0 20px;animation:fadeInDown .5s ease}
+        .page-header-back{width:40px;height:40px;border-radius:var(--radius-md);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-normal);flex-shrink:0}
+        .page-header-back:hover{background:var(--surface-hover);border-color:var(--primary);transform:translateX(-3px)}
+        .page-header-back i{width:20px;height:20px;color:var(--text-secondary)}
+        .page-header-info{flex:1;min-width:0}
+        .page-header-title{font-size:20px;font-weight:800;color:var(--text-primary);line-height:1.2}
+        .page-header-sub{font-size:12px;color:var(--text-tertiary)}
+        .page-header-action{width:40px;height:40px;border-radius:var(--radius-md);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-normal);position:relative}
+        .page-header-action:hover{background:var(--surface-hover)}
+        .page-header-action i{width:20px;height:20px;color:var(--text-secondary)}
+
+        /* BALANCE MINI */
+        .balance-strip{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:var(--radius-lg);margin-bottom:18px;color:#fff;cursor:pointer;transition:all var(--transition-normal);position:relative;overflow:hidden;animation:fadeInUp .5s ease .1s both;background-size:200% 200%;animation:fadeInUp .5s ease .1s both,gradientShift 8s ease infinite}
+        .balance-strip::before{content:'';position:absolute;top:-50%;right:-20%;width:150px;height:150px;background:radial-gradient(circle,rgba(255,255,255,.1),transparent 70%);animation:orbFloat 10s infinite;pointer-events:none}
+        .balance-strip:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,.3)}
+        .balance-strip-left{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+        .balance-strip-icon{width:36px;height:36px;background:rgba(255,255,255,.2);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
+        .balance-strip-icon i{width:18px;height:18px;color:#fff}
+        .balance-strip-text{display:flex;flex-direction:column;line-height:1.2}
+        .balance-strip-label{font-size:11px;opacity:.8;font-weight:500;letter-spacing:.3px}
+        .balance-strip-value{font-size:18px;font-weight:800}
+        .balance-strip-cta{display:flex;align-items:center;gap:5px;padding:7px 14px;background:rgba(255,255,255,.2);border-radius:var(--radius-sm);font-size:12px;font-weight:600;position:relative;z-index:1;backdrop-filter:blur(10px);transition:all var(--transition-normal)}
+        .balance-strip-cta:hover{background:rgba(255,255,255,.3)}
+        .balance-strip-cta i{width:14px;height:14px}
+
+        /* SEARCH */
+        .search-bar{position:relative;margin-bottom:16px;animation:fadeInUp .5s ease .15s both}
+        .search-bar i.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--text-tertiary);pointer-events:none;transition:color var(--transition-fast)}
+        .search-bar input{width:100%;padding:12px 44px 12px 42px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-md);font-size:14px;font-family:var(--font);color:var(--text-primary);transition:all var(--transition-normal);outline:none}
+        .search-bar input::placeholder{color:var(--text-tertiary)}
+        .search-bar input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+        .search-bar input:focus~.search-icon{color:var(--primary)}
+        .search-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:var(--surface-3);display:none;align-items:center;justify-content:center;cursor:pointer;border:none;transition:all var(--transition-fast)}
+        .search-clear.show{display:flex}
+        .search-clear:hover{background:var(--danger)}
+        .search-clear:hover i{color:#fff}
+        .search-clear i{width:12px;height:12px;color:var(--text-tertiary)}
+
+        /* FILTER TABS */
+        .filter-tabs{display:flex;gap:8px;margin-bottom:18px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;animation:fadeInUp .5s ease .2s both}
+        .filter-tabs::-webkit-scrollbar{display:none}
+        .filter-tab{padding:8px 14px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all var(--transition-normal);font-family:var(--font);display:flex;align-items:center;gap:5px;flex-shrink:0}
+        .filter-tab:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+        .filter-tab.active{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 2px 10px rgba(99,102,241,.3)}
+        .filter-tab i{width:13px;height:13px}
+        .filter-tab-count{font-size:10px;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.2);margin-left:2px}
+        .filter-tab:not(.active) .filter-tab-count{background:var(--surface-3)}
+
+        /* SECTION */
+        .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:0 2px;animation:fadeInUp .5s ease .25s both}
+        .section-title{font-size:16px;font-weight:700;color:var(--text-primary);display:flex;align-items:center;gap:6px}
+        .section-title i{width:18px;height:18px;color:var(--primary)}
+        .section-count{font-size:12px;color:var(--text-tertiary);font-weight:500}
+
+        /* TEST GRID */
+        .test-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:24px}
+        .test-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;cursor:pointer;transition:all var(--transition-normal);position:relative;overflow:hidden;animation:cardFlipIn .5s ease both}
+        .test-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent));transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+        .test-card:hover::before{transform:scaleX(1)}
+        .test-card:hover{border-color:var(--border-hover);transform:translateY(-3px);box-shadow:var(--shadow-md)}
+        .test-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+        .test-card-badges{display:flex;flex-wrap:wrap;gap:6px}
+        .test-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:var(--radius-sm);font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+        .test-badge i{width:11px;height:11px}
+        .test-badge.free{background:var(--success-light);color:var(--success)}
+        .test-badge.paid{background:var(--accent-light);color:var(--accent);animation:badgeGlow 2s ease-in-out infinite}
+        .test-badge.premium{background:linear-gradient(135deg,#F59E0B,#EC4899);color:#fff}
+        .test-badge.new{background:var(--primary-light);color:var(--primary)}
+        .test-badge.popular{background:var(--info-light);color:var(--info)}
+        .test-badge.owned{background:var(--success);color:#fff}
+        .test-badge.recommended{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
+        .test-card-course{font-size:12px;font-weight:700;color:var(--primary);letter-spacing:.4px;margin-bottom:6px}
+        .test-card-title{font-size:16px;font-weight:700;color:var(--text-primary);line-height:1.3;margin-bottom:10px}
+        .test-card-desc{font-size:12px;color:var(--text-secondary);line-height:1.5;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .test-card-meta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px}
+        .test-meta-item{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text-tertiary);font-weight:500}
+        .test-meta-item i{width:13px;height:13px}
+        .test-meta-item.difficulty-easy{color:var(--success)}
+        .test-meta-item.difficulty-medium{color:var(--warning)}
+        .test-meta-item.difficulty-hard{color:var(--danger)}
+        .test-card-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid var(--border)}
+        .test-price-display{display:flex;align-items:baseline;gap:4px}
+        .test-price-currency{font-size:14px;font-weight:600;color:var(--text-tertiary)}
+        .test-price-value{font-size:22px;font-weight:900;color:var(--text-primary);line-height:1}
+        .test-price-value.free{color:var(--success);font-size:16px;letter-spacing:1px}
+        .test-start-btn{padding:10px 18px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;border-radius:var(--radius-md);font-size:13px;font-weight:700;font-family:var(--font);cursor:pointer;transition:all var(--transition-normal);display:flex;align-items:center;gap:6px;box-shadow:0 2px 10px rgba(99,102,241,.25)}
+        .test-start-btn:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(99,102,241,.4)}
+        .test-start-btn:active{transform:translateY(0)}
+        .test-start-btn.owned{background:linear-gradient(135deg,var(--success),#059669);box-shadow:0 2px 10px rgba(16,185,129,.25)}
+        .test-start-btn.owned:hover{box-shadow:0 4px 15px rgba(16,185,129,.4)}
+        .test-start-btn.locked{background:var(--surface-2);color:var(--text-secondary);box-shadow:none;border:1px solid var(--border)}
+        .test-start-btn.locked:hover{background:var(--surface-3);transform:none}
+        .test-start-btn i{width:15px;height:15px}
+
+        /* EMPTY STATE */
+        .empty-state{text-align:center;padding:48px 24px;animation:fadeIn .5s ease}
+        .empty-state-icon{width:72px;height:72px;border-radius:var(--radius-xl);background:var(--surface-2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;animation:float 3s ease-in-out infinite}
+        .empty-state-icon i{width:32px;height:32px;color:var(--text-tertiary);opacity:.5}
+        .empty-state h3{font-size:17px;font-weight:700;color:var(--text-primary);margin-bottom:6px}
+        .empty-state p{font-size:13px;color:var(--text-tertiary);line-height:1.5;max-width:300px;margin:0 auto}
+
+        /* MODAL */
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:flex-end;justify-content:center;padding:0;backdrop-filter:blur(4px)}
+        .modal-overlay.show{display:flex;animation:fadeIn .3s ease}
+        .modal-sheet{background:var(--surface);border-radius:var(--radius-2xl) var(--radius-2xl) 0 0;padding:0;max-width:560px;width:100%;max-height:92vh;overflow-y:auto;animation:slideInModal .4s cubic-bezier(.4,0,.2,1);box-shadow:0 -8px 40px rgba(0,0,0,.4)}
+        .modal-handle{width:40px;height:4px;background:var(--surface-3);border-radius:2px;margin:12px auto 0}
+        .modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 24px 0}
+        .modal-title{font-size:18px;font-weight:800;color:var(--text-primary)}
+        .modal-close{width:32px;height:32px;border-radius:var(--radius-sm);background:var(--surface-2);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-normal)}
+        .modal-close:hover{background:var(--surface-3);transform:rotate(90deg)}
+        .modal-close i{width:16px;height:16px;color:var(--text-secondary)}
+        .modal-body{padding:16px 24px calc(24px + var(--safe-bottom))}
+
+        @media(min-width:768px){
+            .modal-overlay{align-items:center;padding:20px}
+            .modal-sheet{border-radius:var(--radius-2xl);max-height:90vh}
+            .modal-handle{display:none}
+        }
+
+        /* PURCHASE MODAL */
+        .purchase-hero{background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;color:#fff;position:relative;overflow:hidden;animation:scaleIn .4s ease}
+        .purchase-hero::before{content:'';position:absolute;top:-50%;right:-30%;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.1),transparent 70%);animation:orbFloat 10s infinite;pointer-events:none}
+        .purchase-hero-course{font-size:12px;opacity:.8;margin-bottom:4px;position:relative;z-index:1}
+        .purchase-hero-title{font-size:18px;font-weight:800;line-height:1.3;margin-bottom:12px;position:relative;z-index:1}
+        .purchase-hero-stats{display:flex;gap:16px;font-size:12px;opacity:.9;position:relative;z-index:1}
+        .purchase-hero-stats span{display:flex;align-items:center;gap:4px}
+        .purchase-hero-stats i{width:14px;height:14px}
+
+        .purchase-rows{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+        .purchase-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--surface-2);border-radius:var(--radius-md);transition:all var(--transition-normal)}
+        .purchase-row.highlight{background:var(--primary-light);border:1px solid rgba(99,102,241,.2)}
+        .purchase-row-label{font-size:12px;color:var(--text-secondary);font-weight:500;display:flex;align-items:center;gap:6px}
+        .purchase-row-label i{width:14px;height:14px}
+        .purchase-row-value{font-size:14px;font-weight:700;color:var(--text-primary)}
+        .purchase-row-value.price{color:var(--accent);font-size:16px}
+        .purchase-row-value.balance{color:var(--primary);font-size:16px}
+        .purchase-row-value.after{color:var(--success);font-size:16px}
+        .purchase-row-value.insufficient{color:var(--danger);font-size:16px}
+
+        .insufficient-box{background:var(--danger-light);border:1px solid rgba(239,68,68,.2);border-radius:var(--radius-md);padding:14px;margin-bottom:16px;animation:shake .5s ease,slideUp .3s ease}
+        .insufficient-title{font-size:13px;font-weight:700;color:var(--danger);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+        .insufficient-title i{width:16px;height:16px}
+        .insufficient-text{font-size:12px;color:var(--text-secondary);line-height:1.5;margin-bottom:10px}
+        .insufficient-amount{font-size:16px;font-weight:800;color:var(--danger);text-align:center;padding:10px;background:var(--surface-2);border-radius:var(--radius-sm);margin-bottom:12px}
+
+        /* BUTTONS */
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;font-size:14px;font-weight:600;font-family:var(--font);border-radius:var(--radius-md);cursor:pointer;transition:all var(--transition-normal);border:none;outline:none;position:relative;overflow:hidden;width:100%}
+        .btn::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--rx,50%) var(--ry,50%),rgba(255,255,255,.15),transparent 60%);opacity:0;transition:opacity var(--transition-normal)}
+        .btn:hover::after{opacity:1}
+        .btn-primary{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;box-shadow:0 4px 15px rgba(99,102,241,.3)}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,.4)}
+        .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+        .btn-success{background:linear-gradient(135deg,var(--success),#059669);color:#fff;box-shadow:0 4px 15px rgba(16,185,129,.3)}
+        .btn-success:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(16,185,129,.4)}
+        .btn-accent{background:linear-gradient(135deg,var(--accent),#EA580C);color:#fff;box-shadow:0 4px 15px rgba(249,115,22,.3)}
+        .btn-accent:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(249,115,22,.4)}
+        .btn-secondary{background:var(--surface-2);color:var(--text-primary);border:1px solid var(--border)}
+        .btn-secondary:hover{background:var(--surface-3);border-color:var(--border-hover)}
+        .btn i{width:18px;height:18px}
+        .btn .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+        .btn.loading .spinner{display:block}.btn.loading .btn-text{opacity:0}
+
+        /* SUCCESS SCREEN */
+        .success-screen{text-align:center;padding:20px 0}
+        .success-icon{width:88px;height:88px;border-radius:50%;background:var(--success-light);display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px;animation:bounceIn .6s ease,successRing 2s ease-in-out .6s infinite;position:relative}
+        .success-icon i{width:44px;height:44px;color:var(--success)}
+        .success-title{font-size:22px;font-weight:800;color:var(--text-primary);margin-bottom:8px;animation:fadeInUp .5s ease .2s both}
+        .success-sub{font-size:13px;color:var(--text-secondary);line-height:1.5;max-width:360px;margin:0 auto 24px;animation:fadeInUp .5s ease .3s both}
+
+        /* INFO BOX */
+        .info-box{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--primary-light);border-radius:var(--radius-md);margin-bottom:16px;font-size:12px;color:var(--primary);line-height:1.5}
+        .info-box i{width:16px;height:16px;flex-shrink:0;margin-top:1px}
+        .info-box.warning{background:var(--warning-light);color:var(--warning)}
+        .info-box.success{background:var(--success-light);color:var(--success)}
+        .info-box.info{background:var(--info-light);color:var(--info)}
+
+        /* TOAST */
+        .toast-container{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:400;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:calc(100% - 32px);max-width:400px}
+        .toast{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-lg);animation:slideDown .3s ease;pointer-events:auto;font-size:13px;font-weight:500;color:var(--text-primary)}
+        .toast.exit{animation:fadeOut .3s ease forwards}
+        .toast i{width:18px;height:18px;flex-shrink:0}
+        .toast.success i{color:var(--success)}.toast.error i{color:var(--danger)}.toast.warning i{color:var(--warning)}.toast.info i{color:var(--info)}
+
+        /* LOADING */
+        .loading-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;transition:opacity .3s ease}
+        .loading-overlay.hide{opacity:0;pointer-events:none}
+        .loading-spinner{width:42px;height:42px;border:3px solid var(--surface-3);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+        .loading-text{font-size:14px;color:var(--text-secondary);font-weight:500;text-align:center}
+
+        /* RIPPLE */
+        .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.15);animation:ripple .6s ease-out;pointer-events:none}
+
+        /* CONFETTI */
+        .confetti-container{position:fixed;inset:0;pointer-events:none;z-index:500;overflow:hidden}
+        .confetti-piece{position:absolute;width:10px;height:10px;top:-20px;opacity:.8;animation:confettiFall 3s linear forwards}
+
+        /* SKELETON */
+        .skeleton{background:linear-gradient(90deg,var(--surface-2) 25%,var(--surface-3) 50%,var(--surface-2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--radius-sm)}
+        .skeleton-card{height:170px;border-radius:var(--radius-lg);margin-bottom:14px}
+
+        /* BOTTOM NAV */
+        .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--surface);border-top:1px solid var(--border);padding:6px 0 calc(6px + var(--safe-bottom));display:flex;backdrop-filter:blur(20px)}
+        .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;cursor:pointer;transition:all var(--transition-normal);border:none;background:none;font-family:var(--font);position:relative}
+        .nav-item::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:0;height:2.5px;background:var(--primary);border-radius:0 0 4px 4px;transition:width var(--transition-normal)}
+        .nav-item.active::before{width:32px}
+        .nav-item i{width:22px;height:22px;color:var(--text-tertiary);transition:all var(--transition-normal)}
+        .nav-item.active i{color:var(--primary)}
+        .nav-item span{font-size:10px;font-weight:600;color:var(--text-tertiary);transition:color var(--transition-normal)}
+        .nav-item.active span{color:var(--primary)}
+        .nav-item:hover i{color:var(--primary);transform:translateY(-2px)}
+
+        /* DESKTOP SIDEBAR */
+        .sidebar-desktop{display:none;position:fixed;top:0;left:0;bottom:0;width:240px;background:var(--surface);border-right:1px solid var(--border);z-index:60;flex-direction:column;padding:24px 16px;animation:slideInLeft .5s ease}
+        .sidebar-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;padding:0 8px}
+        .sidebar-logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:10px;display:flex;align-items:center;justify-content:center}
+        .sidebar-logo-mark i{width:18px;height:18px;color:#fff}
+        .sidebar-logo-text{font-size:20px;font-weight:900;color:var(--text-primary)}
+        .sidebar-nav{flex:1;display:flex;flex-direction:column;gap:4px}
+        .sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:var(--radius-md);cursor:pointer;transition:all var(--transition-normal);border:none;background:none;font-family:var(--font);width:100%;text-align:left;color:var(--text-secondary);font-size:14px;font-weight:500}
+        .sidebar-item:hover{background:var(--surface-hover);color:var(--text-primary)}
+        .sidebar-item.active{background:var(--primary-light);color:var(--primary);font-weight:600}
+        .sidebar-item i{width:20px;height:20px}
+        .sidebar-bottom{padding-top:16px;border-top:1px solid var(--border)}
+
+        @media(min-width:768px){
+            .bottom-nav{display:none}
+            body{padding-bottom:0;padding-left:240px}
+            .sidebar-desktop{display:flex!important}
+            .test-grid{grid-template-columns:1fr 1fr}
+        }
+        @media(min-width:1024px){.main-content{max-width:800px}}
+        @media(min-width:1200px){.test-grid{grid-template-columns:1fr 1fr}}
+        @media(max-width:380px){
+            .main-content{padding:12px 12px 0}
+            .test-card{padding:14px}
+            .test-card-title{font-size:15px}
+            .test-price-value{font-size:20px}
+            .balance-strip{padding:12px 14px}
+            .balance-strip-value{font-size:16px}
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"><div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div></div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div><div class="loading-spinner"></div><p class="loading-text">Loading tests...</p></div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- Desktop Sidebar -->
+    <div class="sidebar-desktop">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-mark"><i data-lucide="graduation-cap"></i></div>
+            <span class="sidebar-logo-text">FAVOJE</span>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="sidebar-item" onclick="location.href='home.html'"><i data-lucide="home"></i>Home</button>
+            <button class="sidebar-item" onclick="location.href='courses.html'"><i data-lucide="book-open"></i>Courses</button>
+            <button class="sidebar-item" onclick="location.href='practice.html'"><i data-lucide="target"></i>Practice</button>
+            <button class="sidebar-item" onclick="location.href='leaderboard.html'"><i data-lucide="trophy"></i>Leaderboard</button>
+            <button class="sidebar-item" onclick="location.href='profile.html'"><i data-lucide="user"></i>Profile</button>
+            <button class="sidebar-item" onclick="location.href='wallet.html'"><i data-lucide="wallet"></i>Wallet</button>
+            <button class="sidebar-item active" onclick="location.href='tests.html'"><i data-lucide="file-text"></i>Tests</button>
+        </nav>
+        <div class="sidebar-bottom">
+            <div class="sidebar-item" id="themeToggle"><i data-lucide="moon" id="themeIcon"></i><span id="themeLabel">Dark Mode</span></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <div class="page-header-back" onclick="location.href='home.html'"><i data-lucide="arrow-left"></i></div>
+            <div class="page-header-info">
+                <div class="page-header-title">Test Library</div>
+                <div class="page-header-sub" id="testCountLabel">Loading...</div>
+            </div>
+            <div class="page-header-action" id="themeToggleMobile"><i data-lucide="moon" id="themeIconMobile"></i></div>
+        </div>
+
+        <!-- Balance Strip -->
+        <div class="balance-strip" onclick="location.href='wallet.html'">
+            <div class="balance-strip-left">
+                <div class="balance-strip-icon"><i data-lucide="wallet"></i></div>
+                <div class="balance-strip-text">
+                    <span class="balance-strip-label">Favoje Balance</span>
+                    <span class="balance-strip-value">₦<span id="balanceDisplay">0</span></span>
+                </div>
+            </div>
+            <div class="balance-strip-cta">
+                <i data-lucide="plus"></i>
+                <span>Top Up</span>
+            </div>
+        </div>
+
+        <!-- Search -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search tests by name, course, or topic...">
+            <i data-lucide="search" class="search-icon"></i>
+            <button class="search-clear" id="searchClear"><i data-lucide="x"></i></button>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs" id="filterTabs">
+            <button class="filter-tab active" data-filter="all"><i data-lucide="list"></i>All <span class="filter-tab-count" id="countAll">0</span></button>
+            <button class="filter-tab" data-filter="recommended"><i data-lucide="sparkles"></i>Recommended <span class="filter-tab-count" id="countRec">0</span></button>
+            <button class="filter-tab" data-filter="owned"><i data-lucide="check-circle"></i>My Tests <span class="filter-tab-count" id="countOwned">0</span></button>
+            <button class="filter-tab" data-filter="free"><i data-lucide="gift"></i>Free <span class="filter-tab-count" id="countFree">0</span></button>
+            <button class="filter-tab" data-filter="50"><i data-lucide="coins"></i>₦50 <span class="filter-tab-count" id="count50">0</span></button>
+            <button class="filter-tab" data-filter="100"><i data-lucide="coins"></i>₦100 <span class="filter-tab-count" id="count100">0</span></button>
+            <button class="filter-tab" data-filter="new"><i data-lucide="zap"></i>New <span class="filter-tab-count" id="countNew">0</span></button>
+            <button class="filter-tab" data-filter="popular"><i data-lucide="flame"></i>Popular <span class="filter-tab-count" id="countPop">0</span></button>
+        </div>
+
+        <!-- Section -->
+        <div class="section-header">
+            <div class="section-title"><i data-lucide="file-text"></i><span id="sectionTitle">All Tests</span></div>
+            <div class="section-count" id="sectionCount">0 tests</div>
+        </div>
+
+        <!-- Skeleton -->
+        <div id="skeletonLoader">
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+        </div>
+
+        <!-- Test Grid -->
+        <div class="test-grid" id="testGrid" style="display:none"></div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display:none">
+            <div class="empty-state-icon"><i data-lucide="file-x"></i></div>
+            <h3>No Tests Available</h3>
+            <p id="emptyText">No tests match your current filters. Try adjusting your search or check back later for new tests.</p>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <button class="nav-item" onclick="location.href='home.html'"><i data-lucide="home"></i><span>Home</span></button>
+        <button class="nav-item" onclick="location.href='courses.html'"><i data-lucide="book-open"></i><span>Courses</span></button>
+        <button class="nav-item" onclick="location.href='practice.html'"><i data-lucide="target"></i><span>Practice</span></button>
+        <button class="nav-item" onclick="location.href='leaderboard.html'"><i data-lucide="trophy"></i><span>Ranks</span></button>
+        <button class="nav-item" onclick="location.href='profile.html'"><i data-lucide="user"></i><span>Profile</span></button>
+    </nav>
+
+    <!-- DETAIL MODAL -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
+            <div class="modal-head">
+                <div class="modal-title">Test Details</div>
+                <button class="modal-close" onclick="closeModal('detailModal')"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" id="detailBody"></div>
+        </div>
+    </div>
+
+    <!-- PURCHASE MODAL -->
+    <div class="modal-overlay" id="purchaseModal">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
+            <div class="modal-head">
+                <div class="modal-title">Purchase Test</div>
+                <button class="modal-close" onclick="closeModal('purchaseModal')"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" id="purchaseBody"></div>
+        </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
+            <div class="modal-body" id="successBody"></div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig={apiKey:"AIzaSyC1SmazNPbak8vMvi-jD40EGqpvWmWdd0U",authDomain:"favoje-fcb02.firebaseapp.com",projectId:"favoje-fcb02",storageBucket:"favoje-fcb02.firebasestorage.app",messagingSenderId:"837946471768",appId:"1:837946471768:web:6ea76eee926fe77bdc212d"};
+        const app=firebase.initializeApp(firebaseConfig),auth=firebase.auth(),db=firebase.firestore();
+        db.settings({cacheSizeBytes:firebase.firestore.CACHE_SIZE_UNLIMITED});
+        db.enablePersistence().catch(e=>console.log(e.code));
+
+        const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+        let currentUser=null,userData=null,allTests=[],purchasedTests=new Set(),currentBalance=0,currentFilter='all',searchQuery='',isPurchasing=false,walletListener=null;
+
+        // THEME
+        let isDark=localStorage.getItem('favoje-theme')!=='light';
+        function applyTheme(){document.documentElement.classList.toggle('light-mode',!isDark);['themeIcon','themeIconMobile'].forEach(id=>{const e=document.getElementById(id);if(e)e.setAttribute('data-lucide',isDark?'moon':'sun')});const l=$('#themeLabel');if(l)l.textContent=isDark?'Dark Mode':'Light Mode';lucide.createIcons()}
+        function toggleTheme(){isDark=!isDark;localStorage.setItem('favoje-theme',isDark?'dark':'light');applyTheme()}
+        $('#themeToggle')?.addEventListener('click',toggleTheme);
+        $('#themeToggleMobile')?.addEventListener('click',toggleTheme);
+        applyTheme();
+
+        function showToast(msg,type='success'){const c=$('#toastContainer'),t=document.createElement('div');t.className=`toast ${type}`;t.innerHTML=`<i data-lucide="${{success:'check-circle-2',error:'x-circle',warning:'alert-triangle',info:'info'}[type]}"></i><span>${msg}</span>`;c.appendChild(t);lucide.createIcons();setTimeout(()=>{t.classList.add('exit');setTimeout(()=>t.remove(),300)},3500)}
+        function fireConfetti(){const c=$('#confettiContainer'),colors=['#6366F1','#F97316','#10B981','#EF4444','#F59E0B','#EC4899','#3B82F6'];for(let i=0;i<40;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=Math.random()*100+'%';p.style.background=colors[Math.floor(Math.random()*colors.length)];p.style.width=(Math.random()*8+5)+'px';p.style.height=(Math.random()*8+5)+'px';p.style.borderRadius=Math.random()>.5?'50%':'2px';p.style.animationDuration=(Math.random()*2+2)+'s';p.style.animationDelay=Math.random()+'s';c.appendChild(p)}setTimeout(()=>c.innerHTML='',5000)}
+        document.addEventListener('click',e=>{const c=e.target.closest('.test-card,.test-start-btn,.btn,.filter-tab,.balance-strip');if(!c)return;c.style.position='relative';c.style.overflow='hidden';const r=document.createElement('span');r.className='ripple';const b=c.getBoundingClientRect();r.style.left=(e.clientX-b.left)+'px';r.style.top=(e.clientY-b.top)+'px';c.appendChild(r);setTimeout(()=>r.remove(),600)});
+        function animNum(el,t,s='',d=1000){const st=performance.now();(function u(n){const p=Math.min((n-st)/d,1),e=1-Math.pow(1-p,3);el.textContent=Math.round(t*e).toLocaleString()+s;if(p<1)requestAnimationFrame(u)})(st)}
+        function openModal(id){$('#'+id).classList.add('show');document.body.style.overflow='hidden'}
+        function closeModal(id){$('#'+id).classList.remove('show');document.body.style.overflow=''}
+        $$('.modal-overlay').forEach(ov=>{ov.addEventListener('click',e=>{if(e.target===ov)closeModal(ov.id)})});
+
+        function timeAgo(d){if(!d)return'';const date=d.toDate?d.toDate():new Date(d);const now=new Date();const diff=Math.floor((now-date)/1000);if(diff<60)return'just now';if(diff<3600)return Math.floor(diff/60)+'m ago';if(diff<86400)return Math.floor(diff/3600)+'h ago';if(diff<604800)return Math.floor(diff/86400)+'d ago';return date.toLocaleDateString()}
+
+        function isNew(d){if(!d)return false;const date=d.toDate?d.toDate():new Date(d);const days=(new Date()-date)/(1000*60*60*24);return days<7}
+
+        // ===== LOAD BALANCE =====
+        async function loadBalance(){
+            if(!currentUser)return;
+            if(walletListener)walletListener();
+            walletListener=db.collection('wallet_accounts').doc(currentUser.uid)
+                .onSnapshot(doc=>{
+                    if(doc.exists){
+                        const bal=doc.data().balance||0;
+                        currentBalance=bal;
+                        animNum($('#balanceDisplay'),bal,'',800);
+                    }
+                },err=>console.log('Wallet:',err));
+        }
+
+        // ===== LOAD PURCHASED TESTS =====
+        async function loadPurchasedTests(){
+            if(!currentUser)return;
+            try{
+                const snap=await db.collection('test_purchases')
+                    .where('userId','==',currentUser.uid)
+                    .where('status','==','active').get();
+                purchasedTests=new Set();
+                snap.forEach(doc=>{purchasedTests.add(doc.data().testId)});
+            }catch(e){console.log('Purchased:',e)}
+        }
+
+        // ===== LOAD TESTS =====
+        async function loadTests(){
+            try{
+                const snap=await db.collection('tests')
+                    .where('status','==','published')
+                    .limit(100).get();
+
+                allTests=[];
+                snap.forEach(doc=>allTests.push({id:doc.id,...doc.data()}));
+
+                // Also check for user's course codes
+                const userCourseCodes=(userData?.selectedCourses||[]).map(c=>c.code);
+
+                // Sort: recommended (user's courses) first, then popular, then by date
+                allTests.sort((a,b)=>{
+                    const aRec=userCourseCodes.includes(a.courseCode||a.course)?1:0;
+                    const bRec=userCourseCodes.includes(b.courseCode||b.course)?1:0;
+                    if(aRec!==bRec)return bRec-aRec;
+                    const aPop=a.attempts||0,bPop=b.attempts||0;
+                    return bPop-aPop;
+                });
+
+                updateFilterCounts();
+                renderTests();
+                $('#skeletonLoader').style.display='none';
+
+            }catch(e){
+                console.error('Load tests:',e);
+                $('#skeletonLoader').style.display='none';
+                renderTests();
+            }
+        }
+
+        function updateFilterCounts(){
+            const userCourseCodes=(userData?.selectedCourses||[]).map(c=>c.code);
+            const owned=allTests.filter(t=>purchasedTests.has(t.id)).length;
+            const free=allTests.filter(t=>!t.price||t.price===0).length;
+            const p50=allTests.filter(t=>t.price===50).length;
+            const p100=allTests.filter(t=>t.price===100).length;
+            const newT=allTests.filter(t=>isNew(t.createdAt)).length;
+            const popular=allTests.filter(t=>(t.attempts||0)>10).length;
+            const rec=allTests.filter(t=>userCourseCodes.includes(t.courseCode||t.course)).length;
+
+            $('#countAll').textContent=allTests.length;
+            $('#countRec').textContent=rec;
+            $('#countOwned').textContent=owned;
+            $('#countFree').textContent=free;
+            $('#count50').textContent=p50;
+            $('#count100').textContent=p100;
+            $('#countNew').textContent=newT;
+            $('#countPop').textContent=popular;
+            $('#testCountLabel').textContent=`${allTests.length} test${allTests.length!==1?'s':''} available`;
+        }
+
+        function renderTests(){
+            const grid=$('#testGrid'),empty=$('#emptyState');
+            const userCourseCodes=(userData?.selectedCourses||[]).map(c=>c.code);
+
+            let filtered=allTests;
+            if(currentFilter==='owned')filtered=allTests.filter(t=>purchasedTests.has(t.id));
+            else if(currentFilter==='free')filtered=allTests.filter(t=>!t.price||t.price===0);
+            else if(currentFilter==='50')filtered=allTests.filter(t=>t.price===50);
+            else if(currentFilter==='100')filtered=allTests.filter(t=>t.price===100);
+            else if(currentFilter==='new')filtered=allTests.filter(t=>isNew(t.createdAt));
+            else if(currentFilter==='popular')filtered=allTests.filter(t=>(t.attempts||0)>10);
+            else if(currentFilter==='recommended')filtered=allTests.filter(t=>userCourseCodes.includes(t.courseCode||t.course));
+
+            // Apply search
+            if(searchQuery){
+                const q=searchQuery.toLowerCase();
+                filtered=filtered.filter(t=>
+                    (t.name||'').toLowerCase().includes(q)||
+                    (t.title||'').toLowerCase().includes(q)||
+                    (t.courseCode||'').toLowerCase().includes(q)||
+                    (t.course||'').toLowerCase().includes(q)||
+                    (t.description||'').toLowerCase().includes(q)
+                );
+            }
+
+            // Section labels
+            const sectionLabels={
+                'all':'All Tests','owned':'My Tests','free':'Free Tests',
+                '50':'₦50 Tests','100':'₦100 Tests','new':'New Tests',
+                'popular':'Popular Tests','recommended':'Recommended for You'
+            };
+            $('#sectionTitle').textContent=sectionLabels[currentFilter]||'All Tests';
+            $('#sectionCount').textContent=`${filtered.length} test${filtered.length!==1?'s':''}`;
+
+            if(filtered.length===0){
+                grid.style.display='none';
+                empty.style.display='block';
+                $('#emptyText').textContent=searchQuery?`No tests match "${searchQuery}". Try a different search.`:'No tests available in this category yet. Check back later!';
+                lucide.createIcons();
+                return;
+            }
+
+            empty.style.display='none';
+            grid.style.display='grid';
+
+            grid.innerHTML=filtered.map((t,i)=>{
+                const isFree=!t.price||t.price===0;
+                const isOwned=purchasedTests.has(t.id);
+                const price=t.price||0;
+                const questionCount=t.questionCount||t.questions||0;
+                const duration=t.duration||30;
+                const difficulty=t.difficulty||'medium';
+                const diffLabels={easy:'Easy',medium:'Medium',hard:'Hard'};
+                const diffEmoji={easy:'🟢',medium:'🟡',hard:'🔴'};
+                const courseCode=t.courseCode||t.course||'';
+                const title=t.name||t.title||'Mock Test';
+                const isNewTest=isNew(t.createdAt);
+                const isPopular=(t.attempts||0)>10;
+                const isRecommended=userCourseCodes.includes(courseCode);
+
+                let badges=[];
+                if(isOwned)badges.push('<span class="test-badge owned"><i data-lucide="check"></i>Owned</span>');
+                else if(isFree)badges.push('<span class="test-badge free"><i data-lucide="gift"></i>Free</span>');
+                else if(price>=500)badges.push('<span class="test-badge premium"><i data-lucide="crown"></i>Premium</span>');
+                else badges.push('<span class="test-badge paid"><i data-lucide="coins"></i>Paid</span>');
+
+                if(isNewTest)badges.push('<span class="test-badge new"><i data-lucide="zap"></i>New</span>');
+                if(isPopular)badges.push('<span class="test-badge popular"><i data-lucide="flame"></i>Popular</span>');
+                if(isRecommended&&!isOwned)badges.push('<span class="test-badge recommended"><i data-lucide="sparkles"></i>For You</span>');
+
+                let btnHtml;
+                if(isOwned){
+                    btnHtml=`<button class="test-start-btn owned" onclick="event.stopPropagation();startTest('${t.id}')"><i data-lucide="play"></i>Start</button>`;
+                }else if(isFree){
+                    btnHtml=`<button class="test-start-btn" onclick="event.stopPropagation();startTest('${t.id}')"><i data-lucide="play"></i>Start Free</button>`;
+                }else{
+                    btnHtml=`<button class="test-start-btn" onclick="event.stopPropagation();openPurchase('${t.id}')"><i data-lucide="lock"></i>Unlock</button>`;
+                }
+
+                return`<div class="test-card" style="animation-delay:${Math.min(i,10)*.05}s" onclick="openDetail('${t.id}')">
+                    <div class="test-card-top">
+                        <div class="test-card-badges">${badges.join('')}</div>
+                    </div>
+                    <div class="test-card-course">${courseCode}</div>
+                    <div class="test-card-title">${title}</div>
+                    ${t.description?`<div class="test-card-desc">${t.description}</div>`:''}
+                    <div class="test-card-meta">
+                        <div class="test-meta-item"><i data-lucide="help-circle"></i>${questionCount} Qs</div>
+                        <div class="test-meta-item"><i data-lucide="clock"></i>${duration} min</div>
+                        <div class="test-meta-item difficulty-${difficulty}"><i data-lucide="bar-chart-2"></i>${diffLabels[difficulty]||'Medium'}</div>
+                        ${t.attempts?`<div class="test-meta-item"><i data-lucide="users"></i>${t.attempts}</div>`:''}
+                    </div>
+                    <div class="test-card-bottom">
+                        <div class="test-price-display">
+                            ${isFree?'<span class="test-price-value free">FREE</span>':`<span class="test-price-currency">₦</span><span class="test-price-value">${price.toLocaleString()}</span>`}
+                        </div>
+                        ${btnHtml}
+                    </div>
+                </div>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        // ===== SEARCH =====
+        $('#searchInput').addEventListener('input',e=>{
+            searchQuery=e.target.value.trim();
+            $('#searchClear').classList.toggle('show',searchQuery.length>0);
+            renderTests();
+        });
+        $('#searchClear').addEventListener('click',()=>{
+            $('#searchInput').value='';
+            searchQuery='';
+            $('#searchClear').classList.remove('show');
+            renderTests();
+        });
+
+        // ===== FILTER TABS =====
+        $$('.filter-tab').forEach(tab=>{
+            tab.addEventListener('click',()=>{
+                $$('.filter-tab').forEach(t=>t.classList.remove('active'));
+                tab.classList.add('active');
+                currentFilter=tab.dataset.filter;
+                renderTests();
+            });
+        });
+
+        // ===== TEST DETAIL =====
+        function openDetail(testId){
+            const t=allTests.find(x=>x.id===testId);
+            if(!t)return;
+            const isFree=!t.price||t.price===0;
+            const isOwned=purchasedTests.has(t.id);
+            const price=t.price||0;
+
+            $('#detailBody').innerHTML=`
+                <div class="purchase-hero">
+                    <div class="purchase-hero-course">${t.courseCode||t.course||''}</div>
+                    <div class="purchase-hero-title">${t.name||t.title||'Mock Test'}</div>
+                    <div class="purchase-hero-stats">
+                        <span><i data-lucide="help-circle"></i>${t.questionCount||t.questions||0} Questions</span>
+                        <span><i data-lucide="clock"></i>${t.duration||30} min</span>
+                        <span><i data-lucide="bar-chart-2"></i>${(t.difficulty||'medium').charAt(0).toUpperCase()+(t.difficulty||'medium').slice(1)}</span>
+                    </div>
+                </div>
+
+                ${t.description?`<div class="info-box"><i data-lucide="info"></i><span>${t.description}</span></div>`:''}
+
+                <div class="purchase-rows">
+                    <div class="purchase-row">
+                        <span class="purchase-row-label"><i data-lucide="help-circle"></i>Questions</span>
+                        <span class="purchase-row-value">${t.questionCount||t.questions||0}</span>
+                    </div>
+                    <div class="purchase-row">
+                        <span class="purchase-row-label"><i data-lucide="clock"></i>Duration</span>
+                        <span class="purchase-row-value">${t.duration||30} min</span>
+                    </div>
+                    <div class="purchase-row">
+                        <span class="purchase-row-label"><i data-lucide="repeat"></i>Attempts</span>
+                        <span class="purchase-row-value">${t.attemptLimit?t.attemptLimit+' max':'Unlimited'}</span>
+                    </div>
+                    <div class="purchase-row highlight">
+                        <span class="purchase-row-label"><i data-lucide="tag"></i>Price</span>
+                        <span class="purchase-row-value ${isFree?'':'price'}">${isFree?'FREE':'₦'+price.toLocaleString()}</span>
+                    </div>
+                </div>
+
+                ${isOwned?`
+                    <div class="info-box success"><i data-lucide="check-circle"></i><span>You own this test. Start whenever you're ready!</span></div>
+                    <button class="btn btn-success" onclick="closeModal('detailModal');startTest('${t.id}')">
+                        <i data-lucide="play-circle"></i><span class="btn-text">Start Test</span>
+                    </button>
+                `:isFree?`
+                    <button class="btn btn-primary" onclick="closeModal('detailModal');startTest('${t.id}')">
+                        <i data-lucide="play-circle"></i><span class="btn-text">Start Free Test</span>
+                    </button>
+                `:`
+                    <button class="btn btn-accent" onclick="closeModal('detailModal');openPurchase('${t.id}')">
+                        <i data-lucide="shopping-cart"></i><span class="btn-text">Purchase for ₦${price.toLocaleString()}</span>
+                    </button>
+                `}
+            `;
+            openModal('detailModal');
+            lucide.createIcons();
+        }
+
+        // ===== PURCHASE =====
+        function openPurchase(testId){
+            const t=allTests.find(x=>x.id===testId);
+            if(!t)return;
+            if(purchasedTests.has(t.id)){startTest(t.id);return}
+
+            const price=t.price||0;
+            const afterBalance=currentBalance-price;
+            const insufficient=currentBalance<price;
+
+            $('#purchaseBody').innerHTML=`
+                <div class="purchase-hero">
+                    <div class="purchase-hero-course">${t.courseCode||t.course||''}</div>
+                    <div class="purchase-hero-title">${t.name||t.title||'Mock Test'}</div>
+                    <div class="purchase-hero-stats">
+                        <span><i data-lucide="help-circle"></i>${t.questionCount||t.questions||0} Qs</span>
+                        <span><i data-lucide="clock"></i>${t.duration||30} min</span>
+                    </div>
+                </div>
+
+                <div class="purchase-rows">
+                    <div class="purchase-row">
+                        <span class="purchase-row-label"><i data-lucide="tag"></i>Test Price</span>
+                        <span class="purchase-row-value price">₦${price.toLocaleString()}</span>
+                    </div>
+                    <div class="purchase-row">
+                        <span class="purchase-row-label"><i data-lucide="wallet"></i>Your Balance</span>
+                        <span class="purchase-row-value balance">₦${currentBalance.toLocaleString()}</span>
+                    </div>
+                    <div class="purchase-row highlight">
+                        <span class="purchase-row-label"><i data-lucide="${insufficient?'alert-circle':'check-circle'}"></i>After Purchase</span>
+                        <span class="purchase-row-value ${insufficient?'insufficient':'after'}">${insufficient?'Insufficient':'₦'+afterBalance.toLocaleString()}</span>
+                    </div>
+                </div>
+
+                ${insufficient?`
+                    <div class="insufficient-box">
+                        <div class="insufficient-title"><i data-lucide="alert-triangle"></i>Insufficient Balance</div>
+                        <div class="insufficient-text">You need more funds to purchase this test.</div>
+                        <div class="insufficient-amount">You need ₦${(price-currentBalance).toLocaleString()} more</div>
+                        <button class="btn btn-accent" onclick="closeModal('purchaseModal');location.href='wallet.html'">
+                            <i data-lucide="plus-circle"></i><span class="btn-text">Add Balance Now</span>
+                        </button>
+                    </div>
+                `:`
+                    <div class="info-box"><i data-lucide="info"></i><span>Favoje balance will be deducted immediately. Your purchase cannot be reversed except through admin refund.</span></div>
+                    <button class="btn btn-primary" id="confirmPurchaseBtn" onclick="confirmPurchase('${t.id}')">
+                        <div class="spinner"></div>
+                        <i data-lucide="shopping-cart"></i>
+                        <span class="btn-text">Confirm Purchase — ₦${price.toLocaleString()}</span>
+                    </button>
+                    <button class="btn btn-secondary" style="margin-top:10px" onclick="closeModal('purchaseModal')">
+                        <span class="btn-text">Cancel</span>
+                    </button>
+                `}
+            `;
+            openModal('purchaseModal');
+            lucide.createIcons();
+        }
+
+        async function confirmPurchase(testId){
+            if(isPurchasing)return;
+            const t=allTests.find(x=>x.id===testId);
+            if(!t)return;
+
+            isPurchasing=true;
+            const btn=$('#confirmPurchaseBtn');
+            btn.classList.add('loading');btn.disabled=true;
+
+            try{
+                const price=t.price||0;
+
+                // Transaction (atomic) - deduct balance & record purchase
+                await db.runTransaction(async transaction=>{
+                    const walletRef=db.collection('wallet_accounts').doc(currentUser.uid);
+                    const walletDoc=await transaction.get(walletRef);
+
+                    if(!walletDoc.exists)throw new Error('Wallet not found');
+                    const walletData=walletDoc.data();
+                    const bal=walletData.balance||0;
+
+                    if(bal<price)throw new Error('Insufficient balance');
+
+                    // Check if already purchased (idempotency)
+                    const purchaseCheck=await db.collection('test_purchases')
+                        .where('userId','==',currentUser.uid)
+                        .where('testId','==',testId)
+                        .where('status','==','active')
+                        .limit(1).get();
+                    if(!purchaseCheck.empty)throw new Error('Already purchased');
+
+                    // Deduct balance
+                    transaction.update(walletRef,{
+                        balance:bal-price,
+                        totalSpent:(walletData.totalSpent||0)+price,
+                        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    // Create transaction record
+                    const txRef=db.collection('wallet_transactions').doc();
+                    transaction.set(txRef,{
+                        userId:currentUser.uid,
+                        userEmail:currentUser.email,
+                        userName:userData.fullName||'',
+                        type:'debit',
+                        subType:'test_purchase',
+                        amount:price,
+                        description:`${t.courseCode||''} ${t.name||t.title||'Test'}`,
+                        reference:`FAV-PUR-${Date.now().toString(36).toUpperCase()}`,
+                        status:'completed',
+                        testId:testId,
+                        testName:t.name||t.title||'',
+                        createdAt:firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    // Create purchase record
+                    const purchaseRef=db.collection('test_purchases').doc();
+                    transaction.set(purchaseRef,{
+                        userId:currentUser.uid,
+                        testId:testId,
+                        testName:t.name||t.title||'',
+                        courseCode:t.courseCode||t.course||'',
+                        amount:price,
+                        attemptLimit:t.attemptLimit||null,
+                        attemptsUsed:0,
+                        status:'active',
+                        purchasedAt:firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+
+                // Create notification
+                await db.collection('notifications').add({
+                    userId:currentUser.uid,
+                    title:'Test Unlocked! 🎉',
+                    message:`${t.name||t.title} has been unlocked. Start whenever you're ready!`,
+                    type:'test_purchase',
+                    read:false,
+                    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Update local state
+                purchasedTests.add(testId);
+
+                closeModal('purchaseModal');
+                showPurchaseSuccess(t);
+                fireConfetti();
+                updateFilterCounts();
+                renderTests();
+
+            }catch(e){
+                console.error('Purchase error:',e);
+                if(e.message==='Insufficient balance')showToast('Insufficient balance','error');
+                else if(e.message==='Already purchased'){showToast('You already own this test','warning');purchasedTests.add(testId);renderTests();closeModal('purchaseModal')}
+                else showToast('Purchase failed. Try again.','error');
+            }finally{
+                isPurchasing=false;
+                btn.classList.remove('loading');btn.disabled=false;
+            }
+        }
+
+        function showPurchaseSuccess(t){
+            $('#successBody').innerHTML=`
+                <div class="success-screen">
+                    <div class="success-icon"><i data-lucide="check-circle-2"></i></div>
+                    <div class="success-title">Test Unlocked! 🎉</div>
+                    <div class="success-sub">${t.name||t.title} has been added to your library. You can start whenever you're ready.</div>
+                    <div style="display:flex;flex-direction:column;gap:10px">
+                        <button class="btn btn-success" onclick="closeModal('successModal');startTest('${t.id}')">
+                            <i data-lucide="play-circle"></i><span class="btn-text">Start Test Now</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="closeModal('successModal')">
+                            <i data-lucide="check"></i><span class="btn-text">Start Later</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+            openModal('successModal');
+            lucide.createIcons();
+        }
+
+        // ===== START TEST =====
+        async function startTest(testId){
+            const t=allTests.find(x=>x.id===testId);
+            if(!t)return;
+
+            const isFree=!t.price||t.price===0;
+            const isOwned=purchasedTests.has(t.id);
+
+            if(!isFree&&!isOwned){
+                openPurchase(testId);return;
+            }
+
+            // Increment attempts counter
+            try{
+                await db.collection('tests').doc(testId).update({
+                    attempts:firebase.firestore.FieldValue.increment(1)
+                });
+            }catch(e){console.log('Attempts inc:',e)}
+
+            // Update purchase attempt count if owned
+            if(isOwned){
+                try{
+                    const pSnap=await db.collection('test_purchases')
+                        .where('userId','==',currentUser.uid)
+                        .where('testId','==',testId)
+                        .where('status','==','active').limit(1).get();
+                    if(!pSnap.empty){
+                        await pSnap.docs[0].ref.update({
+                            attemptsUsed:firebase.firestore.FieldValue.increment(1),
+                            lastAttemptAt:firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }
+                }catch(e){console.log('Purchase inc:',e)}
+            }
+
+            showToast('Starting test...','info');
+
+            // Navigate to practice page in CBT mode
+            setTimeout(()=>{
+                location.href=`practice.html?mode=cbt&course=${t.courseId||''}&count=${t.questionCount||t.questions||30}&test=${testId}`;
+            },500);
+        }
+
+        // ===== AUTH =====
+        auth.onAuthStateChanged(async user=>{
+            if(!user){location.href='index.html';return}
+            currentUser=user;
+            try{
+                const doc=await db.collection('users').doc(user.uid).get();
+                if(!doc.exists){location.href='index.html';return}
+                userData=doc.data();userData.uid=user.uid;
+                if(!userData.onboardingComplete){location.href='onboarding.html';return}
+
+                // Handle URL filters
+                const params=new URLSearchParams(location.search);
+                const urlCourse=params.get('course');
+                if(urlCourse){
+                    $('#searchInput').value=urlCourse;
+                    searchQuery=urlCourse;
+                    $('#searchClear').classList.add('show');
+                }
+
+                await loadBalance();
+                await loadPurchasedTests();
+                await loadTests();
+
+                const lo=$('#loadingOverlay');lo.classList.add('hide');setTimeout(()=>lo.style.display='none',300);
+
+                // Seed sample tests if none exist (first-time setup)
+                if(allTests.length===0){
+                    await seedSampleTests();
+                    await loadTests();
+                }
+
+            }catch(e){
+                console.error('Load error:',e);
+                const lo=$('#loadingOverlay');lo.classList.add('hide');setTimeout(()=>lo.style.display='none',300);
+                showToast('Error loading tests','error');
+            }
+        });
+
+        // Seed sample test metadata (empty tests - admin populates questions later)
+        async function seedSampleTests(){
+            try{
+                const checkSnap=await db.collection('tests').limit(1).get();
+                if(!checkSnap.empty)return;
+
+                const userCourses=userData?.selectedCourses||[];
+                if(userCourses.length===0)return;
+
+                const batch=db.batch();
+                userCourses.slice(0,6).forEach((c,i)=>{
+                    const testRef=db.collection('tests').doc();
+                    const prices=[0,50,100,200,0,500];
+                    const difficulties=['easy','medium','medium','hard','medium','hard'];
+                    batch.set(testRef,{
+                        name:`${c.name} — Comprehensive Mock`,
+                        title:`${c.name} — Comprehensive Mock`,
+                        courseCode:c.code,
+                        course:c.code,
+                        courseId:c.id,
+                        courseName:c.name,
+                        description:`A comprehensive mock test covering ${c.name} topics. Perfect for revision.`,
+                        questionCount:30,
+                        questions:30,
+                        duration:30,
+                        difficulty:difficulties[i%difficulties.length],
+                        price:prices[i%prices.length],
+                        status:'published',
+                        attemptLimit:null,
+                        attempts:Math.floor(Math.random()*25),
+                        createdAt:firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+                await batch.commit();
+                console.log('Sample tests seeded');
+            }catch(e){console.log('Seed tests:',e)}
+        }
+
+        window.addEventListener('beforeunload',()=>{if(walletListener)walletListener()});
+        window.addEventListener('popstate',()=>{const openM=document.querySelector('.modal-overlay.show');if(openM){closeModal(openM.id);history.pushState(null,'',location.href)}});
+        history.pushState(null,'',location.href);
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>

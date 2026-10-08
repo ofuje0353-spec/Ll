@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FAVOJE — Courses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --primary:#6366F1;--primary-hover:#5558E6;--primary-light:rgba(99,102,241,.12);--primary-glow:rgba(99,102,241,.25);
+            --secondary:#4F46E5;--bg:#080B14;--bg-secondary:#0d1121;
+            --surface:#111827;--surface-hover:#1a2235;--surface-2:#1F2937;--surface-3:#2a3548;
+            --accent:#F97316;--accent-light:rgba(249,115,22,.12);
+            --success:#10B981;--success-light:rgba(16,185,129,.12);
+            --danger:#EF4444;--danger-light:rgba(239,68,68,.12);
+            --warning:#F59E0B;--warning-light:rgba(245,158,11,.12);
+            --info:#3B82F6;--info-light:rgba(59,130,246,.12);
+            --white:#F8FAFC;--text-primary:#F1F5F9;--text-secondary:#94A3B8;--text-tertiary:#64748B;
+            --border:rgba(148,163,184,.1);--border-hover:rgba(148,163,184,.2);
+            --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 12px rgba(0,0,0,.4);
+            --shadow-lg:0 8px 32px rgba(0,0,0,.5);
+            --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-2xl:24px;--radius-full:50%;
+            --transition-fast:.15s ease;--transition-normal:.3s ease;--transition-slow:.5s ease;
+            --transition-spring:.5s cubic-bezier(.34,1.56,.64,1);
+            --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+            --bottom-nav-height:72px;--safe-bottom:env(safe-area-inset-bottom,0px)
+        }
+        :root.light-mode{
+            --bg:#F1F5F9;--bg-secondary:#E8ECF1;--surface:#FFFFFF;--surface-hover:#F8FAFC;
+            --surface-2:#F1F5F9;--surface-3:#E2E8F0;--text-primary:#0F172A;--text-secondary:#475569;
+            --text-tertiary:#94A3B8;--border:rgba(15,23,42,.08);--border-hover:rgba(15,23,42,.15);
+            --shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 4px 12px rgba(0,0,0,.08);
+            --shadow-lg:0 8px 32px rgba(0,0,0,.1);--primary-glow:rgba(99,102,241,.12)
+        }
+        html{font-size:16px;-webkit-text-size-adjust:100%}
+        body{font-family:var(--font);background:var(--bg);color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:calc(var(--bottom-nav-height) + var(--safe-bottom) + 20px)}
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        @keyframes fadeOut{from{opacity:1}to{opacity:0}}
+        @keyframes slideInLeft{from{opacity:0;transform:translateX(-50px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes slideInRight{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes slideOutLeft{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-50px)}}
+        @keyframes slideOutRight{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(50px)}}
+        @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes slideDown{from{opacity:0;transform:translateY(-15px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes scaleIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+        @keyframes scaleInBounce{0%{opacity:0;transform:scale(.5)}60%{transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
+        @keyframes bounceIn{0%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.05)}70%{transform:scale(.95)}100%{transform:scale(1)}}
+        @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+        @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes glow{0%,100%{box-shadow:0 0 15px var(--primary-glow)}50%{box-shadow:0 0 35px var(--primary-glow)}}
+        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+        @keyframes ripple{0%{transform:scale(0);opacity:.5}100%{transform:scale(4);opacity:0}}
+        @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(25px,-25px) scale(1.08)}50%{transform:translate(-15px,15px) scale(.92)}75%{transform:translate(10px,30px) scale(1.04)}}
+        @keyframes staggerIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+        @keyframes progressGrow{from{width:0}to{width:var(--target-width,0%)}}
+        @keyframes borderGlow{0%,100%{border-color:var(--border)}50%{border-color:var(--primary)}}
+        @keyframes expandHeight{from{max-height:0;opacity:0}to{max-height:1000px;opacity:1}}
+        @keyframes collapseHeight{from{max-height:1000px;opacity:1}to{max-height:0;opacity:0}}
+        @keyframes cardEntrance{from{opacity:0;transform:translateY(20px) rotateX(10deg)}to{opacity:1;transform:translateY(0) rotateX(0)}}
+        @keyframes slidePanel{from{transform:translateX(100%)}to{transform:translateX(0)}}
+        @keyframes slidePanelOut{from{transform:translateX(0)}to{transform:translateX(100%)}}
+        @keyframes checkDraw{to{stroke-dashoffset:0}}
+        @keyframes popIn{0%{transform:scale(0) rotate(-180deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+        @keyframes waveMove{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+        @keyframes breathe{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.02)}}
+        @keyframes tilt3d{0%{transform:perspective(600px) rotateY(0)}100%{transform:perspective(600px) rotateY(2deg)}}
+        @keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+        .anim-fadeInUp{animation:fadeInUp .6s ease both}
+        .anim-fadeIn{animation:fadeIn .5s ease both}
+        .anim-scaleIn{animation:scaleIn .5s ease both}
+        .anim-slideUp{animation:slideUp .4s ease both}
+        .anim-stagger{animation:staggerIn .5s ease both}
+        .anim-card{animation:cardEntrance .5s ease both}
+        .d0{animation-delay:0s}.d1{animation-delay:.06s}.d2{animation-delay:.12s}.d3{animation-delay:.18s}
+        .d4{animation-delay:.24s}.d5{animation-delay:.3s}.d6{animation-delay:.36s}.d7{animation-delay:.42s}
+        .d8{animation-delay:.48s}.d9{animation-delay:.54s}.d10{animation-delay:.6s}
+
+        /* ===== BACKGROUND ===== */
+        .bg-gradient{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+        .bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.1;animation:orbFloat 22s infinite ease-in-out}
+        .bg-orb-1{width:350px;height:350px;background:var(--primary);top:-80px;right:-80px}
+        .bg-orb-2{width:280px;height:280px;background:var(--accent);bottom:-60px;left:-60px;animation-delay:-8s}
+
+        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:4px}
+
+        /* ===== MAIN ===== */
+        .main-content{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:16px 16px 0}
+
+        /* ===== HEADER ===== */
+        .page-header{display:flex;align-items:center;gap:14px;padding:12px 0 20px;animation:fadeInDown .5s ease}
+        .page-header-back{width:40px;height:40px;border-radius:var(--radius-md);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-normal);flex-shrink:0}
+        .page-header-back:hover{background:var(--surface-hover);border-color:var(--primary);transform:translateX(-3px)}
+        .page-header-back i{width:20px;height:20px;color:var(--text-secondary)}
+        .page-header-info{flex:1;min-width:0}
+        .page-header-title{font-size:20px;font-weight:800;color:var(--text-primary);line-height:1.2}
+        .page-header-sub{font-size:12px;color:var(--text-tertiary);font-weight:500}
+        .page-header-action{width:40px;height:40px;border-radius:var(--radius-md);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-normal)}
+        .page-header-action:hover{background:var(--surface-hover);border-color:var(--border-hover)}
+        .page-header-action i{width:20px;height:20px;color:var(--text-secondary)}
+
+        /* ===== SEARCH ===== */
+        .search-bar{position:relative;margin-bottom:16px;animation:fadeInUp .5s ease .1s both}
+        .search-bar i.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--text-tertiary);pointer-events:none;transition:color var(--transition-fast)}
+        .search-bar input{width:100%;padding:12px 44px 12px 42px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-md);font-size:14px;font-family:var(--font);color:var(--text-primary);transition:all var(--transition-normal);outline:none}
+        .search-bar input::placeholder{color:var(--text-tertiary)}
+        .search-bar input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+        .search-bar input:focus~.search-icon{color:var(--primary)}
+        .search-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:var(--surface-3);display:none;align-items:center;justify-content:center;cursor:pointer;border:none;padding:0;transition:all var(--transition-fast)}
+        .search-clear.show{display:flex}
+        .search-clear i{width:12px;height:12px;color:var(--text-tertiary)}
+        .search-clear:hover{background:var(--danger);transform:translateY(-50%) scale(1.1)}
+        .search-clear:hover i{color:#fff}
+
+        /* ===== FILTER TABS ===== */
+        .filter-tabs{display:flex;gap:8px;margin-bottom:18px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;animation:fadeInUp .5s ease .15s both}
+        .filter-tabs::-webkit-scrollbar{display:none}
+        .filter-tab{padding:8px 16px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all var(--transition-normal);font-family:var(--font);display:flex;align-items:center;gap:6px;flex-shrink:0}
+        .filter-tab:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+        .filter-tab.active{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 2px 10px rgba(99,102,241,.3)}
+        .filter-tab i{width:14px;height:14px}
+        .filter-tab .count{font-size:11px;opacity:.7}
+
+        /* ===== SEMESTER TOGGLE ===== */
+        .semester-toggle{display:flex;background:var(--surface-2);border-radius:var(--radius-md);padding:3px;margin-bottom:18px;animation:fadeInUp .5s ease .12s both}
+        .semester-btn{flex:1;padding:10px;text-align:center;font-size:13px;font-weight:600;color:var(--text-tertiary);cursor:pointer;border-radius:var(--radius-sm);transition:all var(--transition-normal);border:none;background:none;font-family:var(--font)}
+        .semester-btn.active{background:var(--primary);color:#fff;box-shadow:var(--shadow-sm)}
+        .semester-btn:not(.active):hover{color:var(--text-primary)}
+
+        /* ===== COURSE LIST ===== */
+        .course-list{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+        .course-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;cursor:pointer;transition:all var(--transition-normal);position:relative;overflow:hidden;animation:cardEntrance .5s ease both}
+        .course-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent));transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+        .course-card:hover::before{transform:scaleX(1)}
+        .course-card:hover{border-color:var(--border-hover);transform:translateY(-3px);box-shadow:var(--shadow-md)}
+        .course-card:active{transform:translateY(-1px) scale(.99)}
+        .course-card-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+        .course-card-icon{width:48px;height:48px;border-radius:var(--radius-md);background:var(--primary-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;transition:transform var(--transition-spring)}
+        .course-card:hover .course-card-icon{transform:scale(1.1) rotate(5deg)}
+        .course-card-info{flex:1;min-width:0}
+        .course-card-code{font-size:13px;font-weight:700;color:var(--primary);letter-spacing:.3px;margin-bottom:2px}
+        .course-card-name{font-size:15px;font-weight:600;color:var(--text-primary);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .course-card-units{font-size:11px;color:var(--text-tertiary);margin-top:3px}
+        .course-card-arrow{width:32px;height:32px;border-radius:var(--radius-sm);background:var(--surface-2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--transition-normal)}
+        .course-card:hover .course-card-arrow{background:var(--primary);transform:translateX(3px)}
+        .course-card-arrow i{width:16px;height:16px;color:var(--text-tertiary);transition:color var(--transition-fast)}
+        .course-card:hover .course-card-arrow i{color:#fff}
+        .course-card-stats{display:flex;gap:16px;margin-bottom:12px}
+        .course-stat{display:flex;align-items:center;gap:5px}
+        .course-stat i{width:13px;height:13px;color:var(--text-tertiary)}
+        .course-stat span{font-size:12px;color:var(--text-secondary);font-weight:500}
+        .course-stat .val{font-weight:700;color:var(--text-primary)}
+        .course-progress-bar{height:5px;background:var(--surface-3);border-radius:3px;overflow:hidden}
+        .course-progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width 1s cubic-bezier(.4,0,.2,1)}
+        .course-progress-label{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--text-tertiary)}
+        .course-badge{position:absolute;top:14px;right:14px;padding:3px 10px;border-radius:var(--radius-sm);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+        .course-badge.new{background:var(--success-light);color:var(--success)}
+        .course-badge.active-badge{background:var(--primary-light);color:var(--primary)}
+        .course-badge.completed{background:var(--accent-light);color:var(--accent)}
+
+        /* ===== COURSE DETAIL VIEW ===== */
+        .detail-panel{position:fixed;inset:0;z-index:200;background:var(--bg);transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);overflow-y:auto;overflow-x:hidden}
+        .detail-panel.open{transform:translateX(0)}
+        .detail-panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:199;opacity:0;pointer-events:none;transition:opacity .3s ease}
+        .detail-panel-overlay.open{opacity:1;pointer-events:auto}
+
+        .detail-content{max-width:640px;margin:0 auto;padding:16px 16px calc(var(--bottom-nav-height) + var(--safe-bottom) + 30px)}
+
+        .detail-hero{padding:20px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:var(--radius-xl);margin-bottom:20px;position:relative;overflow:hidden;animation:scaleIn .5s ease}
+        .detail-hero::before{content:'';position:absolute;top:-40%;right:-20%;width:250px;height:250px;background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%);animation:orbFloat 15s infinite;pointer-events:none}
+        .detail-hero-code{font-size:14px;color:rgba(255,255,255,.7);font-weight:600;letter-spacing:.5px;margin-bottom:4px}
+        .detail-hero-name{font-size:22px;font-weight:800;color:#fff;line-height:1.3;margin-bottom:12px}
+        .detail-hero-meta{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:rgba(255,255,255,.7)}
+        .detail-hero-meta span{display:flex;align-items:center;gap:4px}
+        .detail-hero-meta i{width:14px;height:14px}
+        .detail-hero-emoji{position:absolute;bottom:16px;right:20px;font-size:48px;opacity:.2;animation:float 4s ease-in-out infinite}
+
+        .detail-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;animation:fadeInUp .5s ease .2s both}
+        .detail-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;text-align:center;transition:all var(--transition-normal)}
+        .detail-stat:hover{border-color:var(--primary);transform:translateY(-2px)}
+        .detail-stat-value{font-size:22px;font-weight:800;color:var(--text-primary);line-height:1.2}
+        .detail-stat-label{font-size:11px;color:var(--text-tertiary);font-weight:500;margin-top:2px}
+
+        .detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;animation:fadeInUp .5s ease .25s both}
+
+        /* ===== TOPIC LIST ===== */
+        .topics-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;animation:fadeInUp .5s ease .3s both}
+        .topics-title{font-size:16px;font-weight:700;color:var(--text-primary)}
+        .topics-count{font-size:12px;color:var(--text-tertiary);font-weight:500}
+
+        .topic-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+        .topic-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer;transition:all var(--transition-normal);position:relative;overflow:hidden;animation:staggerIn .4s ease both}
+        .topic-item:hover{border-color:var(--primary);transform:translateX(5px);background:var(--surface-hover)}
+        .topic-item:active{transform:translateX(3px) scale(.99)}
+        .topic-status{width:28px;height:28px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--transition-spring)}
+        .topic-status i{width:14px;height:14px}
+        .topic-status.not-started{background:var(--surface-3);color:var(--text-tertiary)}
+        .topic-status.in-progress{background:var(--warning-light);color:var(--warning)}
+        .topic-status.strong{background:var(--success-light);color:var(--success)}
+        .topic-status.weak{background:var(--danger-light);color:var(--danger)}
+        .topic-item:hover .topic-status{transform:scale(1.15) rotate(10deg)}
+        .topic-info{flex:1;min-width:0}
+        .topic-name{font-size:14px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .topic-meta{font-size:11px;color:var(--text-tertiary);margin-top:2px;display:flex;gap:10px}
+        .topic-accuracy{font-size:13px;font-weight:700;flex-shrink:0}
+        .topic-accuracy.high{color:var(--success)}
+        .topic-accuracy.mid{color:var(--warning)}
+        .topic-accuracy.low{color:var(--danger)}
+        .topic-accuracy.none{color:var(--text-tertiary)}
+        .topic-arrow{width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .topic-arrow i{width:14px;height:14px;color:var(--text-tertiary);transition:all var(--transition-fast)}
+        .topic-item:hover .topic-arrow i{color:var(--primary);transform:translateX(3px)}
+
+        /* ===== TOPIC DETAIL VIEW ===== */
+        .topic-detail-panel{position:fixed;inset:0;z-index:210;background:var(--bg);transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+        .topic-detail-panel.open{transform:translateX(0)}
+
+        .topic-detail-content{max-width:640px;margin:0 auto;padding:16px 16px calc(var(--bottom-nav-height) + var(--safe-bottom) + 30px)}
+
+        .topic-hero{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:24px;margin-bottom:20px;text-align:center;animation:scaleIn .5s ease;position:relative;overflow:hidden}
+        .topic-hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 50%,var(--primary-light),transparent 70%);opacity:.5;animation:breathe 4s ease-in-out infinite;pointer-events:none}
+        .topic-hero-icon{width:64px;height:64px;border-radius:var(--radius-lg);background:var(--primary-light);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px;animation:bounceIn .6s ease}
+        .topic-hero-icon i{width:28px;height:28px;color:var(--primary)}
+        .topic-hero-name{font-size:20px;font-weight:800;color:var(--text-primary);margin-bottom:4px;position:relative;z-index:1}
+        .topic-hero-course{font-size:13px;color:var(--primary);font-weight:600;margin-bottom:12px;position:relative;z-index:1}
+        .topic-hero-desc{font-size:13px;color:var(--text-secondary);line-height:1.5;max-width:400px;margin:0 auto;position:relative;z-index:1}
+
+        .topic-stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;animation:fadeInUp .5s ease .2s both}
+        .topic-stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:16px;text-align:center;transition:all var(--transition-normal)}
+        .topic-stat-card:hover{border-color:var(--primary);transform:translateY(-2px)}
+        .topic-stat-icon{width:36px;height:36px;border-radius:var(--radius-sm);display:inline-flex;align-items:center;justify-content:center;margin-bottom:8px}
+        .topic-stat-icon i{width:18px;height:18px}
+        .topic-stat-val{font-size:20px;font-weight:800;color:var(--text-primary);line-height:1.2}
+        .topic-stat-lbl{font-size:11px;color:var(--text-tertiary);font-weight:500}
+
+        .practice-options{margin-bottom:20px;animation:fadeInUp .5s ease .3s both}
+        .practice-options-title{font-size:16px;font-weight:700;margin-bottom:14px;color:var(--text-primary)}
+        .practice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+        .practice-option{padding:20px 10px;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius-lg);text-align:center;cursor:pointer;transition:all var(--transition-normal);position:relative;overflow:hidden}
+        .practice-option:hover{border-color:var(--primary);transform:translateY(-3px);box-shadow:var(--shadow-md)}
+        .practice-option:active{transform:translateY(-1px) scale(.97)}
+        .practice-option.selected{border-color:var(--primary);background:var(--primary-light)}
+        .practice-option-num{font-size:28px;font-weight:900;color:var(--primary);line-height:1.2;margin-bottom:4px}
+        .practice-option-label{font-size:11px;color:var(--text-tertiary);font-weight:500}
+
+        .topic-recent{animation:fadeInUp .5s ease .4s both}
+        .topic-recent-title{font-size:14px;font-weight:700;margin-bottom:12px;color:var(--text-primary)}
+        .recent-attempt{display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:8px;transition:all var(--transition-normal)}
+        .recent-attempt:hover{background:var(--surface-hover)}
+        .recent-attempt-icon{width:32px;height:32px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .recent-attempt-icon i{width:16px;height:16px}
+        .recent-attempt-info{flex:1}
+        .recent-attempt-score{font-size:13px;font-weight:600;color:var(--text-primary)}
+        .recent-attempt-date{font-size:11px;color:var(--text-tertiary)}
+        .recent-attempt-pct{font-size:14px;font-weight:700}
+
+        /* ===== BUTTONS ===== */
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;font-size:14px;font-weight:600;font-family:var(--font);border-radius:var(--radius-md);cursor:pointer;transition:all var(--transition-normal);border:none;outline:none;position:relative;overflow:hidden}
+        .btn::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--rx,50%) var(--ry,50%),rgba(255,255,255,.15),transparent 60%);opacity:0;transition:opacity var(--transition-normal)}
+        .btn:hover::after{opacity:1}
+        .btn-primary{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;box-shadow:0 4px 15px rgba(99,102,241,.3)}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,.4)}
+        .btn-primary:active{transform:translateY(0)}
+        .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+        .btn-secondary{background:var(--surface-2);color:var(--text-primary);border:1px solid var(--border)}
+        .btn-secondary:hover{background:var(--surface-3);border-color:var(--border-hover);transform:translateY(-2px)}
+        .btn-accent{background:linear-gradient(135deg,var(--accent),#EA580C);color:#fff;box-shadow:0 4px 15px rgba(249,115,22,.3)}
+        .btn-accent:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(249,115,22,.4)}
+        .btn-success{background:linear-gradient(135deg,var(--success),#059669);color:#fff;box-shadow:0 4px 15px rgba(16,185,129,.3)}
+        .btn i{width:18px;height:18px}
+        .btn .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+        .btn.loading .spinner{display:block}.btn.loading .btn-text{opacity:0}
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state{text-align:center;padding:48px 24px;animation:fadeIn .5s ease}
+        .empty-state-icon{width:72px;height:72px;border-radius:var(--radius-xl);background:var(--surface-2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;animation:float 3s ease-in-out infinite}
+        .empty-state-icon i{width:32px;height:32px;color:var(--text-tertiary);opacity:.5}
+        .empty-state h3{font-size:17px;font-weight:700;color:var(--text-primary);margin-bottom:6px}
+        .empty-state p{font-size:13px;color:var(--text-tertiary);line-height:1.5;max-width:300px;margin:0 auto}
+
+        /* ===== SKELETON ===== */
+        .skeleton{background:linear-gradient(90deg,var(--surface-2) 25%,var(--surface-3) 50%,var(--surface-2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--radius-sm)}
+        .skeleton-card{height:120px;border-radius:var(--radius-lg);margin-bottom:12px}
+        .skeleton-line{height:14px;margin-bottom:8px;width:80%}
+        .skeleton-line.short{width:50%}
+        .skeleton-line.tiny{width:30%}
+
+        /* ===== TOAST ===== */
+        .toast-container{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:calc(100% - 32px);max-width:400px}
+        .toast{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-lg);animation:slideDown .3s ease;pointer-events:auto;font-size:13px;font-weight:500;color:var(--text-primary)}
+        .toast.exit{animation:fadeOut .3s ease forwards}
+        .toast i{width:18px;height:18px;flex-shrink:0}
+        .toast.success i{color:var(--success)}.toast.error i{color:var(--danger)}.toast.warning i{color:var(--warning)}
+
+        /* ===== LOADING ===== */
+        .loading-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;transition:opacity .3s ease}
+        .loading-overlay.hide{opacity:0;pointer-events:none}
+        .loading-spinner{width:42px;height:42px;border:3px solid var(--surface-3);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+        .loading-text{font-size:14px;color:var(--text-secondary);font-weight:500;text-align:center}
+
+        /* ===== RIPPLE ===== */
+        .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.15);animation:ripple .6s ease-out;pointer-events:none}
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--surface);border-top:1px solid var(--border);padding:6px 0 calc(6px + var(--safe-bottom));display:flex;backdrop-filter:blur(20px)}
+        .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;cursor:pointer;transition:all var(--transition-normal);border:none;background:none;font-family:var(--font);position:relative}
+        .nav-item::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:0;height:2.5px;background:var(--primary);border-radius:0 0 4px 4px;transition:width var(--transition-normal)}
+        .nav-item.active::before{width:32px}
+        .nav-item i{width:22px;height:22px;color:var(--text-tertiary);transition:all var(--transition-normal)}
+        .nav-item.active i{color:var(--primary)}
+        .nav-item span{font-size:10px;font-weight:600;color:var(--text-tertiary);transition:color var(--transition-normal)}
+        .nav-item.active span{color:var(--primary)}
+        .nav-item:hover i{color:var(--primary);transform:translateY(-2px)}
+        .nav-item:active{transform:scale(.92)}
+
+        /* ===== DESKTOP SIDEBAR ===== */
+        .sidebar-desktop{display:none;position:fixed;top:0;left:0;bottom:0;width:240px;background:var(--surface);border-right:1px solid var(--border);z-index:60;flex-direction:column;padding:24px 16px;animation:slideInLeft .5s ease}
+        .sidebar-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;padding:0 8px}
+        .sidebar-logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:10px;display:flex;align-items:center;justify-content:center}
+        .sidebar-logo-mark i{width:18px;height:18px;color:#fff}
+        .sidebar-logo-text{font-size:20px;font-weight:900;color:var(--text-primary)}
+        .sidebar-nav{flex:1;display:flex;flex-direction:column;gap:4px}
+        .sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:var(--radius-md);cursor:pointer;transition:all var(--transition-normal);border:none;background:none;font-family:var(--font);width:100%;text-align:left;color:var(--text-secondary);font-size:14px;font-weight:500}
+        .sidebar-item:hover{background:var(--surface-hover);color:var(--text-primary)}
+        .sidebar-item.active{background:var(--primary-light);color:var(--primary);font-weight:600}
+        .sidebar-item i{width:20px;height:20px}
+        .sidebar-bottom{padding-top:16px;border-top:1px solid var(--border)}
+
+        @media(min-width:768px){
+            .bottom-nav{display:none}
+            body{padding-bottom:0;padding-left:240px}
+            .sidebar-desktop{display:flex!important}
+            .detail-panel,.topic-detail-panel{left:240px}
+        }
+        @media(max-width:400px){
+            .main-content{padding:12px 12px 0}
+            .course-card{padding:14px}
+            .detail-stats{grid-template-columns:repeat(3,1fr);gap:8px}
+            .detail-stat{padding:12px}
+            .detail-stat-value{font-size:18px}
+            .practice-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+            .practice-option{padding:16px 8px}
+            .practice-option-num{font-size:24px}
+            .topic-stats-grid{grid-template-columns:1fr 1fr;gap:8px}
+        }
+        @media(min-width:1024px){.main-content{max-width:720px}}
+        @media(min-width:1440px){.main-content{max-width:800px}}
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"><div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div></div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div>
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Loading courses...</p>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Desktop Sidebar -->
+    <div class="sidebar-desktop">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-mark"><i data-lucide="graduation-cap"></i></div>
+            <span class="sidebar-logo-text">FAVOJE</span>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="sidebar-item" onclick="location.href='home.html'"><i data-lucide="home"></i>Home</button>
+            <button class="sidebar-item active" onclick="location.href='courses.html'"><i data-lucide="book-open"></i>Courses</button>
+            <button class="sidebar-item" onclick="location.href='practice.html'"><i data-lucide="target"></i>Practice</button>
+            <button class="sidebar-item" onclick="location.href='leaderboard.html'"><i data-lucide="trophy"></i>Leaderboard</button>
+            <button class="sidebar-item" onclick="location.href='profile.html'"><i data-lucide="user"></i>Profile</button>
+            <button class="sidebar-item" onclick="location.href='wallet.html'"><i data-lucide="wallet"></i>Wallet</button>
+        </nav>
+        <div class="sidebar-bottom">
+            <div class="sidebar-item" id="themeToggle"><i data-lucide="moon" id="themeIcon"></i><span id="themeLabel">Dark Mode</span></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="page-header">
+            <div class="page-header-back" onclick="location.href='home.html'"><i data-lucide="arrow-left"></i></div>
+            <div class="page-header-info">
+                <div class="page-header-title">My Courses</div>
+                <div class="page-header-sub" id="courseCountLabel">Loading...</div>
+            </div>
+            <div class="page-header-action" id="themeToggleMobile"><i data-lucide="moon" id="themeIconMobile"></i></div>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search courses...">
+            <i data-lucide="search" class="search-icon"></i>
+            <button class="search-clear" id="searchClear"><i data-lucide="x"></i></button>
+        </div>
+
+        <div class="semester-toggle" id="semesterToggle">
+            <button class="semester-btn active" data-semester="first">First Semester</button>
+            <button class="semester-btn" data-semester="second">Second Semester</button>
+        </div>
+
+        <div id="skeletonLoader">
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+            <div class="skeleton skeleton-card"></div>
+        </div>
+
+        <div class="course-list" id="courseList" style="display:none"></div>
+
+        <div class="empty-state" id="emptyState" style="display:none">
+            <div class="empty-state-icon"><i data-lucide="book-x"></i></div>
+            <h3>No Courses Found</h3>
+            <p>You haven't selected any courses yet, or no courses match your search.</p>
+        </div>
+    </div>
+
+    <!-- Course Detail Panel -->
+    <div class="detail-panel-overlay" id="detailOverlay"></div>
+    <div class="detail-panel" id="detailPanel">
+        <div class="detail-content" id="detailContent"></div>
+    </div>
+
+    <!-- Topic Detail Panel -->
+    <div class="topic-detail-panel" id="topicPanel">
+        <div class="topic-detail-content" id="topicContent"></div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <button class="nav-item" onclick="location.href='home.html'"><i data-lucide="home"></i><span>Home</span></button>
+        <button class="nav-item active" onclick="location.href='courses.html'"><i data-lucide="book-open"></i><span>Courses</span></button>
+        <button class="nav-item" onclick="location.href='practice.html'"><i data-lucide="target"></i><span>Practice</span></button>
+        <button class="nav-item" onclick="location.href='leaderboard.html'"><i data-lucide="trophy"></i><span>Ranks</span></button>
+        <button class="nav-item" onclick="location.href='profile.html'"><i data-lucide="user"></i><span>Profile</span></button>
+    </nav>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig={apiKey:"AIzaSyC1SmazNPbak8vMvi-jD40EGqpvWmWdd0U",authDomain:"favoje-fcb02.firebaseapp.com",projectId:"favoje-fcb02",storageBucket:"favoje-fcb02.firebasestorage.app",messagingSenderId:"837946471768",appId:"1:837946471768:web:6ea76eee926fe77bdc212d"};
+        const app=firebase.initializeApp(firebaseConfig);
+        const auth=firebase.auth();
+        const db=firebase.firestore();
+        db.settings({cacheSizeBytes:firebase.firestore.CACHE_SIZE_UNLIMITED});
+        db.enablePersistence().catch(e=>console.log(e.code));
+
+        const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+        let currentUser=null,userData=null,allCourses=[],coursePerformance={},courseTopics={},currentSemester='first';
+
+        // Theme
+        let isDark=localStorage.getItem('favoje-theme')!=='light';
+        function applyTheme(){
+            document.documentElement.classList.toggle('light-mode',!isDark);
+            ['themeIcon','themeIconMobile'].forEach(id=>{const e=document.getElementById(id);if(e)e.setAttribute('data-lucide',isDark?'moon':'sun')});
+            const l=$('#themeLabel');if(l)l.textContent=isDark?'Dark Mode':'Light Mode';
+            lucide.createIcons();
+        }
+        function toggleTheme(){isDark=!isDark;localStorage.setItem('favoje-theme',isDark?'dark':'light');applyTheme()}
+        $('#themeToggle')?.addEventListener('click',toggleTheme);
+        $('#themeToggleMobile')?.addEventListener('click',toggleTheme);
+        applyTheme();
+
+        // Toast
+        function showToast(msg,type='success'){const c=$('#toastContainer'),t=document.createElement('div');t.className=`toast ${type}`;t.innerHTML=`<i data-lucide="${{success:'check-circle-2',error:'x-circle',warning:'alert-triangle'}[type]}"></i><span>${msg}</span>`;c.appendChild(t);lucide.createIcons();setTimeout(()=>{t.classList.add('exit');setTimeout(()=>t.remove(),300)},3500)}
+
+        // Ripple
+        document.addEventListener('click',e=>{const c=e.target.closest('.course-card,.topic-item,.practice-option,.btn,.quick-item');if(!c)return;c.style.position='relative';c.style.overflow='hidden';const r=document.createElement('span');r.className='ripple';const rect=c.getBoundingClientRect();r.style.left=(e.clientX-rect.left)+'px';r.style.top=(e.clientY-rect.top)+'px';c.appendChild(r);setTimeout(()=>r.remove(),600)});
+
+        // Time ago
+        function timeAgo(d){if(!d)return'—';const now=new Date(),date=d.toDate?d.toDate():new Date(d),diff=Math.floor((now-date)/1000);if(diff<60)return'just now';if(diff<3600)return Math.floor(diff/60)+'m ago';if(diff<86400)return Math.floor(diff/3600)+'h ago';if(diff<604800)return Math.floor(diff/86400)+'d ago';return date.toLocaleDateString()}
+
+        // Animate number
+        function animNum(el,target,suffix='',dur=1000){const start=performance.now();(function upd(now){const p=Math.min((now-start)/dur,1);const e=1-Math.pow(1-p,3);el.textContent=Math.round(target*e)+suffix;if(p<1)requestAnimationFrame(upd)})(start)}
+
+        // ===== SEARCH =====
+        const searchInput=$('#searchInput'),searchClear=$('#searchClear');
+        searchInput.addEventListener('input',()=>{const v=searchInput.value.trim();searchClear.classList.toggle('show',v.length>0);renderCourses()});
+        searchClear.addEventListener('click',()=>{searchInput.value='';searchClear.classList.remove('show');renderCourses()});
+
+        // ===== SEMESTER TOGGLE =====
+        $$('.semester-btn').forEach(btn=>{
+            btn.addEventListener('click',()=>{
+                $$('.semester-btn').forEach(b=>b.classList.remove('active'));
+                btn.classList.add('active');
+                currentSemester=btn.dataset.semester;
+                renderCourses();
+            });
+        });
+
+        // ===== RENDER COURSES =====
+        function renderCourses(){
+            const list=$('#courseList'),empty=$('#emptyState'),skeleton=$('#skeletonLoader');
+            skeleton.style.display='none';
+
+            const search=searchInput.value.toLowerCase().trim();
+            let filtered=allCourses.filter(c=>{
+                const semMatch=!c.semester||c.semester===currentSemester||c.semester==='both';
+                const searchMatch=!search||(c.code||'').toLowerCase().includes(search)||(c.name||'').toLowerCase().includes(search);
+                return semMatch&&searchMatch;
+            });
+
+            if(filtered.length===0){list.style.display='none';empty.style.display='block';lucide.createIcons();return}
+            empty.style.display='none';list.style.display='flex';
+
+            list.innerHTML=filtered.map((c,i)=>{
+                const perf=coursePerformance[c.id]||{};
+                const attempted=perf.questionsAttempted||0;
+                const correct=perf.questionsCorrect||0;
+                const accuracy=attempted>0?Math.round((correct/attempted)*100):0;
+                const progress=perf.progress||0;
+                const icon=getCourseEmoji(c.code);
+                return`<div class="course-card anim-card d${Math.min(i,10)}" data-course-id="${c.id}" onclick="openCourseDetail('${c.id}')">
+                    <div class="course-card-top">
+                        <div class="course-card-icon">${icon}</div>
+                        <div class="course-card-info">
+                            <div class="course-card-code">${c.code||''}</div>
+                            <div class="course-card-name">${c.name||'Unnamed Course'}</div>
+                            <div class="course-card-units">${c.units||0} Units${c.isCompulsory?' • Compulsory':''}</div>
+                        </div>
+                        <div class="course-card-arrow"><i data-lucide="chevron-right"></i></div>
+                    </div>
+                    <div class="course-card-stats">
+                        <div class="course-stat"><i data-lucide="help-circle"></i><span><span class="val">${attempted}</span> Qs</span></div>
+                        <div class="course-stat"><i data-lucide="target"></i><span><span class="val">${accuracy}%</span> Acc</span></div>
+                        <div class="course-stat"><i data-lucide="bar-chart-2"></i><span><span class="val">${progress}%</span> Prog</span></div>
+                    </div>
+                    <div class="course-progress-bar"><div class="course-progress-fill" style="width:${progress}%"></div></div>
+                    <div class="course-progress-label"><span>${progress}% complete</span><span>${accuracy}% accuracy</span></div>
+                </div>`;
+            }).join('');
+
+            $('#courseCountLabel').textContent=`${filtered.length} course${filtered.length!==1?'s':''}`;
+            lucide.createIcons();
+
+            // Intersection observer for card animations
+            const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.style.opacity='1'})},{threshold:.1});
+            list.querySelectorAll('.course-card').forEach(c=>obs.observe(c));
+        }
+
+        function getCourseEmoji(code){
+            if(!code)return'📘';const prefix=code.substring(0,3).toUpperCase();
+            const map={MTH:'📐',CPT:'💻',STA:'📊',GST:'🎓',EED:'💡',PHY:'⚛️',CHM:'🧪',BIO:'🧬',BCH:'🔬',MCB:'🦠',CPE:'🔌',ELE:'⚡',EEE:'⚡',MEE:'⚙️',CVE:'🏗️',CHE:'🏭',ARC:'🏛️',QTS:'📏',URP:'🗺️',SVG:'📡',BLD:'🧱',AGE:'🌾',MTE:'🔩',MCE:'🤖',TCE:'📡',CYB:'🛡️',ITS:'🌐',LIS:'📚',SCE:'👨‍🏫',MGT:'📋',ENT:'🚀',GEO:'🌍',STS:'📈'};
+            return map[prefix]||'📘';
+        }
+
+        // ===== COURSE DETAIL =====
+        async function openCourseDetail(courseId){
+            const course=allCourses.find(c=>c.id===courseId);
+            if(!course)return;
+
+            const panel=$('#detailPanel'),overlay=$('#detailOverlay'),content=$('#detailContent');
+            const perf=coursePerformance[courseId]||{};
+            const attempted=perf.questionsAttempted||0;
+            const correct=perf.questionsCorrect||0;
+            const accuracy=attempted>0?Math.round((correct/attempted)*100):0;
+            const progress=perf.progress||0;
+            const emoji=getCourseEmoji(course.code);
+
+            // Load topics from Firestore
+            let topics=[];
+            try{
+                const snap=await db.collection('topics').where('courseId','==',courseId).orderBy('order','asc').get();
+                snap.forEach(doc=>topics.push({id:doc.id,...doc.data()}));
+            }catch(e){
+                console.log('Topics query error:',e);
+                // Try without ordering
+                try{
+                    const snap2=await db.collection('topics').where('courseId','==',courseId).get();
+                    snap2.forEach(doc=>topics.push({id:doc.id,...doc.data()}));
+                }catch(e2){console.log('Topics fallback error:',e2)}
+            }
+
+            // Load topic performances
+            let topicPerfs={};
+            try{
+                const perfSnap=await db.collection('topic_performance').where('userId','==',currentUser.uid).where('courseId','==',courseId).get();
+                perfSnap.forEach(doc=>{const d=doc.data();topicPerfs[d.topicId]=d});
+            }catch(e){console.log('Topic perf error:',e)}
+
+            courseTopics[courseId]=topics;
+
+            content.innerHTML=`
+                <div class="page-header" style="animation:fadeInDown .4s ease">
+                    <div class="page-header-back" onclick="closeCourseDetail()"><i data-lucide="arrow-left"></i></div>
+                    <div class="page-header-info">
+                        <div class="page-header-title">${course.code||''}</div>
+                        <div class="page-header-sub">Course Details</div>
+                    </div>
+                </div>
+
+                <div class="detail-hero">
+                    <div class="detail-hero-code">${course.code||''}</div>
+                    <div class="detail-hero-name">${course.name||''}</div>
+                    <div class="detail-hero-meta">
+                        <span><i data-lucide="layers"></i>${course.units||0} Units</span>
+                        <span><i data-lucide="calendar"></i>${course.semester==='first'?'1st':'2nd'} Semester</span>
+                        <span><i data-lucide="book-open"></i>${topics.length} Topics</span>
+                    </div>
+                    <div class="detail-hero-emoji">${emoji}</div>
+                </div>
+
+                <div class="detail-stats">
+                    <div class="detail-stat">
+                        <div class="detail-stat-value" id="dStatQ">${attempted}</div>
+                        <div class="detail-stat-label">Questions</div>
+                    </div>
+                    <div class="detail-stat">
+                        <div class="detail-stat-value" id="dStatA">${accuracy}%</div>
+                        <div class="detail-stat-label">Accuracy</div>
+                    </div>
+                    <div class="detail-stat">
+                        <div class="detail-stat-value" id="dStatP">${progress}%</div>
+                        <div class="detail-stat-label">Progress</div>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <button class="btn btn-primary" onclick="window.location.href='practice.html?course=${courseId}'">
+                        <i data-lucide="play-circle"></i><span class="btn-text">Practice</span>
+                    </button>
+                    <button class="btn btn-accent" onclick="window.location.href='tests.html?course=${course.code}'">
+                        <i data-lucide="clock"></i><span class="btn-text">Take CBT</span>
+                    </button>
+                </div>
+
+                <div class="topics-header">
+                    <span class="topics-title">Topics</span>
+                    <span class="topics-count">${topics.length} total</span>
+                </div>
+
+                ${topics.length>0?`<div class="topic-list">${topics.map((t,i)=>{
+                    const tp=topicPerfs[t.id]||{};
+                    const tAccuracy=Math.round(tp.accuracy||0);
+                    const tAttempted=tp.questionsAttempted||0;
+                    let status='not-started',statusIcon='circle',accClass='none';
+                    if(tAttempted>0){
+                        if(tAccuracy>=70){status='strong';statusIcon='check-circle-2';accClass='high'}
+                        else if(tAccuracy>=40){status='in-progress';statusIcon='clock';accClass='mid'}
+                        else{status='weak';statusIcon='alert-triangle';accClass='low'}
+                    }
+                    return`<div class="topic-item d${Math.min(i,10)}" onclick="openTopicDetail('${courseId}','${t.id}')">
+                        <div class="topic-status ${status}"><i data-lucide="${statusIcon}"></i></div>
+                        <div class="topic-info">
+                            <div class="topic-name">${t.name||'Topic '+(i+1)}</div>
+                            <div class="topic-meta"><span>${t.questionsCount||0} questions</span>${tAttempted>0?`<span>${tAttempted} attempted</span>`:''}</div>
+                        </div>
+                        ${tAttempted>0?`<span class="topic-accuracy ${accClass}">${tAccuracy}%</span>`:''}
+                        <div class="topic-arrow"><i data-lucide="chevron-right"></i></div>
+                    </div>`;
+                }).join('')}</div>`:`
+                <div class="empty-state">
+                    <div class="empty-state-icon"><i data-lucide="layers"></i></div>
+                    <h3>No Topics Yet</h3>
+                    <p>Topics for this course haven't been added yet. Check back later!</p>
+                </div>`}
+            `;
+
+            panel.classList.add('open');
+            overlay.classList.add('open');
+            document.body.style.overflow='hidden';
+            lucide.createIcons();
+
+            // Animate stats
+            setTimeout(()=>{
+                animNum($('#dStatQ'),attempted,'',800);
+                animNum($('#dStatA'),accuracy,'%',800);
+                animNum($('#dStatP'),progress,'%',800);
+            },300);
+        }
+
+        function closeCourseDetail(){
+            $('#detailPanel').classList.remove('open');
+            $('#detailOverlay').classList.remove('open');
+            document.body.style.overflow='';
+        }
+        $('#detailOverlay').addEventListener('click',closeCourseDetail);
+
+        // ===== TOPIC DETAIL =====
+        async function openTopicDetail(courseId,topicId){
+            const course=allCourses.find(c=>c.id===courseId);
+            const topics=courseTopics[courseId]||[];
+            const topic=topics.find(t=>t.id===topicId);
+            if(!topic||!course)return;
+
+            const panel=$('#topicPanel'),content=$('#topicContent');
+
+            // Load topic performance
+            let tp={};
+            try{
+                const perfSnap=await db.collection('topic_performance').where('userId','==',currentUser.uid).where('topicId','==',topicId).limit(1).get();
+                if(!perfSnap.empty)tp=perfSnap.docs[0].data();
+            }catch(e){console.log('Topic perf:',e)}
+
+            const tAccuracy=Math.round(tp.accuracy||0);
+            const tAttempted=tp.questionsAttempted||0;
+            const tCorrect=tp.questionsCorrect||0;
+            const mastery=tp.mastery||tAccuracy;
+            const totalQ=topic.questionsCount||0;
+
+            // Load recent attempts for this topic
+            let recentAttempts=[];
+            try{
+                const attSnap=await db.collection('attempts').where('userId','==',currentUser.uid).where('topicId','==',topicId).orderBy('createdAt','desc').limit(5).get();
+                attSnap.forEach(doc=>recentAttempts.push({id:doc.id,...doc.data()}));
+            }catch(e){console.log('Recent attempts:',e)}
+
+            content.innerHTML=`
+                <div class="page-header" style="animation:fadeInDown .4s ease">
+                    <div class="page-header-back" onclick="closeTopicDetail()"><i data-lucide="arrow-left"></i></div>
+                    <div class="page-header-info">
+                        <div class="page-header-title">Topic</div>
+                        <div class="page-header-sub">${course.code||''}</div>
+                    </div>
+                </div>
+
+                <div class="topic-hero">
+                    <div class="topic-hero-icon"><i data-lucide="book-open"></i></div>
+                    <div class="topic-hero-name">${topic.name||'Topic'}</div>
+                    <div class="topic-hero-course">${course.code} — ${course.name}</div>
+                    ${topic.description?`<div class="topic-hero-desc">${topic.description}</div>`:''}
+                </div>
+
+                <div class="topic-stats-grid">
+                    <div class="topic-stat-card">
+                        <div class="topic-stat-icon" style="background:var(--primary-light)"><i data-lucide="help-circle" style="color:var(--primary)"></i></div>
+                        <div class="topic-stat-val">${totalQ}</div>
+                        <div class="topic-stat-lbl">Total Questions</div>
+                    </div>
+                    <div class="topic-stat-card">
+                        <div class="topic-stat-icon" style="background:var(--success-light)"><i data-lucide="target" style="color:var(--success)"></i></div>
+                        <div class="topic-stat-val">${tAccuracy}%</div>
+                        <div class="topic-stat-lbl">Accuracy</div>
+                    </div>
+                    <div class="topic-stat-card">
+                        <div class="topic-stat-icon" style="background:var(--accent-light)"><i data-lucide="check-circle-2" style="color:var(--accent)"></i></div>
+                        <div class="topic-stat-val">${tAttempted}</div>
+                        <div class="topic-stat-lbl">Attempted</div>
+                    </div>
+                    <div class="topic-stat-card">
+                        <div class="topic-stat-icon" style="background:var(--info-light)"><i data-lucide="trending-up" style="color:var(--info)"></i></div>
+                        <div class="topic-stat-val">${mastery}%</div>
+                        <div class="topic-stat-lbl">Mastery</div>
+                    </div>
+                </div>
+
+                <div class="practice-options">
+                    <div class="practice-options-title">Practice Questions</div>
+                    <div class="practice-grid">
+                        <div class="practice-option" onclick="startPractice('${courseId}','${topicId}',10)">
+                            <div class="practice-option-num">10</div>
+                            <div class="practice-option-label">Questions</div>
+                        </div>
+                        <div class="practice-option" onclick="startPractice('${courseId}','${topicId}',20)">
+                            <div class="practice-option-num">20</div>
+                            <div class="practice-option-label">Questions</div>
+                        </div>
+                        <div class="practice-option" onclick="startPractice('${courseId}','${topicId}',50)">
+                            <div class="practice-option-num">50</div>
+                            <div class="practice-option-label">Questions</div>
+                        </div>
+                    </div>
+                </div>
+
+                ${recentAttempts.length>0?`
+                <div class="topic-recent">
+                    <div class="topic-recent-title">Recent Attempts</div>
+                    ${recentAttempts.map(a=>{
+                        const score=a.score||0;const total=a.totalQuestions||0;
+                        const pct=total>0?Math.round((score/total)*100):0;
+                        const cls=pct>=70?'high':pct>=50?'mid':'low';
+                        const bgCls=pct>=70?'success':pct>=50?'warning':'danger';
+                        return`<div class="recent-attempt">
+                            <div class="recent-attempt-icon" style="background:var(--${bgCls}-light)"><i data-lucide="${pct>=70?'check-circle-2':'alert-triangle'}" style="color:var(--${bgCls})"></i></div>
+                            <div class="recent-attempt-info">
+                                <div class="recent-attempt-score">${score}/${total} correct</div>
+                                <div class="recent-attempt-date">${timeAgo(a.createdAt)}</div>
+                            </div>
+                            <span class="recent-attempt-pct topic-accuracy ${cls}">${pct}%</span>
+                        </div>`;
+                    }).join('')}
+                </div>`:''}
+
+                <div style="margin-top:20px">
+                    <button class="btn btn-primary" style="width:100%" onclick="startPractice('${courseId}','${topicId}',10)">
+                        <i data-lucide="play-circle"></i><span class="btn-text">Start Practicing</span>
+                    </button>
+                </div>
+            `;
+
+            panel.classList.add('open');
+            document.body.style.overflow='hidden';
+            lucide.createIcons();
+        }
+
+        function closeTopicDetail(){
+            $('#topicPanel').classList.remove('open');
+            if(!$('#detailPanel').classList.contains('open'))document.body.style.overflow='';
+        }
+
+        function startPractice(courseId,topicId,count){
+            window.location.href=`practice.html?course=${courseId}&topic=${topicId}&count=${count}`;
+        }
+
+        // ===== LOAD COURSE PERFORMANCE =====
+        async function loadCoursePerformance(){
+            if(!currentUser)return;
+            try{
+                const snap=await db.collection('course_performance').where('userId','==',currentUser.uid).get();
+                snap.forEach(doc=>{const d=doc.data();coursePerformance[d.courseId]=d});
+            }catch(e){console.log('Course perf:',e)}
+        }
+
+        // ===== MAIN LOAD =====
+        auth.onAuthStateChanged(async user=>{
+            if(!user){location.href='index.html';return}
+            currentUser=user;
+
+            try{
+                const doc=await db.collection('users').doc(user.uid).get();
+                if(!doc.exists){location.href='index.html';return}
+                userData=doc.data();userData.uid=user.uid;
+                if(!userData.onboardingComplete){location.href='onboarding.html';return}
+
+                // Set semester from user data
+                if(userData.semester){
+                    currentSemester=userData.semester;
+                    $$('.semester-btn').forEach(b=>{b.classList.toggle('active',b.dataset.semester===currentSemester)});
+                }
+
+                // Load user's selected courses from Firestore
+                const selectedCourses=userData.selectedCourses||[];
+                if(selectedCourses.length>0){
+                    // Get full course data from Firestore
+                    const courseIds=selectedCourses.map(c=>c.id).filter(Boolean);
+                    if(courseIds.length>0){
+                        // Firestore 'in' queries limited to 10 items
+                        const chunks=[];
+                        for(let i=0;i<courseIds.length;i+=10)chunks.push(courseIds.slice(i,i+10));
+                        allCourses=[];
+                        for(const chunk of chunks){
+                            try{
+                                const snap=await db.collection('courses').where(firebase.firestore.FieldPath.documentId(),'in',chunk).get();
+                                snap.forEach(doc=>allCourses.push({id:doc.id,...doc.data()}));
+                            }catch(e){console.log('Course chunk error:',e)}
+                        }
+                        // If Firestore query didn't return results, use stored course data
+                        if(allCourses.length===0){
+                            allCourses=selectedCourses.map((c,i)=>({id:c.id||'c'+i,code:c.code||'',name:c.name||'',units:c.units||0,semester:userData.semester||'first'}));
+                        }
+                    }else{
+                        allCourses=selectedCourses.map((c,i)=>({id:c.id||'c'+i,code:c.code||'',name:c.name||'',units:c.units||0,semester:userData.semester||'first'}));
+                    }
+                }
+
+                await loadCoursePerformance();
+
+                // Hide loader
+                const lo=$('#loadingOverlay');lo.classList.add('hide');setTimeout(()=>lo.style.display='none',300);
+
+                renderCourses();
+
+            }catch(e){
+                console.error('Load error:',e);
+                const lo=$('#loadingOverlay');lo.classList.add('hide');setTimeout(()=>lo.style.display='none',300);
+                showToast('Error loading courses','error');
+            }
+        });
+
+        // Handle back button / escape
+        document.addEventListener('keydown',e=>{
+            if(e.key==='Escape'){
+                if($('#topicPanel').classList.contains('open'))closeTopicDetail();
+                else if($('#detailPanel').classList.contains('open'))closeCourseDetail();
+            }
+        });
+
+        // Handle browser back
+        window.addEventListener('popstate',()=>{
+            if($('#topicPanel').classList.contains('open')){closeTopicDetail();history.pushState(null,'',location.href)}
+            else if($('#detailPanel').classList.contains('open')){closeCourseDetail();history.pushState(null,'',location.href)}
+        });
+        history.pushState(null,'',location.href);
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>

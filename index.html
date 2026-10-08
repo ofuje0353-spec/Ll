@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FAVOJE — Practice Smarter. Perform Better.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* ========== CSS RESET & VARIABLES ========== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366F1;
+            --primary-hover: #5558E6;
+            --primary-light: rgba(99, 102, 241, 0.12);
+            --secondary: #4F46E5;
+            --bg: #080B14;
+            --bg-secondary: #0d1121;
+            --surface: #111827;
+            --surface-hover: #1a2235;
+            --surface-2: #1F2937;
+            --surface-3: #2a3548;
+            --accent: #F97316;
+            --accent-light: rgba(249, 115, 22, 0.12);
+            --success: #10B981;
+            --success-light: rgba(16, 185, 129, 0.12);
+            --danger: #EF4444;
+            --danger-light: rgba(239, 68, 68, 0.12);
+            --warning: #F59E0B;
+            --warning-light: rgba(245, 158, 11, 0.12);
+            --white: #F8FAFC;
+            --text-primary: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --text-tertiary: #64748B;
+            --border: rgba(148, 163, 184, 0.1);
+            --border-hover: rgba(148, 163, 184, 0.2);
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+            --shadow-xl: 0 16px 48px rgba(0,0,0,0.6);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-full: 50%;
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        :root.light-mode {
+            --bg: #F1F5F9;
+            --bg-secondary: #E8ECF1;
+            --surface: #FFFFFF;
+            --surface-hover: #F8FAFC;
+            --surface-2: #F1F5F9;
+            --surface-3: #E2E8F0;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-tertiary: #94A3B8;
+            --border: rgba(15, 23, 42, 0.08);
+            --border-hover: rgba(15, 23, 42, 0.15);
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.1);
+            --shadow-xl: 0 16px 48px rgba(0,0,0,0.12);
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ========== BACKGROUND ANIMATION ========== */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: orbFloat 20s infinite ease-in-out;
+        }
+
+        .bg-orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .bg-orb-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            bottom: -50px;
+            left: -50px;
+            animation-delay: -7s;
+        }
+
+        .bg-orb-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--success);
+            top: 50%;
+            left: 50%;
+            animation-delay: -14s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.9); }
+            75% { transform: translate(10px, 40px) scale(1.05); }
+        }
+
+        /* ========== LAYOUT ========== */
+        .auth-container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-wrapper {
+            width: 100%;
+            max-width: 460px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes checkmark {
+            from { stroke-dashoffset: 30; }
+            to { stroke-dashoffset: 0; }
+        }
+
+        .shake { animation: shake 0.4s ease; }
+
+        /* ========== LOGO ========== */
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo-mark {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+            animation: scaleIn 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-mark::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1));
+        }
+
+        .logo-mark i {
+            color: white;
+            width: 28px;
+            height: 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+        }
+
+        .logo-tagline {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        /* ========== DARK MODE TOGGLE ========== */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            width: 44px;
+            height: 44px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            box-shadow: var(--shadow-md);
+        }
+
+        .theme-toggle:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-hover);
+            transform: rotate(15deg);
+        }
+
+        .theme-toggle i {
+            width: 20px;
+            height: 20px;
+            color: var(--text-secondary);
+            transition: all var(--transition-normal);
+        }
+
+        .theme-toggle:hover i { color: var(--accent); }
+
+        /* ========== AUTH CARD ========== */
+        .auth-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 32px 28px;
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition-normal);
+        }
+
+        .auth-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .auth-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        /* ========== TABS ========== */
+        .auth-tabs {
+            display: flex;
+            background: var(--surface-2);
+            border-radius: var(--radius-md);
+            padding: 4px;
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px 16px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-normal);
+            position: relative;
+            z-index: 1;
+            border: none;
+            background: none;
+        }
+
+        .auth-tab.active {
+            color: var(--white);
+            background: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .auth-tab:not(.active):hover {
+            color: var(--text-primary);
+        }
+
+        /* ========== FORM ========== */
+        .form-view {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .form-view.active { display: block; }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .form-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-input-icon {
+            position: absolute;
+            left: 14px;
+            width: 18px;
+            height: 18px;
+            color: var(--text-tertiary);
+            pointer-events: none;
+            transition: color var(--transition-fast);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-family: var(--font);
+            color: var(--text-primary);
+            transition: all var(--transition-normal);
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-input:focus ~ .form-input-icon,
+        .form-input:focus + .form-input-icon {
+            color: var(--primary);
+        }
+
+        .form-input.no-icon {
+            padding-left: 14px;
+        }
+
+        .form-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .form-input.error {
+            border-color: var(--danger);
+            box-shadow: 0 0 0 3px var(--danger-light);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-family: var(--font);
+            color: var(--text-primary);
+            transition: all var(--transition-normal);
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-select option {
+            background: var(--surface);
+            color: var(--text-primary);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            width: 18px;
+            height: 18px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: color var(--transition-fast);
+        }
+
+        .password-toggle:hover { color: var(--text-primary); }
+
+        .form-error {
+            font-size: 12px;
+            color: var(--danger);
+            margin-top: 6px;
+            display: none;
+            animation: slideDown 0.2s ease;
+        }
+
+        .form-error.show { display: flex; align-items: center; gap: 4px; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 400px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 13px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: var(--font);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            border: none;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--primary);
+            padding: 8px 12px;
+        }
+
+        .btn-ghost:hover {
+            background: var(--primary-light);
+        }
+
+        .btn .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+        }
+
+        .btn.loading .spinner { display: block; }
+        .btn.loading .btn-text { opacity: 0; }
+
+        /* ========== ALERT ========== */
+        .alert {
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.3s ease;
+            line-height: 1.5;
+        }
+
+        .alert.show { display: flex; }
+
+        .alert-success {
+            background: var(--success-light);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .alert-error {
+            background: var(--danger-light);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .alert-warning {
+            background: var(--warning-light);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .alert i {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        /* ========== LINKS ========== */
+        .auth-link {
+            font-size: 13px;
+            color: var(--primary);
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color var(--transition-fast);
+        }
+
+        .auth-link:hover { color: var(--primary-hover); text-decoration: underline; }
+
+        .forgot-link {
+            display: block;
+            text-align: right;
+            margin-top: -8px;
+            margin-bottom: 20px;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .auth-footer a:hover { text-decoration: underline; }
+
+        /* ========== DIVIDER ========== */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        /* ========== REGISTER FORM STEPS ========== */
+        .reg-step {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .reg-step.active { display: block; }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--surface-3);
+            transition: all var(--transition-normal);
+        }
+
+        .step-dot.active {
+            background: var(--primary);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .step-dot.completed {
+            background: var(--success);
+        }
+
+        .step-header {
+            margin-bottom: 20px;
+        }
+
+        .step-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ========== AVATAR PICKER ========== */
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .avatar-option {
+            aspect-ratio: 1;
+            border-radius: var(--radius-full);
+            border: 3px solid var(--border);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface-2);
+            font-size: 24px;
+        }
+
+        .avatar-option:hover {
+            border-color: var(--primary);
+            transform: scale(1.08);
+        }
+
+        .avatar-option.selected {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .avatar-option.selected::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-color {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 20px;
+        }
+
+        /* ========== PASSWORD STRENGTH ========== */
+        .password-strength {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+            margin-bottom: 4px;
+        }
+
+        .strength-bar {
+            flex: 1;
+            height: 3px;
+            border-radius: 2px;
+            background: var(--surface-3);
+            transition: background var(--transition-normal);
+        }
+
+        .strength-bar.weak { background: var(--danger); }
+        .strength-bar.fair { background: var(--warning); }
+        .strength-bar.good { background: var(--accent); }
+        .strength-bar.strong { background: var(--success); }
+
+        .strength-text {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        /* ========== TERMS ========== */
+        .terms-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .terms-check input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            margin-top: 1px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .terms-check label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        .terms-check label a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* ========== FORGOT PASSWORD ========== */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            margin-bottom: 20px;
+            border: none;
+            background: none;
+            font-family: var(--font);
+            font-weight: 500;
+            padding: 4px 0;
+            transition: color var(--transition-fast);
+        }
+
+        .back-btn:hover { color: var(--primary); }
+        .back-btn i { width: 16px; height: 16px; }
+
+        /* ========== SUCCESS ANIMATION ========== */
+        .success-check {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--success-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: scaleIn 0.5s ease;
+        }
+
+        .success-check i {
+            width: 32px;
+            height: 32px;
+            color: var(--success);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 480px) {
+            .auth-container { padding: 16px; }
+            .auth-card { padding: 24px 20px; }
+            .logo-text { font-size: 24px; }
+            .auth-title { font-size: 20px; }
+            .avatar-grid { grid-template-columns: repeat(5, 1fr); gap: 8px; }
+            .avatar-option { font-size: 20px; }
+        }
+
+        @media (min-width: 1024px) {
+            .auth-wrapper { max-width: 480px; }
+            .auth-card { padding: 40px 36px; }
+        }
+
+        /* ========== LOADING OVERLAY ========== */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(8, 11, 20, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .loading-overlay.show { display: flex; }
+
+        .loading-content {
+            text-align: center;
+            animation: scaleIn 0.3s ease;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--surface-3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ========== TOAST ========== */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+            width: calc(100% - 40px);
+            max-width: 400px;
+        }
+
+        .toast {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-lg);
+            animation: slideDown 0.3s ease;
+            pointer-events: auto;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .toast.toast-exit { animation: slideUp 0.3s ease forwards; opacity: 0; }
+
+        .toast i { width: 18px; height: 18px; flex-shrink: 0; }
+        .toast.success i { color: var(--success); }
+        .toast.error i { color: var(--danger); }
+        .toast.warning i { color: var(--warning); }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg-gradient">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <i data-lucide="moon"></i>
+    </button>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p class="loading-text" id="loadingText">Please wait...</p>
+        </div>
+    </div>
+
+    <!-- Auth Container -->
+    <div class="auth-container">
+        <div class="auth-wrapper">
+            <!-- Logo -->
+            <div class="auth-logo">
+                <div class="logo-mark">
+                    <i data-lucide="graduation-cap"></i>
+                </div>
+                <div class="logo-text">FAVOJE</div>
+                <div class="logo-tagline">Practice Smarter. Perform Better.</div>
+            </div>
+
+            <!-- Auth Card -->
+            <div class="auth-card">
+                <!-- Alert -->
+                <div class="alert" id="authAlert">
+                    <i data-lucide="info"></i>
+                    <span id="alertText"></span>
+                </div>
+
+                <!-- ========== LOGIN VIEW ========== -->
+                <div class="form-view active" id="loginView">
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" data-tab="login">Sign In</button>
+                        <button class="auth-tab" data-tab="register">Create Account</button>
+                    </div>
+
+                    <form id="loginForm" novalidate>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <div class="form-input-wrapper">
+                                <i data-lucide="mail" class="form-input-icon"></i>
+                                <input type="email" class="form-input" id="loginEmail" placeholder="you@example.com" autocomplete="email" required>
+                            </div>
+                            <div class="form-error" id="loginEmailError"><i data-lucide="alert-circle"></i><span></span></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Password</label>
+                            <div class="form-input-wrapper">
+                                <i data-lucide="lock" class="form-input-icon"></i>
+                                <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" required>
+                                <i data-lucide="eye-off" class="password-toggle" data-target="loginPassword"></i>
+                            </div>
+                            <div class="form-error" id="loginPasswordError"><i data-lucide="alert-circle"></i><span></span></div>
+                        </div>
+
+                        <a class="auth-link forgot-link" id="showForgot">Forgot password?</a>
+
+                        <button type="submit" class="btn btn-primary" id="loginBtn">
+                            <div class="spinner"></div>
+                            <span class="btn-text">Sign In</span>
+                        </button>
+                    </form>
+
+                    <div class="auth-footer">
+                        Don't have an account? <a href="#" id="goToRegister">Create one</a>
+                    </div>
+                </div>
+
+                <!-- ========== REGISTER VIEW ========== -->
+                <div class="form-view" id="registerView">
+                    <div class="auth-tabs">
+                        <button class="auth-tab" data-tab="login">Sign In</button>
+                        <button class="auth-tab active" data-tab="register">Create Account</button>
+                    </div>
+
+                    <!-- Step Indicator -->
+                    <div class="step-indicator" id="stepIndicator">
+                        <div class="step-dot active" data-step="1"></div>
+                        <div class="step-dot" data-step="2"></div>
+                        <div class="step-dot" data-step="3"></div>
+                    </div>
+
+                    <form id="registerForm" novalidate>
+                        <!-- Step 1: Personal Info -->
+                        <div class="reg-step active" id="regStep1">
+                            <div class="step-header">
+                                <div class="step-title">Personal Information</div>
+                                <div class="step-desc">Tell us about yourself</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <div class="form-input-wrapper">
+                                    <i data-lucide="user" class="form-input-icon"></i>
+                                    <input type="text" class="form-input" id="regFullName" placeholder="Enter your full name" required>
+                                </div>
+                                <div class="form-error" id="regFullNameError"><i data-lucide="alert-circle"></i><span></span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Username</label>
+                                <div class="form-input-wrapper">
+                                    <i data-lucide="at-sign" class="form-input-icon"></i>
+                                    <input type="text" class="form-input" id="regUsername" placeholder="Choose a username" required>
+                                </div>
+                                <div class="form-error" id="regUsernameError"><i data-lucide="alert-circle"></i><span></span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Email Address</label>
+                                <div class="form-input-wrapper">
+                                    <i data-lucide="mail" class="form-input-icon"></i>
+                                    <input type="email" class="form-input" id="regEmail" placeholder="you@example.com" autocomplete="email" required>
+                                </div>
+                                <div class="form-error" id="regEmailError"><i data-lucide="alert-circle"></i><span></span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <div class="form-input-wrapper">
+                                    <i data-lucide="phone" class="form-input-icon"></i>
+                                    <input type="tel" class="form-input" id="regPhone" placeholder="080XXXXXXXX" required>
+                                </div>
+                                <div class="form-error" id="regPhoneError"><i data-lucide="alert-circle"></i><span></span></div>
+                            </div>
+
+                            <button type="button" class="btn btn-primary" id="regStep1Next">
+                                <span class="btn-text">Continue</span>
+                                <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+                            </button>
+                        </div>
+
+                        <!-- Step 2: Academic Info -->
+                        <div class="reg-step" id="regStep2">
+                            <div class="step-header">
+                                <div class="step-title">Academic Information</div>
+                                <div class="step-desc">Select your university details</div>
+                            </div>
+
+                            <button type="button" class="back-btn" id="regStep2Back">
+                                <i data-lucide="arrow-left"></i> Back
+                            </button>
+
+                            <div class="form-group">
+                                <label class="form-label">University</label>
+                                <div class="form-input-wrapper">
+                                    <i data-lucide="building-2" class="form-input-icon"></i>
+                                    <select class="form-select" id="regUniversity" required>
+                                        <option value="">Select university</option>
+                                    </select>
+                                </div>
+                                <div class="form-error" id="regUniversityError"><i data-lucide="alert-circle"></i><span></span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Faculty / College</label>
+                                <div class="form-input-wrapper">
+                                    <i data-lucide="layout-grid" class="form-input-icon"></i>
+                                    <select class="form-select" id="regFaculty" required disabled>
+                                        <option value="">Select faculty</option>
+                                    </select>
+                                </div>
+                                <div class="form-error" id="regFacultyError"><i data-lucide="alert-circle"></i><span></span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Department</label>
+                                <div class="form-input-wrapper">
+                                    <i data-lucide="book-open" class="form-input-icon"></i>
+                                    <select class="form-select" id="regDepartment" required disabled>
+                                        <option value="">Select department</option>
+                                    </select>
+                                </div>
+                                <div class="form-error" id="regDepartmentError"><i data-lucide="alert-circle"></i><span></span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Level</label>
+                                <div class="form-input-wrapper">
+                                    <i data-lucide="layers" class="form-input-icon"></i>
+                                    <select class="form-select" id="regLevel" required disabled>
+                                        <option value="">Select level</option>
+                                    </select>
+                                </div>
+                                <div class="form-error" id="regLevelError"><i data-lucide="alert-circle"></i><span></span></div>
+                            </div>
+
+                            <button type="button" class="btn btn-primary" id="regStep2Next">
+                                <span class="btn-text">Continue</span>
+                                <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+                            </button>
+                        </div>
+
+                        <!-- Step 3: Avatar & Password -->
+                        <div class="reg-step" id="regStep3">
+                            <div class="step-header">
+                                <div class="step-title">Almost Done!</div>
+                                <div class="step-desc">Pick an avatar and set your password</div>
+                            </div>
+
+                            <button type="button" class="back-btn" id="regStep3Back">
+                                <i data-lucide="arrow-left"></i> Back
+                            </button>
+
+                            <div class="form-group">
+                                <label class="form-label">Choose Your Avatar</label>
+                                <div class="avatar-grid" id="avatarGrid"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <div class="form-input-wrapper">
+                                    <i data-lucide="lock" class="form-input-icon"></i>
+                                    <input type="password" class="form-input" id="regPassword" placeholder="Create a strong password" required>
+                                    <i data-lucide="eye-off" class="password-toggle" data-target="regPassword"></i>
+                                </div>
+                                <div class="password-strength" id="passwordStrength">
+                                    <div class="strength-bar"></div>
+                                    <div class="strength-bar"></div>
+                                    <div class="strength-bar"></div>
+                                    <div class="strength-bar"></div>
+                                </div>
+                                <div class="strength-text" id="strengthText"></div>
+                                <div class="form-error" id="regPasswordError"><i data-lucide="alert-circle"></i><span></span></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Confirm Password</label>
+                                <div class="form-input-wrapper">
+                                    <i data-lucide="lock" class="form-input-icon"></i>
+                                    <input type="password" class="form-input" id="regConfirmPassword" placeholder="Confirm your password" required>
+                                    <i data-lucide="eye-off" class="password-toggle" data-target="regConfirmPassword"></i>
+                                </div>
+                                <div class="form-error" id="regConfirmPasswordError"><i data-lucide="alert-circle"></i><span></span></div>
+                            </div>
+
+                            <div class="terms-check">
+                                <input type="checkbox" id="termsCheck">
+                                <label for="termsCheck">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" id="registerBtn">
+                                <div class="spinner"></div>
+                                <span class="btn-text">Create Account</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="auth-footer">
+                        Already have an account? <a href="#" id="goToLogin">Sign in</a>
+                    </div>
+                </div>
+
+                <!-- ========== FORGOT PASSWORD VIEW ========== -->
+                <div class="form-view" id="forgotView">
+                    <button type="button" class="back-btn" id="forgotBack">
+                        <i data-lucide="arrow-left"></i> Back to sign in
+                    </button>
+
+                    <div class="step-header">
+                        <div class="step-title">Reset Password</div>
+                        <div class="step-desc">Enter your email to receive a password reset link</div>
+                    </div>
+
+                    <form id="forgotForm" novalidate>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <div class="form-input-wrapper">
+                                <i data-lucide="mail" class="form-input-icon"></i>
+                                <input type="email" class="form-input" id="forgotEmail" placeholder="you@example.com" required>
+                            </div>
+                            <div class="form-error" id="forgotEmailError"><i data-lucide="alert-circle"></i><span></span></div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" id="forgotBtn">
+                            <div class="spinner"></div>
+                            <span class="btn-text">Send Reset Link</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- ========== RESET SUCCESS VIEW ========== -->
+                <div class="form-view" id="resetSuccessView">
+                    <div style="text-align:center; padding: 20px 0;">
+                        <div class="success-check">
+                            <i data-lucide="mail-check"></i>
+                        </div>
+                        <div class="step-title" style="margin-bottom:8px;">Check Your Email</div>
+                        <p class="step-desc" style="margin-bottom:24px;">We've sent a password reset link to your email address. Please check your inbox.</p>
+                        <button type="button" class="btn btn-primary" id="backToLoginFromReset">
+                            <span class="btn-text">Back to Sign In</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ========== REGISTER SUCCESS VIEW ========== -->
+                <div class="form-view" id="registerSuccessView">
+                    <div style="text-align:center; padding: 20px 0;">
+                        <div class="success-check">
+                            <i data-lucide="check-circle-2"></i>
+                        </div>
+                        <div class="step-title" style="margin-bottom:8px;">Account Created!</div>
+                        <p class="step-desc" style="margin-bottom:24px;">Welcome to Favoje! Your account has been created successfully. Redirecting you to the app...</p>
+                        <div class="loading-spinner" style="margin:0 auto;width:32px;height:32px;border-width:2px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ========== FIREBASE CONFIGURATION ==========
+        const firebaseConfig = {
+            apiKey: "AIzaSyC1SmazNPbak8vMvi-jD40EGqpvWmWdd0U",
+            authDomain: "favoje-fcb02.firebaseapp.com",
+            projectId: "favoje-fcb02",
+            storageBucket: "favoje-fcb02.firebasestorage.app",
+            messagingSenderId: "837946471768",
+            appId: "1:837946471768:web:6ea76eee926fe77bdc212d"
+        };
+
+        // Initialize Firebase
+        let app, auth, db;
+        try {
+            app = firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            db = firebase.firestore();
+            console.log('Firebase initialized successfully');
+        } catch (error) {
+            console.error('Firebase initialization error:', error);
+        }
+
+        // ========== UNIVERSITY DATA (Stored in Firestore, seeded on first run) ==========
+        const UNIVERSITY_STRUCTURE = {
+            'futminna': {
+                id: 'futminna',
+                name: 'Federal University of Technology, Minna',
+                shortName: 'FUTMINNA',
+                faculties: {
+                    'set': {
+                        id: 'set',
+                        name: 'School of Electrical Engineering and Technology',
+                        departments: {
+                            'cpe': { id: 'cpe', name: 'Computer Engineering' },
+                            'ece': { id: 'ece', name: 'Electrical and Electronics Engineering' },
+                            'tce': { id: 'tce', name: 'Telecommunication Engineering' },
+                            'mce': { id: 'mce', name: 'Mechatronics Engineering' }
+                        }
+                    },
+                    'sist': {
+                        id: 'sist',
+                        name: 'School of Information and Communication Technology',
+                        departments: {
+                            'csc': { id: 'csc', name: 'Computer Science' },
+                            'cyb': { id: 'cyb', name: 'Cyber Security' },
+                            'its': { id: 'its', name: 'Information Technology' },
+                            'lis': { id: 'lis', name: 'Library and Information Science' }
+                        }
+                    },
+                    'sps': {
+                        id: 'sps',
+                        name: 'School of Physical Sciences',
+                        departments: {
+                            'phy': { id: 'phy', name: 'Physics' },
+                            'chm': { id: 'chm', name: 'Chemistry' },
+                            'mth': { id: 'mth', name: 'Mathematics' },
+                            'sts': { id: 'sts', name: 'Statistics' },
+                            'geo': { id: 'geo', name: 'Geology' }
+                        }
+                    },
+                    'sls': {
+                        id: 'sls',
+                        name: 'School of Life Sciences',
+                        departments: {
+                            'bio': { id: 'bio', name: 'Biology' },
+                            'bcm': { id: 'bcm', name: 'Biochemistry' },
+                            'mcb': { id: 'mcb', name: 'Microbiology' }
+                        }
+                    },
+                    'ssse': {
+                        id: 'ssse',
+                        name: 'School of Science and Science Education',
+                        departments: {
+                            'sce': { id: 'sce', name: 'Science Education' }
+                        }
+                    },
+                    'seit': {
+                        id: 'seit',
+                        name: 'School of Environmental and Infrastructure Technology',
+                        departments: {
+                            'arc': { id: 'arc', name: 'Architecture' },
+                            'bld': { id: 'bld', name: 'Building' },
+                            'qty': { id: 'qty', name: 'Quantity Surveying' },
+                            'urp': { id: 'urp', name: 'Urban and Regional Planning' },
+                            'svg': { id: 'svg', name: 'Surveying and Geoinformatics' }
+                        }
+                    },
+                    'smt': {
+                        id: 'smt',
+                        name: 'School of Mechanical and Transportation Technology',
+                        departments: {
+                            'mec': { id: 'mec', name: 'Mechanical Engineering' },
+                            'cve': { id: 'cve', name: 'Civil Engineering' },
+                            'che': { id: 'che', name: 'Chemical Engineering' },
+                            'agr': { id: 'agr', name: 'Agricultural and Bioresources Engineering' },
+                            'met': { id: 'met', name: 'Materials and Metallurgical Engineering' }
+                        }
+                    },
+                    'sms': {
+                        id: 'sms',
+                        name: 'School of Management Sciences',
+                        departments: {
+                            'ent': { id: 'ent', name: 'Entrepreneurship and Business Studies' },
+                            'mgt': { id: 'mgt', name: 'Management Technology' }
+                        }
+                    }
+                },
+                levels: [
+                    { id: '100', name: '100 Level' },
+                    { id: '200', name: '200 Level' },
+                    { id: '300', name: '300 Level' },
+                    { id: '400', name: '400 Level' },
+                    { id: '500', name: '500 Level' }
+                ]
+            }
+        };
+
+        // ========== AVATAR DEFINITIONS ==========
+        const AVATARS = [
+            { id: 'av1', emoji: '🧑‍🎓', bg: '#6366F1' },
+            { id: 'av2', emoji: '👩‍🎓', bg: '#EC4899' },
+            { id: 'av3', emoji: '🦊', bg: '#F97316' },
+            { id: 'av4', emoji: '🦁', bg: '#EAB308' },
+            { id: 'av5', emoji: '🐺', bg: '#64748B' },
+            { id: 'av6', emoji: '🦅', bg: '#8B5CF6' },
+            { id: 'av7', emoji: '🐯', bg: '#F59E0B' },
+            { id: 'av8', emoji: '🦉', bg: '#78716C' },
+            { id: 'av9', emoji: '🚀', bg: '#3B82F6' },
+            { id: 'av10', emoji: '⚡', bg: '#10B981' },
+            { id: 'av11', emoji: '🎯', bg: '#EF4444' },
+            { id: 'av12', emoji: '💎', bg: '#06B6D4' },
+            { id: 'av13', emoji: '🔥', bg: '#DC2626' },
+            { id: 'av14', emoji: '🌟', bg: '#A855F7' },
+            { id: 'av15', emoji: '🎓', bg: '#0EA5E9' }
+        ];
+
+        // ========== DOM REFERENCES ==========
+        const $ = (sel) => document.querySelector(sel);
+        const $$ = (sel) => document.querySelectorAll(sel);
+
+        // Views
+        const loginView = $('#loginView');
+        const registerView = $('#registerView');
+        const forgotView = $('#forgotView');
+        const resetSuccessView = $('#resetSuccessView');
+        const registerSuccessView = $('#registerSuccessView');
+        const authAlert = $('#authAlert');
+        const alertText = $('#alertText');
+
+        // ========== THEME TOGGLE ==========
+        const themeToggle = $('#themeToggle');
+        let isDark = localStorage.getItem('favoje-theme') !== 'light';
+
+        function applyTheme() {
+            if (isDark) {
+                document.documentElement.classList.remove('light-mode');
+                themeToggle.innerHTML = '<i data-lucide="moon"></i>';
+            } else {
+                document.documentElement.classList.add('light-mode');
+                themeToggle.innerHTML = '<i data-lucide="sun"></i>';
+            }
+            lucide.createIcons();
+        }
+
+        themeToggle.addEventListener('click', () => {
+            isDark = !isDark;
+            localStorage.setItem('favoje-theme', isDark ? 'dark' : 'light');
+            applyTheme();
+        });
+
+        applyTheme();
+
+        // ========== TOAST NOTIFICATIONS ==========
+        function showToast(message, type = 'success') {
+            const container = $('#toastContainer');
+            const icons = { success: 'check-circle-2', error: 'x-circle', warning: 'alert-triangle' };
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<i data-lucide="${icons[type] || icons.success}"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.add('toast-exit');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // ========== LOADING ==========
+        function showLoading(text = 'Please wait...') {
+            $('#loadingText').textContent = text;
+            $('#loadingOverlay').classList.add('show');
+        }
+
+        function hideLoading() {
+            $('#loadingOverlay').classList.remove('show');
+        }
+
+        // ========== ALERT ==========
+        function showAlert(message, type = 'error') {
+            authAlert.className = `alert show alert-${type}`;
+            const iconMap = { error: 'x-circle', success: 'check-circle-2', warning: 'alert-triangle' };
+            authAlert.innerHTML = `<i data-lucide="${iconMap[type]}"></i><span>${message}</span>`;
+            lucide.createIcons();
+            setTimeout(() => { authAlert.classList.remove('show'); }, 6000);
+        }
+
+        function hideAlert() {
+            authAlert.classList.remove('show');
+        }
+
+        // ========== VIEW SWITCHING ==========
+        function switchView(viewId) {
+            hideAlert();
+            $$('.form-view').forEach(v => v.classList.remove('active'));
+            $(`#${viewId}`).classList.add('active');
+        }
+
+        // Tab clicking
+        $$('.auth-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+                if (target === 'login') switchView('loginView');
+                else switchView('registerView');
+
+                // Update tab states within the current view
+                tab.closest('.auth-tabs').querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        $('#goToRegister').addEventListener('click', (e) => {
+            e.preventDefault();
+            switchView('registerView');
+        });
+
+        $('#goToLogin').addEventListener('click', (e) => {
+            e.preventDefault();
+            switchView('loginView');
+        });
+
+        $('#showForgot').addEventListener('click', (e) => {
+            e.preventDefault();
+            switchView('forgotView');
+        });
+
+        $('#forgotBack').addEventListener('click', () => switchView('loginView'));
+        $('#backToLoginFromReset').addEventListener('click', () => switchView('loginView'));
+
+        // ========== PASSWORD TOGGLE ==========
+        $$('.password-toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const target = $(`#${toggle.dataset.target}`);
+                if (target.type === 'password') {
+                    target.type = 'text';
+                    toggle.setAttribute('data-lucide', 'eye');
+                } else {
+                    target.type = 'password';
+                    toggle.setAttribute('data-lucide', 'eye-off');
+                }
+                lucide.createIcons();
+            });
+        });
+
+        // ========== FORM VALIDATION HELPERS ==========
+        function showFieldError(id, message) {
+            const errorEl = $(`#${id}`);
+            if (errorEl) {
+                errorEl.querySelector('span').textContent = message;
+                errorEl.classList.add('show');
+                const input = errorEl.previousElementSibling?.querySelector('.form-input, .form-select') ||
+                    errorEl.parentElement.querySelector('.form-input, .form-select');
+                if (input) input.classList.add('error');
+            }
+        }
+
+        function clearFieldError(id) {
+            const errorEl = $(`#${id}`);
+            if (errorEl) {
+                errorEl.classList.remove('show');
+                const input = errorEl.previousElementSibling?.querySelector('.form-input, .form-select') ||
+                    errorEl.parentElement.querySelector('.form-input, .form-select');
+                if (input) input.classList.remove('error');
+            }
+        }
+
+        function clearAllErrors() {
+            $$('.form-error').forEach(e => e.classList.remove('show'));
+            $$('.form-input, .form-select').forEach(i => i.classList.remove('error'));
+        }
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function validatePhone(phone) {
+            return /^0[7-9][0-1]\d{8}$/.test(phone.replace(/\s/g, ''));
+        }
+
+        // ========== PASSWORD STRENGTH ==========
+        const regPassword = $('#regPassword');
+
+        regPassword.addEventListener('input', () => {
+            const val = regPassword.value;
+            const bars = $$('#passwordStrength .strength-bar');
+            const strengthText = $('#strengthText');
+            let strength = 0;
+
+            if (val.length >= 6) strength++;
+            if (val.length >= 8) strength++;
+            if (/[A-Z]/.test(val) && /[a-z]/.test(val)) strength++;
+            if (/[0-9]/.test(val) && /[^a-zA-Z0-9]/.test(val)) strength++;
+
+            const levels = ['', 'weak', 'fair', 'good', 'strong'];
+            const labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+            const colors = ['', 'var(--danger)', 'var(--warning)', 'var(--accent)', 'var(--success)'];
+
+            bars.forEach((bar, i) => {
+                bar.className = 'strength-bar';
+                if (i < strength) bar.classList.add(levels[strength]);
+            });
+
+            strengthText.textContent = val.length > 0 ? labels[strength] || '' : '';
+            strengthText.style.color = colors[strength] || '';
+        });
+
+        // ========== AVATAR GRID ==========
+        let selectedAvatar = null;
+
+        function renderAvatarGrid() {
+            const grid = $('#avatarGrid');
+            grid.innerHTML = AVATARS.map(av => `
+                <div class="avatar-option" data-avatar="${av.id}" title="Select avatar">
+                    <div class="avatar-color" style="background:${av.bg}">${av.emoji}</div>
+                </div>
+            `).join('');
+
+            grid.querySelectorAll('.avatar-option').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    grid.querySelectorAll('.avatar-option').forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+                    selectedAvatar = opt.dataset.avatar;
+                });
+            });
+        }
+
+        renderAvatarGrid();
+
+        // ========== POPULATE UNIVERSITY DROPDOWN ==========
+        function populateUniversities() {
+            const select = $('#regUniversity');
+            select.innerHTML = '<option value="">Select university</option>';
+            Object.values(UNIVERSITY_STRUCTURE).forEach(uni => {
+                select.innerHTML += `<option value="${uni.id}">${uni.name}</option>`;
+            });
+        }
+
+        populateUniversities();
+
+        // University change → populate faculties
+        $('#regUniversity').addEventListener('change', function () {
+            const uniId = this.value;
+            const facultySelect = $('#regFaculty');
+            const deptSelect = $('#regDepartment');
+            const levelSelect = $('#regLevel');
+
+            facultySelect.innerHTML = '<option value="">Select faculty</option>';
+            deptSelect.innerHTML = '<option value="">Select department</option>';
+            levelSelect.innerHTML = '<option value="">Select level</option>';
+            facultySelect.disabled = true;
+            deptSelect.disabled = true;
+            levelSelect.disabled = true;
+
+            if (uniId && UNIVERSITY_STRUCTURE[uniId]) {
+                const uni = UNIVERSITY_STRUCTURE[uniId];
+                Object.values(uni.faculties).forEach(fac => {
+                    facultySelect.innerHTML += `<option value="${fac.id}">${fac.name}</option>`;
+                });
+                facultySelect.disabled = false;
+
+                // Populate levels
+                uni.levels.forEach(lev => {
+                    levelSelect.innerHTML += `<option value="${lev.id}">${lev.name}</option>`;
+                });
+                levelSelect.disabled = false;
+            }
+        });
+
+        // Faculty change → populate departments
+        $('#regFaculty').addEventListener('change', function () {
+            const uniId = $('#regUniversity').value;
+            const facId = this.value;
+            const deptSelect = $('#regDepartment');
+
+            deptSelect.innerHTML = '<option value="">Select department</option>';
+            deptSelect.disabled = true;
+
+            if (uniId && facId && UNIVERSITY_STRUCTURE[uniId]) {
+                const faculty = UNIVERSITY_STRUCTURE[uniId].faculties[facId];
+                if (faculty) {
+                    Object.values(faculty.departments).forEach(dept => {
+                        deptSelect.innerHTML += `<option value="${dept.id}">${dept.name}</option>`;
+                    });
+                    deptSelect.disabled = false;
+                }
+            }
+        });
+
+        // ========== REGISTRATION STEPS ==========
+        let currentStep = 1;
+
+        function goToStep(step) {
+            clearAllErrors();
+            $$('.reg-step').forEach(s => s.classList.remove('active'));
+            $(`#regStep${step}`).classList.add('active');
+
+            $$('.step-dot').forEach((dot, i) => {
+                dot.classList.remove('active', 'completed');
+                if (i + 1 === step) dot.classList.add('active');
+                else if (i + 1 < step) dot.classList.add('completed');
+            });
+
+            currentStep = step;
+        }
+
+        // Step 1 → Step 2
+        $('#regStep1Next').addEventListener('click', () => {
+            clearAllErrors();
+            let valid = true;
+
+            const fullName = $('#regFullName').value.trim();
+            const username = $('#regUsername').value.trim();
+            const email = $('#regEmail').value.trim();
+            const phone = $('#regPhone').value.trim();
+
+            if (!fullName || fullName.length < 3) {
+                showFieldError('regFullNameError', 'Full name must be at least 3 characters');
+                valid = false;
+            }
+            if (!username || username.length < 3) {
+                showFieldError('regUsernameError', 'Username must be at least 3 characters');
+                valid = false;
+            } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                showFieldError('regUsernameError', 'Only letters, numbers and underscores');
+                valid = false;
+            }
+            if (!email || !validateEmail(email)) {
+                showFieldError('regEmailError', 'Enter a valid email address');
+                valid = false;
+            }
+            if (!phone || !validatePhone(phone)) {
+                showFieldError('regPhoneError', 'Enter a valid Nigerian phone number');
+                valid = false;
+            }
+
+            if (valid) goToStep(2);
+            else {
+                const firstError = document.querySelector('.form-error.show');
+                if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+
+        // Step 2 → Step 3
+        $('#regStep2Next').addEventListener('click', () => {
+            clearAllErrors();
+            let valid = true;
+
+            if (!$('#regUniversity').value) {
+                showFieldError('regUniversityError', 'Select your university');
+                valid = false;
+            }
+            if (!$('#regFaculty').value) {
+                showFieldError('regFacultyError', 'Select your faculty');
+                valid = false;
+            }
+            if (!$('#regDepartment').value) {
+                showFieldError('regDepartmentError', 'Select your department');
+                valid = false;
+            }
+            if (!$('#regLevel').value) {
+                showFieldError('regLevelError', 'Select your level');
+                valid = false;
+            }
+
+            if (valid) goToStep(3);
+        });
+
+        // Back buttons
+        $('#regStep2Back').addEventListener('click', () => goToStep(1));
+        $('#regStep3Back').addEventListener('click', () => goToStep(2));
+
+        // ========== LOGIN ==========
+        $('#loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearAllErrors();
+            hideAlert();
+
+            const email = $('#loginEmail').value.trim();
+            const password = $('#loginPassword').value;
+            let valid = true;
+
+            if (!email || !validateEmail(email)) {
+                showFieldError('loginEmailError', 'Enter a valid email address');
+                valid = false;
+            }
+            if (!password || password.length < 6) {
+                showFieldError('loginPasswordError', 'Password must be at least 6 characters');
+                valid = false;
+            }
+
+            if (!valid) {
+                $('#loginForm').classList.add('shake');
+                setTimeout(() => $('#loginForm').classList.remove('shake'), 400);
+                return;
+            }
+
+            const btn = $('#loginBtn');
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                // Fetch user profile from Firestore
+                const userDoc = await db.collection('users').doc(user.uid).get();
+
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    localStorage.setItem('favoje-user', JSON.stringify({
+                        uid: user.uid,
+                        email: user.email,
+                        ...userData
+                    }));
+
+                    showToast('Welcome back!', 'success');
+
+                    // Check if onboarding is complete
+                    if (userData.onboardingComplete) {
+                        setTimeout(() => { window.location.href = 'home.html'; }, 1200);
+                    } else {
+                        setTimeout(() => { window.location.href = 'onboarding.html'; }, 1200);
+                    }
+                } else {
+                    // User exists in Auth but not in Firestore - redirect to onboarding
+                    localStorage.setItem('favoje-user', JSON.stringify({
+                        uid: user.uid,
+                        email: user.email
+                    }));
+                    setTimeout(() => { window.location.href = 'onboarding.html'; }, 1200);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                let message = 'An error occurred. Please try again.';
+
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        message = 'No account found with this email address.';
+                        break;
+                    case 'auth/wrong-password':
+                        message = 'Incorrect password. Please try again.';
+                        break;
+                    case 'auth/invalid-email':
+                        message = 'Invalid email address.';
+                        break;
+                    case 'auth/user-disabled':
+                        message = 'This account has been disabled.';
+                        break;
+                    case 'auth/too-many-requests':
+                        message = 'Too many attempts. Please try again later.';
+                        break;
+                    case 'auth/invalid-credential':
+                        message = 'Invalid email or password.';
+                        break;
+                    case 'auth/network-request-failed':
+                        message = 'Network error. Check your internet connection.';
+                        break;
+                }
+
+                showAlert(message, 'error');
+                $('#loginForm').classList.add('shake');
+                setTimeout(() => $('#loginForm').classList.remove('shake'), 400);
+            } finally {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        });
+
+        // ========== REGISTER ==========
+        $('#registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearAllErrors();
+            hideAlert();
+
+            const password = $('#regPassword').value;
+            const confirmPassword = $('#regConfirmPassword').value;
+            let valid = true;
+
+            if (!selectedAvatar) {
+                showAlert('Please select an avatar', 'warning');
+                valid = false;
+            }
+
+            if (!password || password.length < 6) {
+                showFieldError('regPasswordError', 'Password must be at least 6 characters');
+                valid = false;
+            }
+
+            if (password !== confirmPassword) {
+                showFieldError('regConfirmPasswordError', 'Passwords do not match');
+                valid = false;
+            }
+
+            if (!$('#termsCheck').checked) {
+                showAlert('Please accept the Terms of Service', 'warning');
+                valid = false;
+            }
+
+            if (!valid) return;
+
+            const btn = $('#registerBtn');
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            const userData = {
+                fullName: $('#regFullName').value.trim(),
+                username: $('#regUsername').value.trim().toLowerCase(),
+                email: $('#regEmail').value.trim().toLowerCase(),
+                phone: $('#regPhone').value.trim(),
+                university: $('#regUniversity').value,
+                universityName: $('#regUniversity').options[$('#regUniversity').selectedIndex].text,
+                faculty: $('#regFaculty').value,
+                facultyName: $('#regFaculty').options[$('#regFaculty').selectedIndex].text,
+                department: $('#regDepartment').value,
+                departmentName: $('#regDepartment').options[$('#regDepartment').selectedIndex].text,
+                level: $('#regLevel').value,
+                levelName: $('#regLevel').options[$('#regLevel').selectedIndex].text,
+                avatar: selectedAvatar,
+                avatarEmoji: AVATARS.find(a => a.id === selectedAvatar)?.emoji || '🧑‍🎓',
+                avatarBg: AVATARS.find(a => a.id === selectedAvatar)?.bg || '#6366F1'
+            };
+
+            try {
+                // Check if username is taken
+                const usernameQuery = await db.collection('users')
+                    .where('username', '==', userData.username)
+                    .get();
+
+                if (!usernameQuery.empty) {
+                    showFieldError('regUsernameError', 'This username is already taken');
+                    goToStep(1);
+                    btn.classList.remove('loading');
+                    btn.disabled = false;
+                    return;
+                }
+
+                // Create Firebase Auth user
+                const userCredential = await auth.createUserWithEmailAndPassword(
+                    userData.email,
+                    password
+                );
+
+                const user = userCredential.user;
+
+                // Update display name
+                await user.updateProfile({
+                    displayName: userData.fullName
+                });
+
+                // Store user profile in Firestore
+                await db.collection('users').doc(user.uid).set({
+                    ...userData,
+                    role: 'student',
+                    balance: 0,
+                    streak: 0,
+                    questionsAttempted: 0,
+                    questionsCorrect: 0,
+                    testsCompleted: 0,
+                    totalScore: 0,
+                    accuracy: 0,
+                    mastery: 0,
+                    selectedCourses: [],
+                    achievements: [],
+                    onboardingComplete: false,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastActive: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Create wallet account
+                await db.collection('wallet_accounts').doc(user.uid).set({
+                    userId: user.uid,
+                    balance: 0,
+                    totalDeposits: 0,
+                    totalSpent: 0,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Create initial streak record
+                await db.collection('streaks').doc(user.uid).set({
+                    userId: user.uid,
+                    currentStreak: 0,
+                    longestStreak: 0,
+                    lastActivityDate: null,
+                    streakDays: [],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Store in localStorage
+                localStorage.setItem('favoje-user', JSON.stringify({
+                    uid: user.uid,
+                    ...userData,
+                    role: 'student',
+                    balance: 0,
+                    onboardingComplete: false
+                }));
+
+                // Show success
+                switchView('registerSuccessView');
+                showToast('Account created successfully!', 'success');
+
+                // Redirect to onboarding
+                setTimeout(() => {
+                    window.location.href = 'onboarding.html';
+                }, 2500);
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                let message = 'Registration failed. Please try again.';
+
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        message = 'An account with this email already exists.';
+                        goToStep(1);
+                        break;
+                    case 'auth/invalid-email':
+                        message = 'Invalid email address.';
+                        goToStep(1);
+                        break;
+                    case 'auth/weak-password':
+                        message = 'Password is too weak. Use at least 6 characters.';
+                        break;
+                    case 'auth/network-request-failed':
+                        message = 'Network error. Check your internet connection.';
+                        break;
+                }
+
+                showAlert(message, 'error');
+            } finally {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        });
+
+        // ========== FORGOT PASSWORD ==========
+        $('#forgotForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearAllErrors();
+
+            const email = $('#forgotEmail').value.trim();
+
+            if (!email || !validateEmail(email)) {
+                showFieldError('forgotEmailError', 'Enter a valid email address');
+                return;
+            }
+
+            const btn = $('#forgotBtn');
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            try {
+                await auth.sendPasswordResetEmail(email);
+                switchView('resetSuccessView');
+                showToast('Password reset email sent!', 'success');
+            } catch (error) {
+                console.error('Reset error:', error);
+                let message = 'Could not send reset email. Try again.';
+
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        message = 'No account found with this email.';
+                        break;
+                    case 'auth/invalid-email':
+                        message = 'Invalid email address.';
+                        break;
+                    case 'auth/too-many-requests':
+                        message = 'Too many requests. Try again later.';
+                        break;
+                }
+
+                showAlert(message, 'error');
+            } finally {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        });
+
+        // ========== CHECK EXISTING AUTH STATE ==========
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                try {
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    if (userDoc.exists) {
+                        const userData = userDoc.data();
+                        localStorage.setItem('favoje-user', JSON.stringify({
+                            uid: user.uid,
+                            email: user.email,
+                            ...userData
+                        }));
+
+                        if (userData.onboardingComplete) {
+                            window.location.href = 'home.html';
+                        } else {
+                            window.location.href = 'onboarding.html';
+                        }
+                    }
+                } catch (err) {
+                    console.log('Auth check error:', err);
+                }
+            }
+        });
+
+        // ========== SEED UNIVERSITY DATA TO FIRESTORE ==========
+        async function seedUniversityData() {
+            try {
+                const uniDoc = await db.collection('universities').doc('futminna').get();
+                if (!uniDoc.exists) {
+                    const uni = UNIVERSITY_STRUCTURE.futminna;
+                    await db.collection('universities').doc('futminna').set({
+                        name: uni.name,
+                        shortName: uni.shortName,
+                        levels: uni.levels,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    // Seed faculties and departments
+                    for (const [facId, faculty] of Object.entries(uni.faculties)) {
+                        await db.collection('universities').doc('futminna')
+                            .collection('faculties').doc(facId).set({
+                                name: faculty.name,
+                                departments: faculty.departments
+                            });
+                    }
+                    console.log('University data seeded to Firestore');
+                }
+            } catch (err) {
+                console.log('Seeding skipped or error:', err);
+            }
+        }
+
+        seedUniversityData();
+
+        // ========== CLEAR INPUTS ON FOCUS ==========
+        $$('.form-input, .form-select').forEach(input => {
+            input.addEventListener('focus', function () {
+                this.classList.remove('error');
+                const errorEl = this.closest('.form-group')?.querySelector('.form-error');
+                if (errorEl) errorEl.classList.remove('show');
+            });
+        });
+
+        // ========== INITIALIZE ICONS ==========
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FAVOJE — Onboarding</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+        :root{
+            --primary:#6366F1;--primary-hover:#5558E6;--primary-light:rgba(99,102,241,.12);
+            --secondary:#4F46E5;--bg:#080B14;--bg-secondary:#0d1121;
+            --surface:#111827;--surface-hover:#1a2235;--surface-2:#1F2937;--surface-3:#2a3548;
+            --accent:#F97316;--accent-light:rgba(249,115,22,.12);
+            --success:#10B981;--success-light:rgba(16,185,129,.12);
+            --danger:#EF4444;--danger-light:rgba(239,68,68,.12);
+            --warning:#F59E0B;--warning-light:rgba(245,158,11,.12);
+            --white:#F8FAFC;--text-primary:#F1F5F9;--text-secondary:#94A3B8;--text-tertiary:#64748B;
+            --border:rgba(148,163,184,.1);--border-hover:rgba(148,163,184,.2);
+            --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow-md:0 4px 12px rgba(0,0,0,.4);
+            --shadow-lg:0 8px 32px rgba(0,0,0,.5);--shadow-xl:0 16px 48px rgba(0,0,0,.6);
+            --radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--radius-full:50%;
+            --transition-fast:.15s ease;--transition-normal:.3s ease;--transition-slow:.5s ease;
+            --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+        }
+
+        :root.light-mode{
+            --bg:#F1F5F9;--bg-secondary:#E8ECF1;--surface:#FFFFFF;--surface-hover:#F8FAFC;
+            --surface-2:#F1F5F9;--surface-3:#E2E8F0;--text-primary:#0F172A;--text-secondary:#475569;
+            --text-tertiary:#94A3B8;--border:rgba(15,23,42,.08);--border-hover:rgba(15,23,42,.15);
+            --shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 4px 12px rgba(0,0,0,.08);
+            --shadow-lg:0 8px 32px rgba(0,0,0,.1);--shadow-xl:0 16px 48px rgba(0,0,0,.12);
+        }
+
+        html{font-size:16px;-webkit-text-size-adjust:100%}
+        body{font-family:var(--font);background:var(--bg);color:var(--text-primary);min-height:100vh;min-height:100dvh;overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeInDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        @keyframes fadeOut{from{opacity:1}to{opacity:0}}
+        @keyframes slideInLeft{from{opacity:0;transform:translateX(-60px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes slideInRight{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes slideOutLeft{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-60px)}}
+        @keyframes slideOutRight{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(60px)}}
+        @keyframes scaleIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+        @keyframes scaleInBounce{0%{opacity:0;transform:scale(.5)}60%{opacity:1;transform:scale(1.08)}100%{transform:scale(1)}}
+        @keyframes bounceIn{0%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.05)}70%{transform:scale(.95)}100%{transform:scale(1)}}
+        @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+        @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+        @keyframes floatSlow{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-8px) rotate(3deg)}}
+        @keyframes glow{0%,100%{box-shadow:0 0 20px rgba(99,102,241,.2)}50%{box-shadow:0 0 40px rgba(99,102,241,.5)}}
+        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+        @keyframes ripple{0%{transform:scale(0);opacity:.6}100%{transform:scale(4);opacity:0}}
+        @keyframes confetti-fall{0%{transform:translateY(-100vh) rotate(0)}100%{transform:translateY(100vh) rotate(720deg)}}
+        @keyframes typewriter{from{width:0}to{width:100%}}
+        @keyframes blink{0%,100%{border-color:var(--primary)}50%{border-color:transparent}}
+        @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(30px,-30px) scale(1.1)}50%{transform:translate(-20px,20px) scale(.9)}75%{transform:translate(10px,40px) scale(1.05)}}
+        @keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}}
+        @keyframes checkmarkDraw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+        @keyframes progressFill{from{width:0}to{width:var(--fill)}}
+        @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes slideDown{from{opacity:0;transform:translateY(-15px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes heartbeat{0%,100%{transform:scale(1)}14%{transform:scale(1.15)}28%{transform:scale(1)}42%{transform:scale(1.1)}70%{transform:scale(1)}}
+        @keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes staggerIn{from{opacity:0;transform:translateY(15px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+        .animate-fadeInUp{animation:fadeInUp .6s ease both}
+        .animate-fadeIn{animation:fadeIn .5s ease both}
+        .animate-scaleIn{animation:scaleIn .4s ease both}
+        .animate-bounceIn{animation:bounceIn .6s ease both}
+        .animate-slideInLeft{animation:slideInLeft .5s ease both}
+        .animate-slideInRight{animation:slideInRight .5s ease both}
+        .animate-float{animation:float 3s ease-in-out infinite}
+        .animate-floatSlow{animation:floatSlow 4s ease-in-out infinite}
+        .animate-glow{animation:glow 2s ease-in-out infinite}
+        .animate-pulse{animation:pulse 2s ease-in-out infinite}
+        .animate-wiggle{animation:wiggle .5s ease}
+        .animate-heartbeat{animation:heartbeat 1.5s ease-in-out}
+
+        .delay-1{animation-delay:.1s}
+        .delay-2{animation-delay:.2s}
+        .delay-3{animation-delay:.3s}
+        .delay-4{animation-delay:.4s}
+        .delay-5{animation-delay:.5s}
+        .delay-6{animation-delay:.6s}
+        .delay-7{animation-delay:.7s}
+        .delay-8{animation-delay:.8s}
+
+        /* ===== BACKGROUND ===== */
+        .bg-gradient{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+        .bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.12;animation:orbFloat 20s infinite ease-in-out}
+        .bg-orb-1{width:400px;height:400px;background:var(--primary);top:-100px;right:-100px}
+        .bg-orb-2{width:300px;height:300px;background:var(--accent);bottom:-50px;left:-50px;animation-delay:-7s}
+        .bg-orb-3{width:250px;height:250px;background:var(--success);top:50%;left:50%;animation-delay:-14s}
+
+        /* ===== PARTICLES ===== */
+        .particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+        .particle{position:absolute;border-radius:50%;opacity:.15;animation:float 6s ease-in-out infinite}
+        .particle:nth-child(1){width:4px;height:4px;background:var(--primary);top:20%;left:10%;animation-delay:0s;animation-duration:7s}
+        .particle:nth-child(2){width:6px;height:6px;background:var(--accent);top:60%;left:80%;animation-delay:-2s;animation-duration:5s}
+        .particle:nth-child(3){width:3px;height:3px;background:var(--success);top:40%;left:50%;animation-delay:-4s;animation-duration:8s}
+        .particle:nth-child(4){width:5px;height:5px;background:var(--primary);top:80%;left:30%;animation-delay:-1s;animation-duration:6s}
+        .particle:nth-child(5){width:4px;height:4px;background:var(--warning);top:10%;left:70%;animation-delay:-3s;animation-duration:9s}
+        .particle:nth-child(6){width:7px;height:7px;background:var(--secondary);top:70%;left:15%;animation-delay:-5s;animation-duration:7s}
+
+        /* ===== THEME TOGGLE ===== */
+        .theme-toggle{position:fixed;top:20px;right:20px;z-index:100;width:44px;height:44px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition-normal);box-shadow:var(--shadow-md)}
+        .theme-toggle:hover{background:var(--surface-hover);border-color:var(--border-hover);transform:rotate(180deg) scale(1.1)}
+        .theme-toggle:active{transform:rotate(180deg) scale(.95)}
+        .theme-toggle i{width:20px;height:20px;color:var(--text-secondary);transition:color var(--transition-normal)}
+        .theme-toggle:hover i{color:var(--accent)}
+
+        /* ===== TOAST ===== */
+        .toast-container{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:calc(100% - 40px);max-width:400px}
+        .toast{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 18px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-lg);animation:slideDown .3s ease;pointer-events:auto;font-size:13px;font-weight:500;color:var(--text-primary)}
+        .toast.toast-exit{animation:fadeOut .3s ease forwards}
+        .toast i{width:18px;height:18px;flex-shrink:0}
+        .toast.success i{color:var(--success)}
+        .toast.error i{color:var(--danger)}
+        .toast.warning i{color:var(--warning)}
+
+        /* ===== LOADING ===== */
+        .loading-overlay{position:fixed;inset:0;background:rgba(8,11,20,.85);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(8px)}
+        .loading-overlay.show{display:flex}
+        .loading-content{text-align:center;animation:scaleIn .3s ease}
+        .loading-spinner{width:48px;height:48px;border:3px solid var(--surface-3);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+        .loading-text{font-size:14px;color:var(--text-secondary);font-weight:500}
+
+        /* ===== MAIN CONTAINER ===== */
+        .onboarding-container{position:relative;z-index:1;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow:hidden}
+
+        .onboarding-wrapper{width:100%;max-width:520px;position:relative}
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-bar-container{position:fixed;top:0;left:0;right:0;z-index:50;padding:0;background:var(--bg);border-bottom:1px solid var(--border)}
+        .progress-track{height:4px;background:var(--surface-2);position:relative;overflow:hidden}
+        .progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:0 4px 4px 0;transition:width .6s cubic-bezier(.4,0,.2,1);position:relative}
+        .progress-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:30px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3));animation:shimmer 2s infinite}
+        .progress-info{display:flex;justify-content:space-between;align-items:center;padding:8px 20px 10px;font-size:12px;color:var(--text-tertiary);font-weight:500}
+        .progress-step-label{color:var(--text-secondary);font-weight:600}
+
+        /* ===== STEP VIEWS ===== */
+        .step-view{display:none;width:100%}
+        .step-view.active{display:block}
+        .step-view.slide-in-right{animation:slideInRight .5s ease both}
+        .step-view.slide-in-left{animation:slideInLeft .5s ease both}
+        .step-view.slide-out-left{animation:slideOutLeft .3s ease both}
+        .step-view.slide-out-right{animation:slideOutRight .3s ease both}
+
+        /* ===== WELCOME STEP ===== */
+        .welcome-content{text-align:center;padding:20px 0}
+        .welcome-icon{width:100px;height:100px;border-radius:28px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:inline-flex;align-items:center;justify-content:center;margin-bottom:28px;box-shadow:0 8px 32px rgba(99,102,241,.35);animation:bounceIn .8s ease,float 3s ease-in-out 1s infinite;position:relative;overflow:hidden}
+        .welcome-icon::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,.15));border-radius:28px}
+        .welcome-icon i{width:48px;height:48px;color:#fff;position:relative;z-index:1}
+        .welcome-emoji{font-size:48px;position:relative;z-index:1;line-height:1}
+        .welcome-title{font-size:28px;font-weight:800;margin-bottom:8px;line-height:1.2;background:linear-gradient(135deg,var(--text-primary),var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .welcome-subtitle{font-size:16px;color:var(--text-secondary);margin-bottom:12px;font-weight:500}
+        .welcome-desc{font-size:14px;color:var(--text-tertiary);line-height:1.7;max-width:380px;margin:0 auto 36px}
+
+        .feature-cards{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:36px;text-align:left}
+        .feature-card{display:flex;align-items:center;gap:14px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);transition:all var(--transition-normal);animation:staggerIn .5s ease both}
+        .feature-card:hover{border-color:var(--primary);transform:translateX(4px);background:var(--surface-hover)}
+        .feature-card:nth-child(1){animation-delay:.2s}
+        .feature-card:nth-child(2){animation-delay:.35s}
+        .feature-card:nth-child(3){animation-delay:.5s}
+        .feature-card:nth-child(4){animation-delay:.65s}
+        .feature-icon{width:44px;height:44px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .feature-icon i{width:22px;height:22px}
+        .feature-icon.purple{background:var(--primary-light);color:var(--primary)}
+        .feature-icon.orange{background:var(--accent-light);color:var(--accent)}
+        .feature-icon.green{background:var(--success-light);color:var(--success)}
+        .feature-icon.blue{background:rgba(59,130,246,.12);color:#3B82F6}
+        .feature-text h4{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:2px}
+        .feature-text p{font-size:12px;color:var(--text-tertiary);line-height:1.4}
+
+        /* ===== UNIVERSITY CONFIRM ===== */
+        .uni-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:24px;text-align:center;margin-bottom:24px;transition:all var(--transition-normal);animation:scaleIn .5s ease both}
+        .uni-card:hover{border-color:var(--primary);box-shadow:0 0 30px var(--primary-light)}
+        .uni-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--primary-light);border-radius:var(--radius-sm);font-size:12px;font-weight:700;color:var(--primary);margin-bottom:16px;letter-spacing:.5px}
+        .uni-badge i{width:14px;height:14px}
+        .uni-name{font-size:18px;font-weight:700;margin-bottom:4px;color:var(--text-primary)}
+        .uni-details{font-size:13px;color:var(--text-secondary);line-height:1.6}
+        .uni-detail-row{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:6px}
+        .uni-detail-row i{width:14px;height:14px;color:var(--text-tertiary)}
+
+        .info-strip{display:flex;align-items:flex-start;gap:10px;padding:14px;background:var(--primary-light);border-radius:var(--radius-md);margin-bottom:24px;font-size:13px;color:var(--primary);line-height:1.5;animation:slideUp .5s ease .2s both}
+        .info-strip i{width:18px;height:18px;flex-shrink:0;margin-top:1px}
+
+        /* ===== SEMESTER SELECT ===== */
+        .section-title{font-size:20px;font-weight:700;margin-bottom:6px;color:var(--text-primary)}
+        .section-desc{font-size:14px;color:var(--text-secondary);margin-bottom:24px;line-height:1.5}
+
+        .semester-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+        .semester-card{padding:24px 16px;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius-lg);text-align:center;cursor:pointer;transition:all var(--transition-normal);position:relative;overflow:hidden}
+        .semester-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--primary-light),transparent);opacity:0;transition:opacity var(--transition-normal)}
+        .semester-card:hover{border-color:var(--primary);transform:translateY(-3px);box-shadow:var(--shadow-md)}
+        .semester-card:hover::before{opacity:1}
+        .semester-card.selected{border-color:var(--primary);background:var(--surface-hover);box-shadow:0 0 24px var(--primary-light)}
+        .semester-card.selected::before{opacity:1}
+        .semester-card.selected::after{content:'';position:absolute;top:10px;right:10px;width:22px;height:22px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center}
+        .semester-icon{font-size:32px;margin-bottom:12px;display:block;position:relative;z-index:1}
+        .semester-label{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:4px;position:relative;z-index:1}
+        .semester-sub{font-size:12px;color:var(--text-tertiary);position:relative;z-index:1}
+
+        /* ===== COURSE SELECTION ===== */
+        .course-search{position:relative;margin-bottom:20px}
+        .course-search i{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--text-tertiary);pointer-events:none;transition:color var(--transition-fast)}
+        .course-search input{width:100%;padding:12px 14px 12px 42px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-md);font-size:14px;font-family:var(--font);color:var(--text-primary);transition:all var(--transition-normal);outline:none}
+        .course-search input::placeholder{color:var(--text-tertiary)}
+        .course-search input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+        .course-search input:focus+i,.course-search input:focus~i{color:var(--primary)}
+
+        .course-count{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:13px;color:var(--text-tertiary)}
+        .course-count .selected-count{color:var(--primary);font-weight:600}
+
+        .courses-list{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;max-height:400px;overflow-y:auto;padding-right:4px}
+        .courses-list::-webkit-scrollbar{width:4px}
+        .courses-list::-webkit-scrollbar-track{background:transparent}
+        .courses-list::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:4px}
+        .courses-list::-webkit-scrollbar-thumb:hover{background:var(--text-tertiary)}
+
+        .course-item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-md);cursor:pointer;transition:all var(--transition-normal);position:relative;overflow:hidden;animation:staggerIn .4s ease both}
+        .course-item::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--primary-light),transparent);opacity:0;transition:opacity var(--transition-normal)}
+        .course-item:hover{border-color:var(--primary);transform:translateX(4px)}
+        .course-item:hover::before{opacity:.5}
+        .course-item.selected{border-color:var(--primary);background:var(--surface-hover)}
+        .course-item.selected::before{opacity:1}
+
+        .course-checkbox{width:22px;height:22px;border-radius:6px;border:2px solid var(--surface-3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--transition-normal);position:relative;z-index:1}
+        .course-item.selected .course-checkbox{background:var(--primary);border-color:var(--primary)}
+        .course-item.selected .course-checkbox::after{content:'✓';color:#fff;font-size:13px;font-weight:700}
+
+        .course-info{flex:1;position:relative;z-index:1}
+        .course-code{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:2px;letter-spacing:.3px}
+        .course-name{font-size:14px;font-weight:500;color:var(--text-primary);line-height:1.3}
+        .course-units{font-size:11px;color:var(--text-tertiary);margin-top:2px}
+
+        .course-status{position:relative;z-index:1;font-size:11px;font-weight:600;padding:4px 10px;border-radius:var(--radius-sm);background:var(--surface-2);color:var(--text-tertiary)}
+        .course-item.selected .course-status{background:var(--primary-light);color:var(--primary)}
+
+        .no-courses{text-align:center;padding:40px 20px;color:var(--text-tertiary)}
+        .no-courses i{width:48px;height:48px;margin-bottom:12px;opacity:.4}
+        .no-courses p{font-size:14px}
+
+        /* ===== COMPLETION ===== */
+        .completion-content{text-align:center;padding:20px 0}
+        .completion-icon{width:100px;height:100px;border-radius:50%;background:var(--success-light);display:inline-flex;align-items:center;justify-content:center;margin-bottom:24px;animation:bounceIn .8s ease,glow 2s ease-in-out .8s infinite;position:relative}
+        .completion-icon::before{content:'';position:absolute;inset:-8px;border-radius:50%;border:2px solid var(--success);opacity:.3;animation:pulse 2s ease-in-out infinite}
+        .completion-icon i{width:48px;height:48px;color:var(--success)}
+        .completion-title{font-size:26px;font-weight:800;margin-bottom:8px;background:linear-gradient(135deg,var(--success),var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:fadeInUp .6s ease .3s both}
+        .completion-subtitle{font-size:15px;color:var(--text-secondary);margin-bottom:32px;animation:fadeInUp .6s ease .4s both}
+
+        .summary-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;text-align:left;animation:scaleIn .5s ease .5s both}
+        .summary-title{font-size:13px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px}
+        .summary-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+        .summary-row:last-child{border-bottom:none}
+        .summary-label{font-size:13px;color:var(--text-secondary);display:flex;align-items:center;gap:8px}
+        .summary-label i{width:16px;height:16px;color:var(--text-tertiary)}
+        .summary-value{font-size:14px;font-weight:600;color:var(--text-primary)}
+
+        .selected-courses-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+        .course-tag{padding:6px 12px;background:var(--primary-light);border-radius:var(--radius-sm);font-size:12px;font-weight:600;color:var(--primary);animation:scaleIn .3s ease both}
+
+        /* ===== CONFETTI ===== */
+        .confetti-container{position:fixed;inset:0;pointer-events:none;z-index:100;overflow:hidden}
+        .confetti-piece{position:absolute;width:10px;height:10px;top:-20px;animation:confetti-fall 3s linear forwards;opacity:.8}
+
+        /* ===== BUTTONS ===== */
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 24px;font-size:14px;font-weight:600;font-family:var(--font);border-radius:var(--radius-md);cursor:pointer;transition:all var(--transition-normal);border:none;outline:none;position:relative;overflow:hidden}
+        .btn::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--x,50%) var(--y,50%),rgba(255,255,255,.2),transparent 60%);opacity:0;transition:opacity var(--transition-normal)}
+        .btn:hover::after{opacity:1}
+
+        .btn-primary{width:100%;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;box-shadow:0 4px 15px rgba(99,102,241,.3)}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,.4)}
+        .btn-primary:active{transform:translateY(0);box-shadow:0 2px 10px rgba(99,102,241,.3)}
+        .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+        .btn-secondary{width:100%;background:var(--surface-2);color:var(--text-primary);border:1px solid var(--border)}
+        .btn-secondary:hover{background:var(--surface-3);border-color:var(--border-hover)}
+
+        .btn-success{width:100%;background:linear-gradient(135deg,var(--success),#059669);color:#fff;box-shadow:0 4px 15px rgba(16,185,129,.3)}
+        .btn-success:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(16,185,129,.4)}
+
+        .btn .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+        .btn.loading .spinner{display:block}
+        .btn.loading .btn-text{opacity:0}
+        .btn i{width:18px;height:18px;transition:transform var(--transition-normal)}
+        .btn:hover i.arrow-icon{transform:translateX(3px)}
+
+        .btn-group{display:flex;gap:12px;margin-top:8px}
+        .btn-group .btn{flex:1}
+
+        /* ===== RIPPLE ===== */
+        .ripple-effect{position:absolute;border-radius:50%;background:rgba(255,255,255,.25);animation:ripple .6s ease-out;pointer-events:none}
+
+        /* ===== MISC ===== */
+        .step-emoji{font-size:36px;display:block;margin-bottom:16px;animation:bounceIn .6s ease}
+
+        .back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-secondary);cursor:pointer;margin-bottom:20px;border:none;background:none;font-family:var(--font);font-weight:500;padding:6px 0;transition:all var(--transition-fast)}
+        .back-btn:hover{color:var(--primary);transform:translateX(-3px)}
+        .back-btn i{width:16px;height:16px;transition:transform var(--transition-fast)}
+        .back-btn:hover i{transform:translateX(-3px)}
+
+        .logo-mini{display:flex;align-items:center;gap:10px;margin-bottom:20px;justify-content:center;animation:fadeInDown .5s ease}
+        .logo-mini-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(99,102,241,.25)}
+        .logo-mini-mark i{width:16px;height:16px;color:#fff}
+        .logo-mini-text{font-size:18px;font-weight:800;color:var(--text-primary);letter-spacing:-.3px}
+
+        /* ===== SELECT ALL ===== */
+        .select-all-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;font-weight:600;color:var(--text-secondary);cursor:pointer;transition:all var(--transition-normal);font-family:var(--font)}
+        .select-all-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+        .select-all-btn i{width:14px;height:14px}
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:480px){
+            .onboarding-container{padding:16px;padding-top:70px}
+            .welcome-title{font-size:24px}
+            .welcome-icon{width:80px;height:80px;border-radius:22px}
+            .welcome-icon i{width:38px;height:38px}
+            .welcome-emoji{font-size:38px}
+            .semester-grid{grid-template-columns:1fr 1fr;gap:10px}
+            .semester-card{padding:20px 12px}
+            .semester-icon{font-size:28px}
+            .feature-cards{gap:10px}
+            .feature-card{padding:14px}
+            .section-title{font-size:18px}
+            .completion-icon{width:80px;height:80px}
+            .completion-icon i{width:38px;height:38px}
+            .completion-title{font-size:22px}
+            .avatar-grid-onboard{grid-template-columns:repeat(5,1fr)!important;gap:8px!important}
+            .btn-group{flex-direction:column}
+            .btn-group .btn{flex:auto}
+        }
+
+        @media(min-width:481px) and (max-width:768px){
+            .onboarding-container{padding-top:70px}
+            .feature-cards{grid-template-columns:1fr 1fr}
+        }
+
+        @media(min-width:769px){
+            .onboarding-container{padding-top:60px}
+            .feature-cards{grid-template-columns:1fr 1fr}
+            .semester-grid{grid-template-columns:1fr 1fr}
+        }
+
+        @media(min-width:1024px){
+            .onboarding-wrapper{max-width:560px}
+        }
+
+        @media(min-width:1440px){
+            .onboarding-wrapper{max-width:600px}
+        }
+
+        @media(max-width:360px){
+            .semester-grid{grid-template-columns:1fr;gap:8px}
+            .semester-card{padding:16px 12px}
+            .feature-cards{gap:8px}
+            .feature-card{padding:12px;gap:10px}
+            .feature-icon{width:38px;height:38px}
+            .course-item{padding:12px}
+        }
+
+        /* Safe area for modern phones */
+        @supports(padding-bottom:env(safe-area-inset-bottom)){
+            .onboarding-container{padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg-gradient">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+    </div>
+
+    <!-- Particles -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <i data-lucide="moon"></i>
+    </button>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p class="loading-text" id="loadingText">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar-container" id="progressBar">
+        <div class="progress-info">
+            <span class="progress-step-label" id="progressLabel">Welcome</span>
+            <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="onboarding-container">
+        <div class="onboarding-wrapper">
+
+            <!-- ===== STEP 1: WELCOME ===== -->
+            <div class="step-view active" id="step1">
+                <div class="welcome-content">
+                    <div class="logo-mini">
+                        <div class="logo-mini-mark"><i data-lucide="graduation-cap"></i></div>
+                        <span class="logo-mini-text">FAVOJE</span>
+                    </div>
+
+                    <div class="welcome-icon animate-bounceIn">
+                        <span class="welcome-emoji">🎓</span>
+                    </div>
+
+                    <h1 class="welcome-title animate-fadeInUp delay-2" id="welcomeTitle">Welcome!</h1>
+                    <p class="welcome-subtitle animate-fadeInUp delay-3">Let's set up your learning experience</p>
+                    <p class="welcome-desc animate-fadeInUp delay-4">We'll personalize your dashboard, courses, and practice sessions in just a few quick steps.</p>
+
+                    <div class="feature-cards">
+                        <div class="feature-card">
+                            <div class="feature-icon purple"><i data-lucide="book-open"></i></div>
+                            <div class="feature-text">
+                                <h4>Your Courses</h4>
+                                <p>Select courses relevant to your program</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon orange"><i data-lucide="target"></i></div>
+                            <div class="feature-text">
+                                <h4>Smart Practice</h4>
+                                <p>Practice questions tailored to your level</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon green"><i data-lucide="trending-up"></i></div>
+                            <div class="feature-text">
+                                <h4>Track Progress</h4>
+                                <p>See your performance improve over time</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon blue"><i data-lucide="trophy"></i></div>
+                            <div class="feature-text">
+                                <h4>Compete & Win</h4>
+                                <p>Climb the leaderboard, earn achievements</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="startBtn">
+                        <span class="btn-text">Let's Get Started</span>
+                        <i data-lucide="arrow-right" class="arrow-icon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===== STEP 2: CONFIRM UNIVERSITY ===== -->
+            <div class="step-view" id="step2">
+                <button class="back-btn" data-back="1"><i data-lucide="arrow-left"></i> Back</button>
+
+                <span class="step-emoji">🏫</span>
+                <h2 class="section-title">Your University</h2>
+                <p class="section-desc">Confirm your academic details below. If anything is wrong, you can update it in your profile later.</p>
+
+                <div class="uni-card" id="uniCard">
+                    <div class="uni-badge"><i data-lucide="shield-check"></i> VERIFIED</div>
+                    <div class="uni-name" id="uniName">Loading...</div>
+                    <div class="uni-details">
+                        <div class="uni-detail-row"><i data-lucide="layout-grid"></i><span id="uniFaculty">...</span></div>
+                        <div class="uni-detail-row"><i data-lucide="book-open"></i><span id="uniDepartment">...</span></div>
+                        <div class="uni-detail-row"><i data-lucide="layers"></i><span id="uniLevel">...</span></div>
+                    </div>
+                </div>
+
+                <div class="info-strip">
+                    <i data-lucide="info"></i>
+                    <span>Your courses will be based on your department and level. Make sure these details are correct.</span>
+                </div>
+
+                <button class="btn btn-primary" id="confirmUniBtn">
+                    <span class="btn-text">Looks Good, Continue</span>
+                    <i data-lucide="arrow-right" class="arrow-icon"></i>
+                </button>
+            </div>
+
+            <!-- ===== STEP 3: SELECT SEMESTER ===== -->
+            <div class="step-view" id="step3">
+                <button class="back-btn" data-back="2"><i data-lucide="arrow-left"></i> Back</button>
+
+                <span class="step-emoji">📅</span>
+                <h2 class="section-title">Select Semester</h2>
+                <p class="section-desc">Which semester are you currently in? This determines the courses shown to you.</p>
+
+                <div class="semester-grid" id="semesterGrid">
+                    <div class="semester-card" data-semester="first">
+                        <span class="semester-icon">📘</span>
+                        <div class="semester-label">First Semester</div>
+                        <div class="semester-sub">Harmattan Semester</div>
+                    </div>
+                    <div class="semester-card" data-semester="second">
+                        <span class="semester-icon">📗</span>
+                        <div class="semester-label">Second Semester</div>
+                        <div class="semester-sub">Rain Semester</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" id="confirmSemesterBtn" disabled>
+                    <span class="btn-text">Continue</span>
+                    <i data-lucide="arrow-right" class="arrow-icon"></i>
+                </button>
+            </div>
+
+            <!-- ===== STEP 4: SELECT COURSES ===== -->
+            <div class="step-view" id="step4">
+                <button class="back-btn" data-back="3"><i data-lucide="arrow-left"></i> Back</button>
+
+                <span class="step-emoji">📚</span>
+                <h2 class="section-title">Select Your Courses</h2>
+                <p class="section-desc">Choose the courses you're taking this semester. You can always change this later.</p>
+
+                <div class="course-search">
+                    <input type="text" id="courseSearchInput" placeholder="Search courses...">
+                    <i data-lucide="search"></i>
+                </div>
+
+                <div class="course-count">
+                    <span>Available Courses</span>
+                    <div>
+                        <span class="selected-count" id="selectedCount">0 selected</span>
+                        <button class="select-all-btn" id="selectAllBtn"><i data-lucide="check-square"></i> Select All</button>
+                    </div>
+                </div>
+
+                <div class="courses-list" id="coursesList">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <div class="no-courses" id="noCourses" style="display:none">
+                    <i data-lucide="search-x"></i>
+                    <p>No courses found. Try a different search or contact support.</p>
+                </div>
+
+                <button class="btn btn-primary" id="confirmCoursesBtn" disabled>
+                    <span class="btn-text">Confirm Courses</span>
+                    <i data-lucide="check" class="arrow-icon"></i>
+                </button>
+            </div>
+
+            <!-- ===== STEP 5: COMPLETION ===== -->
+            <div class="step-view" id="step5">
+                <div class="completion-content">
+                    <div class="completion-icon">
+                        <i data-lucide="rocket"></i>
+                    </div>
+                    <h1 class="completion-title">You're All Set!</h1>
+                    <p class="completion-subtitle">Your personalized learning environment is ready.</p>
+
+                    <div class="summary-card">
+                        <div class="summary-title">Your Setup Summary</div>
+                        <div class="summary-row">
+                            <span class="summary-label"><i data-lucide="building-2"></i> University</span>
+                            <span class="summary-value" id="summaryUni">—</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label"><i data-lucide="book-open"></i> Department</span>
+                            <span class="summary-value" id="summaryDept">—</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label"><i data-lucide="layers"></i> Level</span>
+                            <span class="summary-value" id="summaryLevel">—</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label"><i data-lucide="calendar"></i> Semester</span>
+                            <span class="summary-value" id="summarySemester">—</span>
+                        </div>
+                        <div class="summary-row" style="border-bottom:none;flex-direction:column;align-items:flex-start;gap:8px">
+                            <span class="summary-label"><i data-lucide="book-marked"></i> Courses (<span id="summaryCourseCount">0</span>)</span>
+                            <div class="selected-courses-tags" id="summaryCourseTags"></div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success" id="goToDashboardBtn">
+                        <span class="btn-text">Go to Dashboard</span>
+                        <i data-lucide="arrow-right" class="arrow-icon"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ========== FIREBASE CONFIG ==========
+        const firebaseConfig = {
+            apiKey: "AIzaSyC1SmazNPbak8vMvi-jD40EGqpvWmWdd0U",
+            authDomain: "favoje-fcb02.firebaseapp.com",
+            projectId: "favoje-fcb02",
+            storageBucket: "favoje-fcb02.firebasestorage.app",
+            messagingSenderId: "837946471768",
+            appId: "1:837946471768:web:6ea76eee926fe77bdc212d"
+        };
+
+        let app, auth, db;
+        try {
+            app = firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            db = firebase.firestore();
+            db.settings({ cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED });
+            db.enablePersistence().catch(err => console.log('Persistence:', err.code));
+            console.log('Firebase initialized');
+        } catch (e) {
+            console.error('Firebase init error:', e);
+        }
+
+        // ========== HELPERS ==========
+        const $ = sel => document.querySelector(sel);
+        const $$ = sel => document.querySelectorAll(sel);
+
+        // Theme
+        let isDark = localStorage.getItem('favoje-theme') !== 'light';
+        function applyTheme() {
+            if (isDark) {
+                document.documentElement.classList.remove('light-mode');
+                $('#themeToggle').innerHTML = '<i data-lucide="moon"></i>';
+            } else {
+                document.documentElement.classList.add('light-mode');
+                $('#themeToggle').innerHTML = '<i data-lucide="sun"></i>';
+            }
+            lucide.createIcons();
+        }
+        $('#themeToggle').addEventListener('click', () => {
+            isDark = !isDark;
+            localStorage.setItem('favoje-theme', isDark ? 'dark' : 'light');
+            applyTheme();
+        });
+        applyTheme();
+
+        // Toast
+        function showToast(msg, type = 'success') {
+            const c = $('#toastContainer');
+            const icons = { success: 'check-circle-2', error: 'x-circle', warning: 'alert-triangle' };
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            t.innerHTML = `<i data-lucide="${icons[type] || icons.success}"></i><span>${msg}</span>`;
+            c.appendChild(t);
+            lucide.createIcons();
+            setTimeout(() => { t.classList.add('toast-exit'); setTimeout(() => t.remove(), 300); }, 4000);
+        }
+
+        // Loading
+        function showLoading(text = 'Loading...') { $('#loadingText').textContent = text; $('#loadingOverlay').classList.add('show'); }
+        function hideLoading() { $('#loadingOverlay').classList.remove('show'); }
+
+        // Ripple effect on buttons
+        document.addEventListener('click', e => {
+            const btn = e.target.closest('.btn');
+            if (!btn) return;
+            const rect = btn.getBoundingClientRect();
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple-effect';
+            ripple.style.left = (e.clientX - rect.left) + 'px';
+            ripple.style.top = (e.clientY - rect.top) + 'px';
+            btn.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+            // Track mouse for hover glow
+            btn.style.setProperty('--x', ((e.clientX - rect.left) / rect.width * 100) + '%');
+            btn.style.setProperty('--y', ((e.clientY - rect.top) / rect.height * 100) + '%');
+        });
+
+        // Confetti
+        function fireConfetti() {
+            const container = $('#confettiContainer');
+            const colors = ['#6366F1', '#F97316', '#10B981', '#EF4444', '#F59E0B', '#EC4899', '#3B82F6', '#8B5CF6'];
+            for (let i = 0; i < 60; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.width = (Math.random() * 8 + 5) + 'px';
+                piece.style.height = (Math.random() * 8 + 5) + 'px';
+                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                piece.style.animationDelay = (Math.random() * 1) + 's';
+                container.appendChild(piece);
+            }
+            setTimeout(() => { container.innerHTML = ''; }, 5000);
+        }
+
+        // ========== STATE ==========
+        let currentUser = null;
+        let userData = null;
+        let currentStep = 1;
+        let selectedSemester = null;
+        let selectedCourses = new Set();
+        let availableCourses = [];
+        const totalSteps = 5;
+
+        const stepLabels = {
+            1: 'Welcome',
+            2: 'University',
+            3: 'Semester',
+            4: 'Courses',
+            5: 'Complete'
+        };
+
+        // ========== AUTH CHECK ==========
+        function redirectToAuth() {
+            window.location.href = 'index.html';
+        }
+
+        auth.onAuthStateChanged(async user => {
+            if (!user) {
+                redirectToAuth();
+                return;
+            }
+            currentUser = user;
+            showLoading('Loading your profile...');
+
+            try {
+                const doc = await db.collection('users').doc(user.uid).get();
+                if (!doc.exists) {
+                    showToast('Profile not found. Please register again.', 'error');
+                    setTimeout(() => redirectToAuth(), 2000);
+                    return;
+                }
+
+                userData = doc.data();
+                userData.uid = user.uid;
+
+                // If onboarding already complete, go to dashboard
+                if (userData.onboardingComplete) {
+                    window.location.href = 'home.html';
+                    return;
+                }
+
+                // Populate UI
+                populateUserInfo();
+                hideLoading();
+
+            } catch (err) {
+                console.error('Error loading profile:', err);
+                hideLoading();
+                showToast('Error loading profile. Please try again.', 'error');
+            }
+        });
+
+        // ========== POPULATE USER INFO ==========
+        function populateUserInfo() {
+            if (!userData) return;
+
+            // Welcome title
+            const firstName = (userData.fullName || 'Student').split(' ')[0];
+            $('#welcomeTitle').textContent = `Welcome, ${firstName}!`;
+
+            // University card
+            $('#uniName').textContent = userData.universityName || 'Unknown University';
+            $('#uniFaculty').textContent = userData.facultyName || 'Unknown Faculty';
+            $('#uniDepartment').textContent = userData.departmentName || 'Unknown Department';
+            $('#uniLevel').textContent = userData.levelName || 'Unknown Level';
+
+            // Load courses from Firestore
+            loadCoursesFromFirestore();
+        }
+
+        // ========== LOAD COURSES FROM FIRESTORE ==========
+        async function loadCoursesFromFirestore() {
+            try {
+                // Query courses matching user's university, department, and level
+                const coursesRef = db.collection('courses');
+                let query = coursesRef
+                    .where('university', '==', userData.university || 'futminna')
+                    .where('department', '==', userData.department || '')
+                    .where('level', '==', userData.level || '');
+
+                const snapshot = await query.get();
+                availableCourses = [];
+
+                snapshot.forEach(doc => {
+                    availableCourses.push({ id: doc.id, ...doc.data() });
+                });
+
+                // If no department-specific courses, try general courses for that level
+                if (availableCourses.length === 0) {
+                    const generalQuery = await coursesRef
+                        .where('university', '==', userData.university || 'futminna')
+                        .where('level', '==', userData.level || '')
+                        .get();
+
+                    generalQuery.forEach(doc => {
+                        const data = doc.data();
+                        if (data.department === userData.department || data.isGeneral === true) {
+                            availableCourses.push({ id: doc.id, ...data });
+                        }
+                    });
+                }
+
+                // Also check for any courses without strict filtering
+                if (availableCourses.length === 0) {
+                    const allCoursesQuery = await coursesRef
+                        .where('university', '==', userData.university || 'futminna')
+                        .limit(50)
+                        .get();
+
+                    allCoursesQuery.forEach(doc => {
+                        availableCourses.push({ id: doc.id, ...doc.data() });
+                    });
+                }
+
+                console.log(`Loaded ${availableCourses.length} courses from Firestore`);
+
+            } catch (err) {
+                console.error('Error loading courses:', err);
+                showToast('Could not load courses. Check your connection.', 'warning');
+            }
+        }
+
+        // ========== STEP NAVIGATION ==========
+        function updateProgress() {
+            const percent = Math.round(((currentStep - 1) / (totalSteps - 1)) * 100);
+            $('#progressFill').style.width = percent + '%';
+            $('#progressPercent').textContent = percent + '%';
+            $('#progressLabel').textContent = `Step ${currentStep}: ${stepLabels[currentStep]}`;
+        }
+
+        function goToStep(step, direction = 'forward') {
+            if (step < 1 || step > totalSteps) return;
+
+            const currentView = $(`#step${currentStep}`);
+            const nextView = $(`#step${step}`);
+
+            // Exit animation
+            currentView.classList.remove('active', 'slide-in-right', 'slide-in-left');
+            currentView.style.display = 'block';
+            currentView.classList.add(direction === 'forward' ? 'slide-out-left' : 'slide-out-right');
+
+            setTimeout(() => {
+                currentView.style.display = 'none';
+                currentView.classList.remove('slide-out-left', 'slide-out-right');
+
+                // Enter animation
+                nextView.style.display = 'block';
+                nextView.classList.add('active', direction === 'forward' ? 'slide-in-right' : 'slide-in-left');
+                currentStep = step;
+                updateProgress();
+
+                // Trigger step-specific actions
+                onStepEnter(step);
+
+                // Re-init icons
+                lucide.createIcons();
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 300);
+        }
+
+        function onStepEnter(step) {
+            switch (step) {
+                case 4:
+                    renderCourses();
+                    break;
+                case 5:
+                    renderSummary();
+                    fireConfetti();
+                    break;
+            }
+        }
+
+        // Back buttons
+        $$('.back-btn[data-back]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetStep = parseInt(btn.dataset.back);
+                goToStep(targetStep, 'back');
+            });
+        });
+
+        // ========== STEP 1: WELCOME ==========
+        $('#startBtn').addEventListener('click', () => {
+            goToStep(2);
+        });
+
+        // ========== STEP 2: CONFIRM UNIVERSITY ==========
+        $('#confirmUniBtn').addEventListener('click', () => {
+            goToStep(3);
+        });
+
+        // ========== STEP 3: SELECT SEMESTER ==========
+        $$('.semester-card').forEach(card => {
+            card.addEventListener('click', () => {
+                $$('.semester-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                card.classList.add('animate-pulse');
+                setTimeout(() => card.classList.remove('animate-pulse'), 500);
+                selectedSemester = card.dataset.semester;
+                $('#confirmSemesterBtn').disabled = false;
+            });
+        });
+
+        $('#confirmSemesterBtn').addEventListener('click', () => {
+            if (!selectedSemester) {
+                showToast('Please select a semester', 'warning');
+                return;
+            }
+            goToStep(4);
+        });
+
+        // ========== STEP 4: COURSE SELECTION ==========
+        function renderCourses(filter = '') {
+            const list = $('#coursesList');
+            const noCoursesEl = $('#noCourses');
+
+            // Filter courses by semester
+            let filtered = availableCourses.filter(c => {
+                const semMatch = !c.semester || c.semester === selectedSemester || c.semester === 'both';
+                return semMatch;
+            });
+
+            // Apply text filter
+            if (filter) {
+                const search = filter.toLowerCase();
+                filtered = filtered.filter(c =>
+                    (c.code || '').toLowerCase().includes(search) ||
+                    (c.name || '').toLowerCase().includes(search)
+                );
+            }
+
+            if (filtered.length === 0) {
+                list.innerHTML = '';
+                noCoursesEl.style.display = 'block';
+                lucide.createIcons();
+                return;
+            }
+
+            noCoursesEl.style.display = 'none';
+
+            list.innerHTML = filtered.map((course, idx) => `
+                <div class="course-item ${selectedCourses.has(course.id) ? 'selected' : ''}" 
+                     data-course-id="${course.id}" 
+                     style="animation-delay:${idx * 0.05}s">
+                    <div class="course-checkbox"></div>
+                    <div class="course-info">
+                        <div class="course-code">${course.code || 'N/A'}</div>
+                        <div class="course-name">${course.name || 'Unnamed Course'}</div>
+                        <div class="course-units">${course.units || '—'} Units${course.isCompulsory ? ' • Compulsory' : ''}</div>
+                    </div>
+                    <div class="course-status">${selectedCourses.has(course.id) ? 'Selected' : 'Tap to select'}</div>
+                </div>
+            `).join('');
+
+            // Bind clicks
+            list.querySelectorAll('.course-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const id = item.dataset.courseId;
+                    if (selectedCourses.has(id)) {
+                        selectedCourses.delete(id);
+                        item.classList.remove('selected');
+                        item.querySelector('.course-status').textContent = 'Tap to select';
+                    } else {
+                        selectedCourses.add(id);
+                        item.classList.add('selected');
+                        item.querySelector('.course-status').textContent = 'Selected';
+                        item.classList.add('animate-pulse');
+                        setTimeout(() => item.classList.remove('animate-pulse'), 500);
+                    }
+                    updateSelectedCount();
+                });
+            });
+
+            updateSelectedCount();
+        }
+
+        function updateSelectedCount() {
+            const count = selectedCourses.size;
+            $('#selectedCount').textContent = `${count} selected`;
+            $('#confirmCoursesBtn').disabled = count === 0;
+        }
+
+        // Search
+        $('#courseSearchInput').addEventListener('input', e => {
+            renderCourses(e.target.value);
+        });
+
+        // Select all
+        $('#selectAllBtn').addEventListener('click', () => {
+            const allItems = $$('.course-item');
+            const allSelected = selectedCourses.size === allItems.length && allItems.length > 0;
+
+            if (allSelected) {
+                // Deselect all
+                selectedCourses.clear();
+                allItems.forEach(item => {
+                    item.classList.remove('selected');
+                    item.querySelector('.course-status').textContent = 'Tap to select';
+                });
+                $('#selectAllBtn').innerHTML = '<i data-lucide="check-square"></i> Select All';
+            } else {
+                // Select all
+                allItems.forEach(item => {
+                    const id = item.dataset.courseId;
+                    selectedCourses.add(id);
+                    item.classList.add('selected');
+                    item.querySelector('.course-status').textContent = 'Selected';
+                });
+                $('#selectAllBtn').innerHTML = '<i data-lucide="x-square"></i> Deselect All';
+            }
+            lucide.createIcons();
+            updateSelectedCount();
+        });
+
+        // Confirm courses
+        $('#confirmCoursesBtn').addEventListener('click', async () => {
+            if (selectedCourses.size === 0) {
+                showToast('Please select at least one course', 'warning');
+                return;
+            }
+
+            const btn = $('#confirmCoursesBtn');
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            try {
+                // Save to Firestore
+                const courseIds = Array.from(selectedCourses);
+                const courseDetails = availableCourses
+                    .filter(c => courseIds.includes(c.id))
+                    .map(c => ({
+                        id: c.id,
+                        code: c.code || '',
+                        name: c.name || '',
+                        units: c.units || 0
+                    }));
+
+                await db.collection('users').doc(currentUser.uid).update({
+                    selectedCourses: courseDetails,
+                    semester: selectedSemester,
+                    onboardingComplete: true,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Update local storage
+                const stored = JSON.parse(localStorage.getItem('favoje-user') || '{}');
+                stored.selectedCourses = courseDetails;
+                stored.semester = selectedSemester;
+                stored.onboardingComplete = true;
+                localStorage.setItem('favoje-user', JSON.stringify(stored));
+
+                // Create initial notification
+                await db.collection('notifications').add({
+                    userId: currentUser.uid,
+                    title: 'Welcome to Favoje! 🎉',
+                    message: `You've selected ${courseDetails.length} courses. Start practicing to build your mastery!`,
+                    type: 'system',
+                    read: false,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showToast('Courses saved successfully!', 'success');
+                goToStep(5);
+
+            } catch (err) {
+                console.error('Error saving courses:', err);
+                showToast('Failed to save. Please try again.', 'error');
+            } finally {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        });
+
+        // ========== STEP 5: COMPLETION SUMMARY ==========
+        function renderSummary() {
+            $('#summaryUni').textContent = userData?.universityName?.replace('Federal University of Technology, ', 'FUT ') || '—';
+            $('#summaryDept').textContent = userData?.departmentName || '—';
+            $('#summaryLevel').textContent = userData?.levelName || '—';
+            $('#summarySemester').textContent = selectedSemester === 'first' ? 'First Semester' : 'Second Semester';
+
+            const courseDetails = availableCourses.filter(c => selectedCourses.has(c.id));
+            $('#summaryCourseCount').textContent = courseDetails.length;
+
+            const tagsContainer = $('#summaryCourseTags');
+            tagsContainer.innerHTML = courseDetails.map((c, i) =>
+                `<span class="course-tag" style="animation-delay:${i * 0.1}s">${c.code || c.name}</span>`
+            ).join('');
+        }
+
+        // Go to dashboard
+        $('#goToDashboardBtn').addEventListener('click', () => {
+            showLoading('Setting up your dashboard...');
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 1500);
+        });
+
+        // ========== INITIALIZE ==========
+        updateProgress();
+        lucide.createIcons();
+
+        // ========== SEED SAMPLE COURSES IF NEEDED ==========
+        async function seedCoursesIfNeeded() {
+            try {
+                const check = await db.collection('courses').limit(1).get();
+                if (!check.empty) {
+                    console.log('Courses already exist in Firestore');
+                    return;
+                }
+
+                console.log('Seeding courses to Firestore...');
+                const batch = db.batch();
+
+                const sampleCourses = [
+                    // General 200 Level Courses
+                    { code: 'MTH 201', name: 'Mathematical Methods I', units: 3, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'MTH 203', name: 'Sets, Logic and Algebra', units: 3, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CPT 201', name: 'Computer Programming I', units: 3, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CPT 203', name: 'Data Structures', units: 3, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CPT 205', name: 'Operating Systems I', units: 3, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'STA 201', name: 'Statistics for Physical Sciences', units: 3, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'GST 201', name: 'Nigerian Peoples and Culture', units: 2, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'first', isCompulsory: true, isGeneral: true },
+                    { code: 'EED 201', name: 'Entrepreneurship Development I', units: 2, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'first', isCompulsory: true, isGeneral: true },
+
+                    // Second Semester
+                    { code: 'MTH 202', name: 'Mathematical Methods II', units: 3, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'MTH 204', name: 'Linear Algebra I', units: 3, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'CPT 202', name: 'Computer Programming II', units: 3, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'CPT 204', name: 'Discrete Structures', units: 3, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'CPT 206', name: 'Introduction to Database Systems', units: 3, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'STA 202', name: 'Applied Statistics', units: 3, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'GST 202', name: 'Philosophy, Logic and Human Existence', units: 2, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'second', isCompulsory: true, isGeneral: true },
+                    { code: 'EED 202', name: 'Entrepreneurship Development II', units: 2, university: 'futminna', level: '200', department: 'csc', faculty: 'sist', semester: 'second', isCompulsory: true, isGeneral: true },
+
+                    // CPE courses
+                    { code: 'ELE 201', name: 'Circuit Theory I', units: 3, university: 'futminna', level: '200', department: 'cpe', faculty: 'set', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'ELE 203', name: 'Electronic Devices and Circuits', units: 3, university: 'futminna', level: '200', department: 'cpe', faculty: 'set', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CPE 201', name: 'Introduction to Computer Engineering', units: 3, university: 'futminna', level: '200', department: 'cpe', faculty: 'set', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CPE 203', name: 'Digital Logic Design', units: 3, university: 'futminna', level: '200', department: 'cpe', faculty: 'set', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'ELE 202', name: 'Circuit Theory II', units: 3, university: 'futminna', level: '200', department: 'cpe', faculty: 'set', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'CPE 202', name: 'Computer Programming for Engineers', units: 3, university: 'futminna', level: '200', department: 'cpe', faculty: 'set', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'CPE 204', name: 'Data Structures and Algorithms', units: 3, university: 'futminna', level: '200', department: 'cpe', faculty: 'set', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Mechanical Engineering
+                    { code: 'MEE 201', name: 'Engineering Mechanics (Statics)', units: 3, university: 'futminna', level: '200', department: 'mec', faculty: 'smt', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'MEE 203', name: 'Engineering Drawing I', units: 2, university: 'futminna', level: '200', department: 'mec', faculty: 'smt', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'MEE 205', name: 'Workshop Technology I', units: 2, university: 'futminna', level: '200', department: 'mec', faculty: 'smt', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'MEE 202', name: 'Engineering Mechanics (Dynamics)', units: 3, university: 'futminna', level: '200', department: 'mec', faculty: 'smt', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'MEE 204', name: 'Strength of Materials I', units: 3, university: 'futminna', level: '200', department: 'mec', faculty: 'smt', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Civil Engineering
+                    { code: 'CVE 201', name: 'Strength of Materials', units: 3, university: 'futminna', level: '200', department: 'cve', faculty: 'smt', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CVE 203', name: 'Civil Engineering Drawing', units: 2, university: 'futminna', level: '200', department: 'cve', faculty: 'smt', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CVE 202', name: 'Fluid Mechanics I', units: 3, university: 'futminna', level: '200', department: 'cve', faculty: 'smt', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'CVE 204', name: 'Engineering Surveying I', units: 3, university: 'futminna', level: '200', department: 'cve', faculty: 'smt', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Biochemistry
+                    { code: 'BCH 201', name: 'General Biochemistry I', units: 3, university: 'futminna', level: '200', department: 'bcm', faculty: 'sls', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'BCH 203', name: 'Carbohydrate Chemistry', units: 3, university: 'futminna', level: '200', department: 'bcm', faculty: 'sls', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'BCH 205', name: 'Lipid Chemistry', units: 3, university: 'futminna', level: '200', department: 'bcm', faculty: 'sls', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'BCH 202', name: 'General Biochemistry II', units: 3, university: 'futminna', level: '200', department: 'bcm', faculty: 'sls', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'BCH 204', name: 'Protein Chemistry', units: 3, university: 'futminna', level: '200', department: 'bcm', faculty: 'sls', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'BCH 206', name: 'Enzymology', units: 3, university: 'futminna', level: '200', department: 'bcm', faculty: 'sls', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Physics
+                    { code: 'PHY 201', name: 'Classical Mechanics', units: 3, university: 'futminna', level: '200', department: 'phy', faculty: 'sps', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'PHY 203', name: 'Electric Circuits and Electronics', units: 3, university: 'futminna', level: '200', department: 'phy', faculty: 'sps', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'PHY 205', name: 'Thermal Physics', units: 3, university: 'futminna', level: '200', department: 'phy', faculty: 'sps', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'PHY 202', name: 'Electromagnetism', units: 3, university: 'futminna', level: '200', department: 'phy', faculty: 'sps', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'PHY 204', name: 'Waves and Optics', units: 3, university: 'futminna', level: '200', department: 'phy', faculty: 'sps', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'PHY 206', name: 'Modern Physics I', units: 3, university: 'futminna', level: '200', department: 'phy', faculty: 'sps', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Chemistry
+                    { code: 'CHM 201', name: 'Physical Chemistry I', units: 3, university: 'futminna', level: '200', department: 'chm', faculty: 'sps', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CHM 203', name: 'Organic Chemistry I', units: 3, university: 'futminna', level: '200', department: 'chm', faculty: 'sps', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CHM 205', name: 'Inorganic Chemistry I', units: 3, university: 'futminna', level: '200', department: 'chm', faculty: 'sps', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CHM 202', name: 'Physical Chemistry II', units: 3, university: 'futminna', level: '200', department: 'chm', faculty: 'sps', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'CHM 204', name: 'Organic Chemistry II', units: 3, university: 'futminna', level: '200', department: 'chm', faculty: 'sps', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Mathematics
+                    { code: 'MTH 211', name: 'Real Analysis I', units: 3, university: 'futminna', level: '200', department: 'mth', faculty: 'sps', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'MTH 213', name: 'Abstract Algebra I', units: 3, university: 'futminna', level: '200', department: 'mth', faculty: 'sps', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'MTH 212', name: 'Real Analysis II', units: 3, university: 'futminna', level: '200', department: 'mth', faculty: 'sps', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'MTH 214', name: 'Differential Equations I', units: 3, university: 'futminna', level: '200', department: 'mth', faculty: 'sps', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Architecture
+                    { code: 'ARC 201', name: 'Architectural Design Studio I', units: 4, university: 'futminna', level: '200', department: 'arc', faculty: 'seit', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'ARC 203', name: 'History of Architecture I', units: 2, university: 'futminna', level: '200', department: 'arc', faculty: 'seit', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'ARC 202', name: 'Architectural Design Studio II', units: 4, university: 'futminna', level: '200', department: 'arc', faculty: 'seit', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'ARC 204', name: 'Building Construction I', units: 3, university: 'futminna', level: '200', department: 'arc', faculty: 'seit', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Cyber Security
+                    { code: 'CYB 201', name: 'Introduction to Cybersecurity', units: 3, university: 'futminna', level: '200', department: 'cyb', faculty: 'sist', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CYB 203', name: 'Network Security Fundamentals', units: 3, university: 'futminna', level: '200', department: 'cyb', faculty: 'sist', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CYB 202', name: 'Security Operations', units: 3, university: 'futminna', level: '200', department: 'cyb', faculty: 'sist', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'CYB 204', name: 'Cryptography Fundamentals', units: 3, university: 'futminna', level: '200', department: 'cyb', faculty: 'sist', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Microbiology
+                    { code: 'MCB 201', name: 'General Microbiology I', units: 3, university: 'futminna', level: '200', department: 'mcb', faculty: 'sls', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'MCB 203', name: 'Introductory Virology', units: 2, university: 'futminna', level: '200', department: 'mcb', faculty: 'sls', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'MCB 202', name: 'General Microbiology II', units: 3, university: 'futminna', level: '200', department: 'mcb', faculty: 'sls', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'MCB 204', name: 'Microbial Genetics', units: 3, university: 'futminna', level: '200', department: 'mcb', faculty: 'sls', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Biology
+                    { code: 'BIO 201', name: 'Genetics I', units: 3, university: 'futminna', level: '200', department: 'bio', faculty: 'sls', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'BIO 203', name: 'Cell Biology', units: 3, university: 'futminna', level: '200', department: 'bio', faculty: 'sls', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'BIO 202', name: 'Ecology I', units: 3, university: 'futminna', level: '200', department: 'bio', faculty: 'sls', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'BIO 204', name: 'Plant Anatomy and Physiology', units: 3, university: 'futminna', level: '200', department: 'bio', faculty: 'sls', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Chemical Engineering
+                    { code: 'CHE 201', name: 'Introduction to Chemical Engineering', units: 3, university: 'futminna', level: '200', department: 'che', faculty: 'smt', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CHE 203', name: 'Material and Energy Balances', units: 3, university: 'futminna', level: '200', department: 'che', faculty: 'smt', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'CHE 202', name: 'Chemical Engineering Thermodynamics I', units: 3, university: 'futminna', level: '200', department: 'che', faculty: 'smt', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Telecom Engineering
+                    { code: 'TCE 201', name: 'Introduction to Telecommunication', units: 3, university: 'futminna', level: '200', department: 'tce', faculty: 'set', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'TCE 203', name: 'Signals and Systems I', units: 3, university: 'futminna', level: '200', department: 'tce', faculty: 'set', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'TCE 202', name: 'Communication Principles', units: 3, university: 'futminna', level: '200', department: 'tce', faculty: 'set', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // EEE
+                    { code: 'EEE 201', name: 'Circuit Analysis I', units: 3, university: 'futminna', level: '200', department: 'ece', faculty: 'set', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'EEE 203', name: 'Electrical Measurements', units: 3, university: 'futminna', level: '200', department: 'ece', faculty: 'set', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'EEE 202', name: 'Circuit Analysis II', units: 3, university: 'futminna', level: '200', department: 'ece', faculty: 'set', semester: 'second', isCompulsory: true, isGeneral: false },
+                    { code: 'EEE 204', name: 'Introduction to Electronics', units: 3, university: 'futminna', level: '200', department: 'ece', faculty: 'set', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Info Tech
+                    { code: 'ITS 201', name: 'Introduction to Information Technology', units: 3, university: 'futminna', level: '200', department: 'its', faculty: 'sist', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'ITS 203', name: 'Web Development Fundamentals', units: 3, university: 'futminna', level: '200', department: 'its', faculty: 'sist', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'ITS 202', name: 'IT Project Management', units: 3, university: 'futminna', level: '200', department: 'its', faculty: 'sist', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Statistics
+                    { code: 'STS 201', name: 'Probability Theory I', units: 3, university: 'futminna', level: '200', department: 'sts', faculty: 'sps', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'STS 203', name: 'Statistical Methods I', units: 3, university: 'futminna', level: '200', department: 'sts', faculty: 'sps', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'STS 202', name: 'Probability Theory II', units: 3, university: 'futminna', level: '200', department: 'sts', faculty: 'sps', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Geology
+                    { code: 'GEO 201', name: 'Physical Geology', units: 3, university: 'futminna', level: '200', department: 'geo', faculty: 'sps', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'GEO 203', name: 'Mineralogy', units: 3, university: 'futminna', level: '200', department: 'geo', faculty: 'sps', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'GEO 202', name: 'Structural Geology', units: 3, university: 'futminna', level: '200', department: 'geo', faculty: 'sps', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Quantity Surveying
+                    { code: 'QTS 201', name: 'Measurement of Building Works I', units: 3, university: 'futminna', level: '200', department: 'qty', faculty: 'seit', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'QTS 203', name: 'Construction Technology I', units: 3, university: 'futminna', level: '200', department: 'qty', faculty: 'seit', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'QTS 202', name: 'Measurement of Building Works II', units: 3, university: 'futminna', level: '200', department: 'qty', faculty: 'seit', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Urban and Regional Planning
+                    { code: 'URP 201', name: 'Introduction to Urban Planning', units: 3, university: 'futminna', level: '200', department: 'urp', faculty: 'seit', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'URP 202', name: 'Planning Theory', units: 3, university: 'futminna', level: '200', department: 'urp', faculty: 'seit', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Surveying
+                    { code: 'SVG 201', name: 'Surveying I', units: 3, university: 'futminna', level: '200', department: 'svg', faculty: 'seit', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'SVG 202', name: 'Surveying II', units: 3, university: 'futminna', level: '200', department: 'svg', faculty: 'seit', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Building
+                    { code: 'BLD 201', name: 'Building Construction I', units: 3, university: 'futminna', level: '200', department: 'bld', faculty: 'seit', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'BLD 202', name: 'Building Construction II', units: 3, university: 'futminna', level: '200', department: 'bld', faculty: 'seit', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Agric Engineering
+                    { code: 'AGE 201', name: 'Introduction to Agricultural Engineering', units: 3, university: 'futminna', level: '200', department: 'agr', faculty: 'smt', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'AGE 202', name: 'Farm Power and Machinery', units: 3, university: 'futminna', level: '200', department: 'agr', faculty: 'smt', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Materials Engineering
+                    { code: 'MTE 201', name: 'Introduction to Materials Science', units: 3, university: 'futminna', level: '200', department: 'met', faculty: 'smt', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'MTE 202', name: 'Physical Metallurgy', units: 3, university: 'futminna', level: '200', department: 'met', faculty: 'smt', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Mechatronics
+                    { code: 'MCE 201', name: 'Introduction to Mechatronics', units: 3, university: 'futminna', level: '200', department: 'mce', faculty: 'set', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'MCE 203', name: 'Engineering Mechanics', units: 3, university: 'futminna', level: '200', department: 'mce', faculty: 'set', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'MCE 202', name: 'Sensors and Actuators', units: 3, university: 'futminna', level: '200', department: 'mce', faculty: 'set', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Management Tech
+                    { code: 'MGT 201', name: 'Principles of Management', units: 3, university: 'futminna', level: '200', department: 'mgt', faculty: 'sms', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'MGT 203', name: 'Business Communication', units: 2, university: 'futminna', level: '200', department: 'mgt', faculty: 'sms', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'MGT 202', name: 'Organizational Behaviour', units: 3, university: 'futminna', level: '200', department: 'mgt', faculty: 'sms', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Entrepreneurship
+                    { code: 'ENT 201', name: 'Introduction to Entrepreneurship', units: 3, university: 'futminna', level: '200', department: 'ent', faculty: 'sms', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'ENT 202', name: 'Business Plan Development', units: 3, university: 'futminna', level: '200', department: 'ent', faculty: 'sms', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Library Science
+                    { code: 'LIS 201', name: 'Introduction to Library Science', units: 3, university: 'futminna', level: '200', department: 'lis', faculty: 'sist', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'LIS 202', name: 'Information Resources', units: 3, university: 'futminna', level: '200', department: 'lis', faculty: 'sist', semester: 'second', isCompulsory: true, isGeneral: false },
+
+                    // Science Education
+                    { code: 'SCE 201', name: 'Foundations of Education', units: 3, university: 'futminna', level: '200', department: 'sce', faculty: 'ssse', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'SCE 203', name: 'Science Curriculum Development', units: 3, university: 'futminna', level: '200', department: 'sce', faculty: 'ssse', semester: 'first', isCompulsory: true, isGeneral: false },
+                    { code: 'SCE 202', name: 'Educational Psychology', units: 3, university: 'futminna', level: '200', department: 'sce', faculty: 'ssse', semester: 'second', isCompulsory: true, isGeneral: false },
+                ];
+
+                for (const course of sampleCourses) {
+                    const docRef = db.collection('courses').doc();
+                    batch.set(docRef, {
+                        ...course,
+                        questionsCount: 0,
+                        topicsCount: 0,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+
+                await batch.commit();
+                console.log('Courses seeded to Firestore successfully');
+
+                // Reload courses
+                await loadCoursesFromFirestore();
+
+            } catch (err) {
+                console.error('Error seeding courses:', err);
+            }
+        }
+
+        // Seed courses after firebase auth check
+        setTimeout(() => {
+            seedCoursesIfNeeded();
+        }, 2000);
+    </script>
+</body>
+</html>

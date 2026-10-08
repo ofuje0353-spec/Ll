@@ -1,0 +1,1450 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>FAVOJE - Practice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --primary:#6366F1;--primary-hover:#5558E8;--primary-light:rgba(99,102,241,.1);--primary-glow:rgba(99,102,241,.25);
+            --secondary:#4F46E5;--bg:#080B14;--surface:#111827;--surface-2:#1F2937;--surface-3:#374151;
+            --accent:#F97316;--accent-light:rgba(249,115,22,.1);
+            --success:#10B981;--success-light:rgba(16,185,129,.1);--success-glow:rgba(16,185,129,.25);
+            --danger:#EF4444;--danger-light:rgba(239,68,68,.1);--danger-glow:rgba(239,68,68,.25);
+            --warning:#F59E0B;--warning-light:rgba(245,158,11,.1);
+            --info:#3B82F6;--info-light:rgba(59,130,246,.1);
+            --white:#F8FAFC;--text-primary:#F8FAFC;--text-secondary:#9CA3AF;--text-muted:#6B7280;
+            --border:#1F2937;--border-2:#374151;
+            --radius:12px;--radius-lg:16px;--radius-xl:24px;
+            --shadow:0 4px 6px -1px rgba(0,0,0,.3);--shadow-lg:0 10px 25px -5px rgba(0,0,0,.4);
+            --transition:all .3s cubic-bezier(.4,0,.2,1);--transition-fast:all .15s ease;
+            --transition-spring:all .5s cubic-bezier(.34,1.56,.64,1);
+            --nav-height:72px;--safe-bottom:env(safe-area-inset-bottom,0px)
+        }
+        [data-theme="light"]{
+            --bg:#F3F4F6;--surface:#FFFFFF;--surface-2:#F9FAFB;--surface-3:#E5E7EB;
+            --text-primary:#111827;--text-secondary:#4B5563;--text-muted:#9CA3AF;
+            --border:#E5E7EB;--border-2:#D1D5DB;
+            --shadow:0 4px 6px -1px rgba(0,0,0,.07);--shadow-lg:0 10px 25px -5px rgba(0,0,0,.1);
+            --primary-light:rgba(99,102,241,.08);--success-light:rgba(16,185,129,.08);
+            --danger-light:rgba(239,68,68,.08);--warning-light:rgba(245,158,11,.08);
+            --accent-light:rgba(249,115,22,.08);--info-light:rgba(59,130,246,.08);
+            --primary-glow:rgba(99,102,241,.15);--success-glow:rgba(16,185,129,.15);--danger-glow:rgba(239,68,68,.15)
+        }
+        html{scroll-behavior:smooth}
+        body{
+            font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+            background:var(--bg);color:var(--text-primary);min-height:100vh;min-height:100dvh;
+            overflow-x:hidden;-webkit-font-smoothing:antialiased
+        }
+
+        /* ==================== ANIMATIONS ==================== */
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        @keyframes fadeInDown{from{opacity:0;transform:translateY(-24px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes slideInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes scaleIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+        @keyframes bounceIn{0%{opacity:0;transform:scale(.3)}50%{transform:scale(1.08)}70%{transform:scale(.95)}100%{opacity:1;transform:scale(1)}}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+        @keyframes slideUp{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:translateY(0)}}
+        @keyframes slideInBottom{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes popIn{0%{opacity:0;transform:scale(0)}80%{transform:scale(1.12)}100%{opacity:1;transform:scale(1)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+        @keyframes dotBounce{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+        @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+        @keyframes correctPulse{0%{box-shadow:0 0 0 0 var(--success-glow)}70%{box-shadow:0 0 0 12px transparent}100%{box-shadow:0 0 0 0 transparent}}
+        @keyframes incorrectShake{0%,100%{transform:translateX(0)}10%{transform:translateX(-8px)}30%{transform:translateX(8px)}50%{transform:translateX(-6px)}70%{transform:translateX(6px)}90%{transform:translateX(-2px)}}
+        @keyframes checkDraw{0%{stroke-dashoffset:24}100%{stroke-dashoffset:0}}
+        @keyframes crossDraw{0%{stroke-dashoffset:20}100%{stroke-dashoffset:0}}
+        @keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(-100px) rotate(720deg);opacity:0}}
+        @keyframes progressGrow{from{width:0}}
+        @keyframes slideOutLeft{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-60px)}}
+        @keyframes slideOutRight{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(60px)}}
+        @keyframes revealDown{from{max-height:0;opacity:0}to{max-height:500px;opacity:1}}
+        @keyframes glowPulse{0%,100%{box-shadow:0 0 5px var(--primary-glow)}50%{box-shadow:0 0 20px var(--primary-glow)}}
+        @keyframes flipIn{from{opacity:0;transform:perspective(400px) rotateY(90deg)}to{opacity:1;transform:perspective(400px) rotateY(0)}}
+        @keyframes stampIn{0%{opacity:0;transform:scale(2) rotate(-15deg)}50%{opacity:1;transform:scale(.9) rotate(3deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+        @keyframes scorePop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.3)}100%{transform:scale(1);opacity:1}}
+        @keyframes ringFill{from{stroke-dashoffset:var(--ring-circumference)}}
+        @keyframes barGrow{from{width:0;opacity:0}to{opacity:1}}
+        @keyframes countUpAnim{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes successBg{0%{background:var(--surface)}50%{background:var(--success-light)}100%{background:var(--surface)}}
+
+        .anim-fadeInUp{animation:fadeInUp .6s ease both}
+        .anim-fadeIn{animation:fadeIn .5s ease both}
+        .anim-scaleIn{animation:scaleIn .4s ease both}
+        .anim-bounceIn{animation:bounceIn .6s ease both}
+        .anim-popIn{animation:popIn .4s ease both}
+        .anim-flipIn{animation:flipIn .5s ease both}
+        .anim-slideInLeft{animation:slideInLeft .5s ease both}
+        .anim-slideInRight{animation:slideInRight .5s ease both}
+
+        .s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}.s4{animation-delay:.2s}
+        .s5{animation-delay:.25s}.s6{animation-delay:.3s}.s7{animation-delay:.35s}.s8{animation-delay:.4s}
+
+        /* ==================== LOADING ==================== */
+        .loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10000;transition:opacity .6s,visibility .6s}
+        .loading-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+        .loading-logo{font-size:2.2rem;font-weight:900;color:var(--primary);letter-spacing:-1px;margin-bottom:6px}
+        .loading-tagline{font-size:.72rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:28px}
+        .loading-dots{display:flex;gap:6px}
+        .loading-dots span{width:10px;height:10px;border-radius:50%;background:var(--primary);animation:dotBounce 1.4s infinite ease-in-out both}
+        .loading-dots span:nth-child(1){animation-delay:-.32s}
+        .loading-dots span:nth-child(2){animation-delay:-.16s}
+
+        .skeleton{background:linear-gradient(90deg,var(--surface-2) 25%,var(--surface-3) 50%,var(--surface-2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--radius)}
+
+        /* ==================== TOAST ==================== */
+        .toast-container{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:10001;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:calc(100% - 32px);max-width:400px}
+        .toast{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-lg);pointer-events:auto;animation:fadeInDown .4s ease;transition:var(--transition)}
+        .toast.removing{opacity:0;transform:translateY(-20px)}
+        .toast-icon{flex-shrink:0}
+        .toast-success .toast-icon{color:var(--success)}
+        .toast-error .toast-icon{color:var(--danger)}
+        .toast-info .toast-icon{color:var(--primary)}
+        .toast-warning .toast-icon{color:var(--warning)}
+        .toast-message{flex:1;font-size:.85rem;font-weight:500}
+        .toast-close{background:none;border:none;color:var(--text-muted);cursor:pointer;padding:4px}
+
+        /* ==================== PRACTICE HEADER ==================== */
+        .practice-header{
+            position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);
+            padding:env(safe-area-inset-top,0) 0 0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)
+        }
+        .practice-header-inner{display:flex;align-items:center;gap:12px;padding:10px 16px;max-width:800px;margin:0 auto}
+        .practice-close{
+            width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);
+            color:var(--text-primary);display:flex;align-items:center;justify-content:center;cursor:pointer;
+            transition:var(--transition);flex-shrink:0
+        }
+        .practice-close:hover{background:var(--danger-light);color:var(--danger);border-color:var(--danger)}
+        .practice-close:active{transform:scale(.9)}
+        .practice-meta{flex:1;min-width:0}
+        .practice-course{font-size:.7rem;color:var(--primary);font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+        .practice-topic-name{font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .practice-actions{display:flex;align-items:center;gap:6px}
+        .practice-action-btn{
+            width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);
+            color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;
+            transition:var(--transition)
+        }
+        .practice-action-btn:hover{color:var(--text-primary);background:var(--surface-2)}
+        .practice-action-btn:active{transform:scale(.9)}
+        .practice-action-btn.bookmarked{color:var(--warning);background:var(--warning-light);border-color:var(--warning)}
+
+        /* ==================== PROGRESS BAR ==================== */
+        .progress-container{padding:0 16px 12px;max-width:800px;margin:0 auto}
+        .progress-row{display:flex;align-items:center;gap:10px}
+        .progress-bar-wrap{flex:1;height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+        .progress-bar-fill{height:100%;border-radius:3px;background:var(--primary);transition:width .6s cubic-bezier(.4,0,.2,1)}
+        .progress-bar-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);animation:shimmer 2s infinite;background-size:200% 100%}
+        .progress-text{font-size:.72rem;font-weight:700;color:var(--text-muted);min-width:40px;text-align:right}
+        .progress-stats{display:flex;gap:14px;margin-top:6px;justify-content:center}
+        .progress-stat{display:flex;align-items:center;gap:4px;font-size:.68rem;font-weight:600;color:var(--text-muted)}
+        .progress-stat .dot{width:6px;height:6px;border-radius:50%}
+        .progress-stat .dot.correct{background:var(--success)}
+        .progress-stat .dot.incorrect{background:var(--danger)}
+        .progress-stat .dot.remaining{background:var(--surface-3)}
+
+        /* ==================== QUESTION AREA ==================== */
+        .question-container{max-width:800px;margin:0 auto;padding:20px 16px 120px}
+        .question-card{
+            background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);
+            padding:28px 22px;margin-bottom:20px;position:relative;overflow:hidden;transition:var(--transition)
+        }
+        .question-card.correct-state{animation:correctPulse .6s ease}
+        .question-card.incorrect-state{animation:incorrectShake .5s ease}
+        .question-number{
+            display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;
+            color:var(--primary);background:var(--primary-light);padding:4px 12px;border-radius:20px;margin-bottom:16px
+        }
+        .question-text{font-size:1rem;font-weight:600;line-height:1.65;margin-bottom:24px;color:var(--text-primary)}
+
+        /* ==================== OPTIONS ==================== */
+        .options-list{display:flex;flex-direction:column;gap:10px}
+        .option{
+            display:flex;align-items:flex-start;gap:14px;padding:14px 18px;
+            background:var(--surface-2);border:2px solid var(--border);border-radius:var(--radius);
+            cursor:pointer;transition:var(--transition);position:relative;overflow:hidden;
+            -webkit-tap-highlight-color:transparent
+        }
+        .option:hover:not(.disabled){border-color:var(--primary);background:var(--primary-light);transform:translateX(4px)}
+        .option:active:not(.disabled){transform:scale(.98)}
+        .option.selected{border-color:var(--primary);background:var(--primary-light)}
+        .option.selected .option-letter{background:var(--primary);color:white;border-color:var(--primary)}
+        .option.correct{border-color:var(--success);background:var(--success-light);animation:correctPulse .5s ease}
+        .option.correct .option-letter{background:var(--success);color:white;border-color:var(--success)}
+        .option.incorrect{border-color:var(--danger);background:var(--danger-light);animation:shake .4s ease}
+        .option.incorrect .option-letter{background:var(--danger);color:white;border-color:var(--danger)}
+        .option.correct-answer{border-color:var(--success);background:var(--success-light)}
+        .option.correct-answer .option-letter{background:var(--success);color:white;border-color:var(--success)}
+        .option.disabled{cursor:default;opacity:.85}
+        .option.disabled:hover{transform:none}
+        .option-letter{
+            width:32px;height:32px;border-radius:50%;border:2px solid var(--border-2);
+            display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;
+            flex-shrink:0;transition:var(--transition);color:var(--text-secondary)
+        }
+        .option-text{flex:1;font-size:.88rem;line-height:1.5;padding-top:4px;color:var(--text-primary)}
+        .option-feedback{
+            position:absolute;right:14px;top:50%;transform:translateY(-50%);
+            display:none;animation:popIn .3s ease both
+        }
+        .option.correct .option-feedback,.option.incorrect .option-feedback,.option.correct-answer .option-feedback{display:flex}
+
+        /* ==================== EXPLANATION ==================== */
+        .explanation-card{
+            background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+            overflow:hidden;margin-bottom:20px;animation:revealDown .5s ease both
+        }
+        .explanation-header{
+            display:flex;align-items:center;gap:10px;padding:14px 18px;
+            border-bottom:1px solid var(--border);cursor:pointer;transition:var(--transition)
+        }
+        .explanation-header:hover{background:var(--surface-2)}
+        .explanation-icon{
+            width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+            flex-shrink:0
+        }
+        .explanation-icon.correct{background:var(--success-light);color:var(--success)}
+        .explanation-icon.incorrect{background:var(--danger-light);color:var(--danger)}
+        .explanation-label{font-size:.85rem;font-weight:700;flex:1}
+        .explanation-label.correct{color:var(--success)}
+        .explanation-label.incorrect{color:var(--danger)}
+        .explanation-body{padding:16px 18px;font-size:.85rem;line-height:1.7;color:var(--text-secondary)}
+        .explanation-source{
+            margin-top:10px;padding-top:10px;border-top:1px solid var(--border);
+            font-size:.72rem;color:var(--text-muted);display:flex;align-items:center;gap:6px
+        }
+
+        /* ==================== ACTION BAR ==================== */
+        .action-bar{
+            position:fixed;bottom:0;left:0;right:0;z-index:100;
+            background:var(--surface);border-top:1px solid var(--border);
+            padding:12px 16px calc(12px + var(--safe-bottom));
+            backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+            animation:slideUp .4s ease
+        }
+        .action-bar-inner{max-width:800px;margin:0 auto;display:flex;gap:10px;align-items:center}
+        .btn{
+            display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;
+            border-radius:var(--radius);font-size:.88rem;font-weight:600;font-family:inherit;cursor:pointer;
+            border:none;transition:var(--transition);position:relative;overflow:hidden;text-decoration:none
+        }
+        .btn::after{
+            content:'';position:absolute;width:100%;height:100%;top:0;left:0;pointer-events:none;
+            background-image:radial-gradient(circle,rgba(255,255,255,.15) 10%,transparent 10.01%);
+            background-repeat:no-repeat;background-position:50%;transform:scale(10);opacity:0;transition:transform .5s,opacity .5s
+        }
+        .btn:active::after{transform:scale(0);opacity:1;transition:0s}
+        .btn-primary{background:var(--primary);color:white;flex:1}
+        .btn-primary:hover{background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 4px 15px var(--primary-glow)}
+        .btn-primary:active{transform:translateY(0)}
+        .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+        .btn-secondary{background:var(--surface-2);color:var(--text-primary);border:1px solid var(--border)}
+        .btn-secondary:hover{background:var(--surface-3);transform:translateY(-1px)}
+        .btn-success{background:var(--success);color:white}
+        .btn-success:hover{box-shadow:0 4px 15px var(--success-glow);transform:translateY(-1px)}
+        .btn-danger{background:var(--danger);color:white}
+        .btn-icon{width:46px;height:46px;padding:0;border-radius:50%;flex:0 0 auto}
+        .btn .btn-spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .6s linear infinite;display:none}
+        .btn.loading .btn-spinner{display:block}
+        .btn.loading .btn-text{opacity:0}
+
+        /* ==================== SETUP SCREEN ==================== */
+        .setup-screen{
+            min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;
+            justify-content:center;padding:24px 16px;text-align:center
+        }
+        .setup-icon{
+            width:80px;height:80px;border-radius:20px;background:var(--primary-light);color:var(--primary);
+            display:flex;align-items:center;justify-content:center;margin:0 auto 24px;animation:bounceIn .6s ease
+        }
+        .setup-title{font-size:1.5rem;font-weight:800;margin-bottom:6px}
+        .setup-subtitle{font-size:.88rem;color:var(--text-secondary);margin-bottom:32px;line-height:1.5;max-width:400px}
+        .setup-card{
+            width:100%;max-width:480px;background:var(--surface);border:1px solid var(--border);
+            border-radius:var(--radius-xl);padding:28px 22px;text-align:left
+        }
+        .setup-section{margin-bottom:20px}
+        .setup-label{font-size:.78rem;font-weight:700;color:var(--text-secondary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+        .setup-select{
+            width:100%;padding:12px 16px;background:var(--surface-2);border:1.5px solid var(--border);
+            border-radius:var(--radius);color:var(--text-primary);font-size:.88rem;font-family:inherit;
+            outline:none;appearance:none;cursor:pointer;transition:var(--transition);
+            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat:no-repeat;background-position:right 12px center
+        }
+        .setup-select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+        .setup-select option{background:var(--surface);color:var(--text-primary)}
+        .count-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+        .count-option{
+            padding:12px 8px;background:var(--surface-2);border:2px solid var(--border);border-radius:var(--radius);
+            text-align:center;cursor:pointer;transition:var(--transition);font-family:inherit
+        }
+        .count-option:hover{border-color:var(--primary);background:var(--primary-light)}
+        .count-option:active{transform:scale(.95)}
+        .count-option.selected{border-color:var(--primary);background:var(--primary-light)}
+        .count-option-value{font-size:1.2rem;font-weight:800;color:var(--text-primary)}
+        .count-option-label{font-size:.65rem;color:var(--text-muted);margin-top:2px}
+
+        /* ==================== RESULTS SCREEN ==================== */
+        .results-screen{
+            min-height:100vh;min-height:100dvh;display:none;flex-direction:column;padding:24px 16px 100px
+        }
+        .results-screen.active{display:flex;animation:fadeInUp .6s ease}
+        .results-header{text-align:center;padding:40px 0 30px}
+        .results-emoji{font-size:3.5rem;animation:bounceIn .8s ease both;display:inline-block}
+        .results-title{font-size:1.4rem;font-weight:800;margin:16px 0 4px;animation:fadeInUp .5s ease both;animation-delay:.2s}
+        .results-subtitle{font-size:.88rem;color:var(--text-secondary);animation:fadeInUp .5s ease both;animation-delay:.3s}
+
+        .results-score-ring{
+            width:140px;height:140px;margin:24px auto;position:relative;animation:scaleIn .6s ease both;animation-delay:.4s
+        }
+        .results-score-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+        .ring-bg{fill:none;stroke:var(--surface-2);stroke-width:8}
+        .ring-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1)}
+        .ring-fill.good{stroke:var(--success)}
+        .ring-fill.medium{stroke:var(--warning)}
+        .ring-fill.bad{stroke:var(--danger)}
+        .ring-value{
+            position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center
+        }
+        .ring-percent{font-size:2rem;font-weight:900;line-height:1}
+        .ring-label{font-size:.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+
+        .results-stats{
+            display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:500px;margin:0 auto 24px
+        }
+        .result-stat{
+            text-align:center;padding:14px 8px;background:var(--surface);border:1px solid var(--border);
+            border-radius:var(--radius);transition:var(--transition)
+        }
+        .result-stat:hover{transform:translateY(-2px)}
+        .result-stat-value{font-size:1.2rem;font-weight:800}
+        .result-stat-value.correct-val{color:var(--success)}
+        .result-stat-value.incorrect-val{color:var(--danger)}
+        .result-stat-value.skipped-val{color:var(--text-muted)}
+        .result-stat-label{font-size:.62rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.3px;margin-top:3px}
+
+        .topic-breakdown{max-width:500px;margin:0 auto 24px;width:100%}
+        .topic-breakdown-title{font-size:.88rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+        .topic-bar{
+            display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)
+        }
+        .topic-bar:last-child{border-bottom:none}
+        .topic-bar-name{font-size:.78rem;font-weight:600;min-width:100px;max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .topic-bar-track{flex:1;height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+        .topic-bar-fill{height:100%;border-radius:4px;transition:width 1s ease}
+        .topic-bar-fill.good{background:var(--success)}
+        .topic-bar-fill.medium{background:var(--warning)}
+        .topic-bar-fill.bad{background:var(--danger)}
+        .topic-bar-percent{font-size:.75rem;font-weight:700;min-width:36px;text-align:right}
+
+        .results-actions{
+            display:flex;flex-direction:column;gap:10px;max-width:400px;margin:0 auto;width:100%
+        }
+
+        /* ==================== CONFETTI ==================== */
+        .confetti-container{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+        .confetti-piece{
+            position:absolute;width:10px;height:10px;border-radius:2px;animation:confettiDrop 3s ease-in-out forwards
+        }
+        @keyframes confettiDrop{
+            0%{transform:translateY(-10vh) rotate(0);opacity:1}
+            100%{transform:translateY(110vh) rotate(720deg);opacity:0}
+        }
+
+        /* ==================== REPORT MODAL ==================== */
+        .modal-overlay{
+            position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);
+            display:none;align-items:center;justify-content:center;padding:20px
+        }
+        .modal-overlay.active{display:flex;animation:fadeIn .3s ease}
+        .modal-card{
+            width:100%;max-width:420px;background:var(--surface);border:1px solid var(--border);
+            border-radius:var(--radius-xl);padding:28px 24px;animation:scaleIn .3s ease
+        }
+        .modal-card-title{font-size:1.05rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+        .report-options{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+        .report-option{
+            display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-2);
+            border:1.5px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:var(--transition)
+        }
+        .report-option:hover{border-color:var(--primary)}
+        .report-option.selected{border-color:var(--primary);background:var(--primary-light)}
+        .report-radio{
+            width:20px;height:20px;border-radius:50%;border:2px solid var(--border-2);
+            display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--transition)
+        }
+        .report-option.selected .report-radio{border-color:var(--primary);background:var(--primary)}
+        .report-option.selected .report-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:white}
+        .report-text{font-size:.85rem;font-weight:500}
+        .report-note{
+            width:100%;padding:10px 14px;background:var(--surface-2);border:1.5px solid var(--border);
+            border-radius:var(--radius);color:var(--text-primary);font-size:.85rem;font-family:inherit;
+            outline:none;resize:vertical;min-height:80px;transition:var(--transition)
+        }
+        .report-note:focus{border-color:var(--primary)}
+        .modal-actions{display:flex;gap:10px;margin-top:16px}
+        .modal-actions .btn{flex:1}
+
+        /* ==================== EXIT CONFIRM MODAL ==================== */
+        .exit-modal-content{text-align:center}
+        .exit-modal-icon{
+            width:64px;height:64px;border-radius:16px;background:var(--warning-light);color:var(--warning);
+            display:flex;align-items:center;justify-content:center;margin:0 auto 16px;animation:wobble .6s ease
+        }
+        @keyframes wobble{0%{transform:rotate(0)}15%{transform:rotate(5deg)}30%{transform:rotate(-5deg)}45%{transform:rotate(3deg)}60%{transform:rotate(-3deg)}75%{transform:rotate(1deg)}100%{transform:rotate(0)}}
+        .exit-modal-title{font-size:1.1rem;font-weight:700;margin-bottom:6px}
+        .exit-modal-desc{font-size:.85rem;color:var(--text-secondary);margin-bottom:20px;line-height:1.5}
+
+        /* ==================== RESPONSIVE ==================== */
+        @media(max-width:360px){
+            .question-card{padding:20px 16px}
+            .question-text{font-size:.92rem}
+            .option{padding:12px 14px;gap:10px}
+            .option-letter{width:28px;height:28px;font-size:.7rem}
+            .option-text{font-size:.82rem}
+            .results-score-ring{width:120px;height:120px}
+            .ring-percent{font-size:1.6rem}
+            .results-stats{grid-template-columns:repeat(3,1fr);gap:6px}
+            .count-options{grid-template-columns:repeat(2,1fr)}
+            .setup-card{padding:20px 16px}
+        }
+        @media(min-width:768px){
+            .question-container{padding:28px 24px 120px}
+            .question-card{padding:36px 32px}
+            .question-text{font-size:1.08rem}
+            .options-list{gap:12px}
+            .option{padding:16px 20px}
+            .action-bar-inner{max-width:600px}
+            .results-header{padding:60px 0 40px}
+            .results-stats{gap:14px}
+            .setup-card{padding:36px 32px}
+        }
+        @media(min-width:1024px){
+            .question-container{max-width:700px}
+            .progress-container{max-width:700px}
+            .practice-header-inner{max-width:700px}
+        }
+
+        ::-webkit-scrollbar{width:5px;height:5px}
+        ::-webkit-scrollbar-track{background:transparent}
+        ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+        .hidden{display:none!important}
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">FAVOJE</div>
+        <div class="loading-tagline">Loading Practice...</div>
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- SETUP SCREEN -->
+    <div class="setup-screen" id="setupScreen">
+        <div class="setup-icon"><i data-lucide="pen-tool" width="36" height="36"></i></div>
+        <h1 class="setup-title anim-fadeInUp">Practice Mode</h1>
+        <p class="setup-subtitle anim-fadeInUp s2">Select a course and topic, then choose how many questions to practice.</p>
+
+        <div class="setup-card anim-fadeInUp s3">
+            <div class="setup-section">
+                <div class="setup-label"><i data-lucide="book-open" width="14" height="14"></i> Course</div>
+                <select class="setup-select" id="courseSelect" onchange="onCourseSelected()">
+                    <option value="">Select course...</option>
+                </select>
+            </div>
+            <div class="setup-section">
+                <div class="setup-label"><i data-lucide="list" width="14" height="14"></i> Topic</div>
+                <select class="setup-select" id="topicSelect" disabled>
+                    <option value="">Select topic...</option>
+                    <option value="all">All Topics</option>
+                </select>
+            </div>
+            <div class="setup-section">
+                <div class="setup-label"><i data-lucide="hash" width="14" height="14"></i> Number of Questions</div>
+                <div class="count-options" id="countOptions">
+                    <div class="count-option" data-count="10" onclick="selectCount(10,this)">
+                        <div class="count-option-value">10</div>
+                        <div class="count-option-label">Quick</div>
+                    </div>
+                    <div class="count-option selected" data-count="20" onclick="selectCount(20,this)">
+                        <div class="count-option-value">20</div>
+                        <div class="count-option-label">Standard</div>
+                    </div>
+                    <div class="count-option" data-count="30" onclick="selectCount(30,this)">
+                        <div class="count-option-value">30</div>
+                        <div class="count-option-label">Extended</div>
+                    </div>
+                    <div class="count-option" data-count="50" onclick="selectCount(50,this)">
+                        <div class="count-option-value">50</div>
+                        <div class="count-option-label">Deep</div>
+                    </div>
+                    <div class="count-option" data-count="100" onclick="selectCount(100,this)">
+                        <div class="count-option-value">100</div>
+                        <div class="count-option-label">Marathon</div>
+                    </div>
+                    <div class="count-option" data-count="0" onclick="selectCount(0,this)">
+                        <div class="count-option-value">All</div>
+                        <div class="count-option-label">Everything</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="startPracticeBtn" onclick="startPractice()" style="width:100%;margin-top:8px;">
+                <i data-lucide="play" width="18" height="18"></i>
+                <span class="btn-text">Start Practice</span>
+                <span class="btn-spinner"></span>
+            </button>
+        </div>
+    </div>
+
+    <!-- PRACTICE SCREEN -->
+    <div id="practiceScreen" class="hidden">
+        <header class="practice-header">
+            <div class="practice-header-inner">
+                <button class="practice-close" id="exitBtn" onclick="confirmExit()">
+                    <i data-lucide="x" width="20" height="20"></i>
+                </button>
+                <div class="practice-meta">
+                    <div class="practice-course" id="practiceCourseName"></div>
+                    <div class="practice-topic-name" id="practiceTopicName"></div>
+                </div>
+                <div class="practice-actions">
+                    <button class="practice-action-btn" id="bookmarkBtn" onclick="toggleBookmark()" title="Bookmark">
+                        <i data-lucide="bookmark" width="18" height="18"></i>
+                    </button>
+                    <button class="practice-action-btn" onclick="openReportModal()" title="Report">
+                        <i data-lucide="flag" width="18" height="18"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-row">
+                    <div class="progress-bar-wrap">
+                        <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0/0</div>
+                </div>
+                <div class="progress-stats" id="progressStats">
+                    <span class="progress-stat"><span class="dot correct"></span> <span id="correctCount">0</span></span>
+                    <span class="progress-stat"><span class="dot incorrect"></span> <span id="incorrectCount">0</span></span>
+                    <span class="progress-stat"><span class="dot remaining"></span> <span id="remainingCount">0</span></span>
+                </div>
+            </div>
+        </header>
+
+        <div class="question-container" id="questionContainer">
+            <!-- Question renders here -->
+        </div>
+
+        <div class="action-bar" id="actionBar">
+            <div class="action-bar-inner">
+                <button class="btn btn-secondary btn-icon" id="prevBtn" onclick="prevQuestion()" disabled title="Previous">
+                    <i data-lucide="chevron-left" width="22" height="22"></i>
+                </button>
+                <button class="btn btn-primary" id="submitBtn" onclick="submitAnswer()" disabled>
+                    <span class="btn-text">Check Answer</span>
+                </button>
+                <button class="btn btn-primary hidden" id="nextBtn" onclick="nextQuestion()">
+                    <span class="btn-text">Next Question</span>
+                    <i data-lucide="chevron-right" width="18" height="18"></i>
+                </button>
+                <button class="btn btn-success hidden" id="finishBtn" onclick="showResults()">
+                    <i data-lucide="check-circle" width="18" height="18"></i>
+                    <span class="btn-text">See Results</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div class="results-screen" id="resultsScreen">
+        <div class="results-header">
+            <div class="results-emoji" id="resultsEmoji">🎉</div>
+            <div class="results-title" id="resultsTitle">Great Job!</div>
+            <div class="results-subtitle" id="resultsSubtitle">You've completed the practice session</div>
+        </div>
+        <div class="results-score-ring" id="scoreRingContainer"></div>
+        <div class="results-stats" id="resultsStats"></div>
+        <div class="topic-breakdown" id="topicBreakdown"></div>
+        <div class="results-actions" id="resultsActions"></div>
+    </div>
+
+    <!-- REPORT MODAL -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-card">
+            <div class="modal-card-title"><i data-lucide="flag" width="20" height="20" style="color:var(--warning)"></i> Report Question</div>
+            <div class="report-options" id="reportOptions">
+                <div class="report-option" data-reason="wrong_answer" onclick="selectReport(this)">
+                    <div class="report-radio"></div><span class="report-text">Wrong correct answer</span>
+                </div>
+                <div class="report-option" data-reason="unclear" onclick="selectReport(this)">
+                    <div class="report-radio"></div><span class="report-text">Question is unclear</span>
+                </div>
+                <div class="report-option" data-reason="typo" onclick="selectReport(this)">
+                    <div class="report-radio"></div><span class="report-text">Contains typo/error</span>
+                </div>
+                <div class="report-option" data-reason="duplicate" onclick="selectReport(this)">
+                    <div class="report-radio"></div><span class="report-text">Duplicate question</span>
+                </div>
+                <div class="report-option" data-reason="other" onclick="selectReport(this)">
+                    <div class="report-radio"></div><span class="report-text">Other issue</span>
+                </div>
+            </div>
+            <textarea class="report-note" id="reportNote" placeholder="Additional details (optional)..."></textarea>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeReportModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitReport()">Submit Report</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXIT CONFIRM MODAL -->
+    <div class="modal-overlay" id="exitModal">
+        <div class="modal-card">
+            <div class="exit-modal-content">
+                <div class="exit-modal-icon"><i data-lucide="alert-triangle" width="28" height="28"></i></div>
+                <div class="exit-modal-title">Leave Practice?</div>
+                <div class="exit-modal-desc" id="exitModalDesc">Your progress will be saved. You've answered 0 of 0 questions.</div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeExitModal()">Continue</button>
+                <button class="btn btn-danger" onclick="exitPractice()">Leave</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ============================================
+        // FIREBASE
+        // ============================================
+        const firebaseConfig={apiKey:"AIzaSyBxYLZsOp4M3EvGjJrRy5u8-VzBypMgwLM",authDomain:"favoje-edtech.firebaseapp.com",projectId:"favoje-edtech",storageBucket:"favoje-edtech.firebasestorage.app",messagingSenderId:"773616455",appId:"1:773616455:web:favoje2025edtech"};
+        let app,auth,db;
+        try{app=firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.firestore()}catch(e){console.error(e)}
+
+        // ============================================
+        // STATE
+        // ============================================
+        let currentUser=null,userData=null;
+        let practiceState={
+            courseId:null,courseName:'',courseCode:'',
+            topicId:null,topicName:'All Topics',
+            questions:[],currentIndex:0,
+            answers:{},bookmarks:new Set(),
+            correctCount:0,incorrectCount:0,
+            isAnswered:false,selectedOption:null,
+            questionCount:20,startTime:null,
+            topicPerformance:{}
+        };
+
+        // ============================================
+        // THEME
+        // ============================================
+        const ThemeManager={
+            init(){const s=localStorage.getItem('favoje-theme')||'dark';this.set(s)},
+            set(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('favoje-theme',t)}
+        };
+
+        // ============================================
+        // TOAST
+        // ============================================
+        const Toast={
+            show(msg,type='info',dur=3500){
+                const c=document.getElementById('toastContainer'),t=document.createElement('div');
+                t.className=`toast toast-${type}`;
+                const ic={success:'check-circle',error:'alert-circle',warning:'alert-triangle',info:'info'};
+                t.innerHTML=`<span class="toast-icon"><i data-lucide="${ic[type]}" width="20" height="20"></i></span><span class="toast-message">${msg}</span><button class="toast-close" onclick="this.parentElement.remove()"><i data-lucide="x" width="16" height="16"></i></button>`;
+                c.appendChild(t);lucide.createIcons();
+                setTimeout(()=>{t.classList.add('removing');setTimeout(()=>t.remove(),300)},dur);
+            }
+        };
+
+        // ============================================
+        // SETUP SCREEN
+        // ============================================
+        async function loadUserCourses(userId){
+            try{
+                const uDoc=await db.collection('users').doc(userId).get();
+                if(!uDoc.exists)return;
+                userData=uDoc.data();
+                const ids=userData.courses||[];
+                const sel=document.getElementById('courseSelect');
+                for(const id of ids){
+                    try{
+                        const cDoc=await db.collection('courses').doc(id).get();
+                        if(cDoc.exists){
+                            const c=cDoc.data();
+                            const opt=document.createElement('option');
+                            opt.value=id;opt.textContent=`${c.code||''} — ${c.name||''}`;
+                            opt.dataset.code=c.code||'';opt.dataset.name=c.name||'';
+                            sel.appendChild(opt);
+                        }
+                    }catch(e){console.error(e)}
+                }
+                // Check URL params
+                const params=new URLSearchParams(window.location.search);
+                const courseParam=params.get('course');
+                const topicParam=params.get('topic');
+                const countParam=params.get('count');
+                if(courseParam){
+                    sel.value=courseParam;
+                    await onCourseSelected();
+                    if(topicParam){
+                        document.getElementById('topicSelect').value=topicParam;
+                    }
+                    if(countParam){
+                        selectCount(parseInt(countParam),null);
+                    }
+                }
+            }catch(e){console.error(e);Toast.show('Error loading courses','error')}
+        }
+
+        async function onCourseSelected(){
+            const sel=document.getElementById('courseSelect');
+            const courseId=sel.value;
+            const topicSel=document.getElementById('topicSelect');
+            topicSel.innerHTML='<option value="">Select topic...</option><option value="all">All Topics</option>';
+            if(!courseId){topicSel.disabled=true;return}
+            topicSel.disabled=false;
+            try{
+                const snap=await db.collection('topics').where('courseId','==',courseId).orderBy('order','asc').get();
+                snap.forEach(doc=>{
+                    const t=doc.data();
+                    const opt=document.createElement('option');
+                    opt.value=doc.id;opt.textContent=t.name||'Topic';
+                    opt.dataset.name=t.name||'Topic';
+                    topicSel.appendChild(opt);
+                });
+            }catch(e){console.error(e)}
+        }
+
+        function selectCount(count,el){
+            practiceState.questionCount=count;
+            document.querySelectorAll('.count-option').forEach(o=>o.classList.remove('selected'));
+            if(el){el.classList.add('selected')}
+            else{
+                document.querySelectorAll('.count-option').forEach(o=>{
+                    if(parseInt(o.dataset.count)===count)o.classList.add('selected');
+                });
+            }
+        }
+
+        // ============================================
+        // START PRACTICE
+        // ============================================
+        async function startPractice(){
+            const courseSel=document.getElementById('courseSelect');
+            const topicSel=document.getElementById('topicSelect');
+            const courseId=courseSel.value;
+            const topicId=topicSel.value;
+            if(!courseId){Toast.show('Please select a course','warning');return}
+            if(!topicId){Toast.show('Please select a topic','warning');return}
+
+            const btn=document.getElementById('startPracticeBtn');
+            btn.classList.add('loading');btn.disabled=true;
+
+            const opt=courseSel.options[courseSel.selectedIndex];
+            practiceState.courseId=courseId;
+            practiceState.courseCode=opt.dataset.code||'';
+            practiceState.courseName=opt.dataset.name||'';
+
+            if(topicId==='all'){
+                practiceState.topicId=null;
+                practiceState.topicName='All Topics';
+            }else{
+                practiceState.topicId=topicId;
+                const tOpt=topicSel.options[topicSel.selectedIndex];
+                practiceState.topicName=tOpt.dataset.name||tOpt.textContent;
+            }
+
+            try{
+                let query=db.collection('questions').where('courseId','==',courseId).where('status','==','published');
+                if(practiceState.topicId){
+                    query=query.where('topicId','==',practiceState.topicId);
+                }
+                const snap=await query.get();
+                if(snap.empty){
+                    Toast.show('No questions available for this selection','warning');
+                    btn.classList.remove('loading');btn.disabled=false;return;
+                }
+
+                let questions=[];
+                snap.forEach(doc=>questions.push({id:doc.id,...doc.data()}));
+                // Shuffle
+                for(let i=questions.length-1;i>0;i--){
+                    const j=Math.floor(Math.random()*(i+1));
+                    [questions[i],questions[j]]=[questions[j],questions[i]];
+                }
+                // Limit
+                const limit=practiceState.questionCount||questions.length;
+                if(limit>0&&limit<questions.length){
+                    questions=questions.slice(0,limit);
+                }
+
+                practiceState.questions=questions;
+                practiceState.currentIndex=0;
+                practiceState.answers={};
+                practiceState.bookmarks=new Set();
+                practiceState.correctCount=0;
+                practiceState.incorrectCount=0;
+                practiceState.isAnswered=false;
+                practiceState.selectedOption=null;
+                practiceState.startTime=Date.now();
+                practiceState.topicPerformance={};
+
+                document.getElementById('setupScreen').classList.add('hidden');
+                document.getElementById('practiceScreen').classList.remove('hidden');
+                document.getElementById('practiceCourseName').textContent=practiceState.courseCode;
+                document.getElementById('practiceTopicName').textContent=practiceState.topicName;
+
+                renderQuestion();
+            }catch(e){
+                console.error(e);Toast.show('Failed to load questions. Please try again.','error');
+            }finally{
+                btn.classList.remove('loading');btn.disabled=false;
+            }
+        }
+
+        // ============================================
+        // RENDER QUESTION
+        // ============================================
+        function renderQuestion(){
+            const q=practiceState.questions[practiceState.currentIndex];
+            if(!q)return;
+
+            const total=practiceState.questions.length;
+            const idx=practiceState.currentIndex;
+            const answered=Object.keys(practiceState.answers).length;
+
+            // Progress
+            document.getElementById('progressFill').style.width=((idx+1)/total*100)+'%';
+            document.getElementById('progressText').textContent=`${idx+1}/${total}`;
+            document.getElementById('correctCount').textContent=practiceState.correctCount;
+            document.getElementById('incorrectCount').textContent=practiceState.incorrectCount;
+            document.getElementById('remainingCount').textContent=total-answered;
+
+            // Prev button
+            document.getElementById('prevBtn').disabled=idx===0;
+
+            // Check if already answered
+            const prevAnswer=practiceState.answers[q.id];
+            practiceState.isAnswered=!!prevAnswer;
+            practiceState.selectedOption=prevAnswer?prevAnswer.selectedIndex:null;
+
+            const letters=['A','B','C','D','E','F'];
+            const options=(q.options||[]).map((opt,i)=>{
+                let cls='option';
+                let feedbackHTML='';
+                if(prevAnswer){
+                    cls+=' disabled';
+                    if(i===prevAnswer.selectedIndex&&prevAnswer.isCorrect){
+                        cls+=' correct';
+                        feedbackHTML='<span class="option-feedback"><i data-lucide="check-circle" width="20" height="20" style="color:var(--success)"></i></span>';
+                    }else if(i===prevAnswer.selectedIndex&&!prevAnswer.isCorrect){
+                        cls+=' incorrect';
+                        feedbackHTML='<span class="option-feedback"><i data-lucide="x-circle" width="20" height="20" style="color:var(--danger)"></i></span>';
+                    }else if(opt.isCorrect){
+                        cls+=' correct-answer';
+                        feedbackHTML='<span class="option-feedback"><i data-lucide="check-circle" width="20" height="20" style="color:var(--success)"></i></span>';
+                    }
+                }
+                return`<div class="${cls}" data-index="${i}" onclick="selectOption(${i},this)"><div class="option-letter">${letters[i]||''}</div><div class="option-text">${opt.text||''}</div>${feedbackHTML}</div>`;
+            }).join('');
+
+            // Explanation
+            let explanationHTML='';
+            if(prevAnswer&&q.explanation){
+                const isCorrect=prevAnswer.isCorrect;
+                explanationHTML=`
+                    <div class="explanation-card anim-fadeInUp s3">
+                        <div class="explanation-header">
+                            <div class="explanation-icon ${isCorrect?'correct':'incorrect'}">
+                                <i data-lucide="${isCorrect?'check-circle':'x-circle'}" width="18" height="18"></i>
+                            </div>
+                            <div class="explanation-label ${isCorrect?'correct':'incorrect'}">${isCorrect?'Correct!':'Incorrect'}</div>
+                        </div>
+                        <div class="explanation-body">
+                            ${q.explanation}
+                            ${q.source?`<div class="explanation-source"><i data-lucide="book-open" width="12" height="12"></i> ${q.source}</div>`:''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Bookmark
+            const isBookmarked=practiceState.bookmarks.has(q.id);
+            const bmBtn=document.getElementById('bookmarkBtn');
+            bmBtn.classList.toggle('bookmarked',isBookmarked);
+            bmBtn.innerHTML=`<i data-lucide="${isBookmarked?'bookmark':'bookmark'}" width="18" height="18"></i>`;
+
+            // Render
+            const container=document.getElementById('questionContainer');
+            container.innerHTML=`
+                <div class="question-card anim-flipIn" id="questionCard">
+                    <div class="question-number">
+                        <i data-lucide="help-circle" width="14" height="14"></i>
+                        Question ${idx+1} of ${total}
+                    </div>
+                    <div class="question-text">${q.question||''}</div>
+                    <div class="options-list" id="optionsList">${options}</div>
+                </div>
+                ${explanationHTML}
+            `;
+            lucide.createIcons();
+
+            // Update action buttons
+            updateActionButtons();
+        }
+
+        // ============================================
+        // SELECT OPTION
+        // ============================================
+        function selectOption(index,el){
+            if(practiceState.isAnswered)return;
+            practiceState.selectedOption=index;
+
+            document.querySelectorAll('.option').forEach(o=>{
+                o.classList.remove('selected');
+                o.querySelector('.option-letter').style.background='';
+                o.querySelector('.option-letter').style.color='';
+                o.querySelector('.option-letter').style.borderColor='';
+            });
+            el.classList.add('selected');
+            el.querySelector('.option-letter').style.background='var(--primary)';
+            el.querySelector('.option-letter').style.color='white';
+            el.querySelector('.option-letter').style.borderColor='var(--primary)';
+
+            document.getElementById('submitBtn').disabled=false;
+
+            // Haptic-like animation
+            el.style.animation='none';
+            el.offsetHeight;
+            el.style.animation='';
+        }
+
+        // ============================================
+        // SUBMIT ANSWER
+        // ============================================
+        async function submitAnswer(){
+            if(practiceState.selectedOption===null||practiceState.isAnswered)return;
+
+            const q=practiceState.questions[practiceState.currentIndex];
+            const selected=practiceState.selectedOption;
+            const isCorrect=q.options[selected]&&q.options[selected].isCorrect;
+
+            practiceState.isAnswered=true;
+            practiceState.answers[q.id]={
+                selectedIndex:selected,
+                isCorrect:isCorrect,
+                questionId:q.id,
+                topicId:q.topicId||null,
+                topicName:q.topicName||null
+            };
+
+            if(isCorrect){
+                practiceState.correctCount++;
+            }else{
+                practiceState.incorrectCount++;
+            }
+
+            // Track topic performance
+            const topicKey=q.topicId||'general';
+            if(!practiceState.topicPerformance[topicKey]){
+                practiceState.topicPerformance[topicKey]={name:q.topicName||'General',correct:0,total:0};
+            }
+            practiceState.topicPerformance[topicKey].total++;
+            if(isCorrect)practiceState.topicPerformance[topicKey].correct++;
+
+            // Animate options
+            document.querySelectorAll('.option').forEach((o,i)=>{
+                o.classList.add('disabled');
+                if(i===selected&&isCorrect){
+                    o.classList.add('correct');
+                    o.innerHTML=o.innerHTML+'<span class="option-feedback" style="display:flex;animation:popIn .3s ease both"><i data-lucide="check-circle" width="20" height="20" style="color:var(--success)"></i></span>';
+                }else if(i===selected&&!isCorrect){
+                    o.classList.add('incorrect');
+                    o.innerHTML=o.innerHTML+'<span class="option-feedback" style="display:flex;animation:popIn .3s ease both"><i data-lucide="x-circle" width="20" height="20" style="color:var(--danger)"></i></span>';
+                }else if(q.options[i]&&q.options[i].isCorrect){
+                    o.classList.add('correct-answer');
+                    o.innerHTML=o.innerHTML+'<span class="option-feedback" style="display:flex;animation:popIn .3s ease both;animation-delay:.2s"><i data-lucide="check-circle" width="20" height="20" style="color:var(--success)"></i></span>';
+                }
+            });
+            lucide.createIcons();
+
+            // Animate question card
+            const card=document.getElementById('questionCard');
+            if(isCorrect){
+                card.classList.add('correct-state');
+                Toast.show('Correct! 🎉','success',2000);
+            }else{
+                card.classList.add('incorrect-state');
+                Toast.show('Incorrect','error',2000);
+            }
+
+            // Show explanation
+            if(q.explanation){
+                const expHTML=`
+                    <div class="explanation-card anim-fadeInUp" style="animation-delay:.3s">
+                        <div class="explanation-header">
+                            <div class="explanation-icon ${isCorrect?'correct':'incorrect'}">
+                                <i data-lucide="${isCorrect?'check-circle':'x-circle'}" width="18" height="18"></i>
+                            </div>
+                            <div class="explanation-label ${isCorrect?'correct':'incorrect'}">${isCorrect?'Correct!':'Incorrect'}</div>
+                        </div>
+                        <div class="explanation-body">
+                            ${q.explanation}
+                            ${q.source?`<div class="explanation-source"><i data-lucide="book-open" width="12" height="12"></i> ${q.source}</div>`:''}
+                        </div>
+                    </div>
+                `;
+                document.getElementById('questionContainer').insertAdjacentHTML('beforeend',expHTML);
+                lucide.createIcons();
+            }
+
+            // Update stats
+            document.getElementById('correctCount').textContent=practiceState.correctCount;
+            document.getElementById('incorrectCount').textContent=practiceState.incorrectCount;
+            document.getElementById('remainingCount').textContent=practiceState.questions.length-Object.keys(practiceState.answers).length;
+
+            updateActionButtons();
+
+            // Save answer to Firebase
+            try{
+                await db.collection('attempt_answers').add({
+                    userId:currentUser.uid,
+                    questionId:q.id,
+                    courseId:practiceState.courseId,
+                    topicId:q.topicId||null,
+                    selectedIndex:selected,
+                    isCorrect:isCorrect,
+                    type:'practice',
+                    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }catch(e){console.error('Save answer error:',e)}
+        }
+
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        function updateActionButtons(){
+            const total=practiceState.questions.length;
+            const idx=practiceState.currentIndex;
+            const isLast=idx>=total-1;
+            const allAnswered=Object.keys(practiceState.answers).length>=total;
+
+            document.getElementById('submitBtn').classList.toggle('hidden',practiceState.isAnswered);
+            document.getElementById('nextBtn').classList.toggle('hidden',!practiceState.isAnswered||isLast);
+            document.getElementById('finishBtn').classList.toggle('hidden',!practiceState.isAnswered||!isLast);
+            if(!practiceState.isAnswered){
+                document.getElementById('submitBtn').disabled=practiceState.selectedOption===null;
+            }
+        }
+
+        function nextQuestion(){
+            if(practiceState.currentIndex<practiceState.questions.length-1){
+                practiceState.currentIndex++;
+                practiceState.isAnswered=false;
+                practiceState.selectedOption=null;
+                renderQuestion();
+                window.scrollTo({top:0,behavior:'smooth'});
+            }
+        }
+
+        function prevQuestion(){
+            if(practiceState.currentIndex>0){
+                practiceState.currentIndex--;
+                practiceState.selectedOption=null;
+                renderQuestion();
+                window.scrollTo({top:0,behavior:'smooth'});
+            }
+        }
+
+        // ============================================
+        // BOOKMARK
+        // ============================================
+        async function toggleBookmark(){
+            const q=practiceState.questions[practiceState.currentIndex];
+            if(!q)return;
+            const btn=document.getElementById('bookmarkBtn');
+            if(practiceState.bookmarks.has(q.id)){
+                practiceState.bookmarks.delete(q.id);
+                btn.classList.remove('bookmarked');
+                Toast.show('Bookmark removed','info',1500);
+                try{
+                    const snap=await db.collection('bookmarks').where('userId','==',currentUser.uid).where('questionId','==',q.id).limit(1).get();
+                    snap.forEach(doc=>doc.ref.delete());
+                }catch(e){console.error(e)}
+            }else{
+                practiceState.bookmarks.add(q.id);
+                btn.classList.add('bookmarked');
+                btn.style.animation='bounceIn .4s ease';
+                setTimeout(()=>btn.style.animation='',400);
+                Toast.show('Question bookmarked! 📌','success',1500);
+                try{
+                    await db.collection('bookmarks').add({
+                        userId:currentUser.uid,
+                        questionId:q.id,
+                        courseId:practiceState.courseId,
+                        topicId:q.topicId||null,
+                        createdAt:firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }catch(e){console.error(e)}
+            }
+            lucide.createIcons();
+        }
+
+        // ============================================
+        // REPORT
+        // ============================================
+        let selectedReportReason=null;
+        function openReportModal(){
+            document.getElementById('reportModal').classList.add('active');
+            document.body.style.overflow='hidden';
+        }
+        function closeReportModal(){
+            document.getElementById('reportModal').classList.remove('active');
+            document.body.style.overflow='';
+            selectedReportReason=null;
+            document.querySelectorAll('.report-option').forEach(o=>o.classList.remove('selected'));
+            document.getElementById('reportNote').value='';
+        }
+        function selectReport(el){
+            document.querySelectorAll('.report-option').forEach(o=>o.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedReportReason=el.dataset.reason;
+        }
+        async function submitReport(){
+            if(!selectedReportReason){Toast.show('Please select a reason','warning');return}
+            const q=practiceState.questions[practiceState.currentIndex];
+            try{
+                await db.collection('question_reports').add({
+                    userId:currentUser.uid,
+                    questionId:q.id,
+                    courseId:practiceState.courseId,
+                    reason:selectedReportReason,
+                    note:document.getElementById('reportNote').value.trim(),
+                    status:'pending',
+                    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+                });
+                Toast.show('Report submitted. Thank you!','success');
+                closeReportModal();
+            }catch(e){
+                console.error(e);Toast.show('Failed to submit report','error');
+            }
+        }
+        document.getElementById('reportModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeReportModal()});
+
+        // ============================================
+        // EXIT
+        // ============================================
+        function confirmExit(){
+            const answered=Object.keys(practiceState.answers).length;
+            const total=practiceState.questions.length;
+            document.getElementById('exitModalDesc').textContent=`Your progress will be saved. You've answered ${answered} of ${total} questions.`;
+            document.getElementById('exitModal').classList.add('active');
+            document.body.style.overflow='hidden';
+        }
+        function closeExitModal(){
+            document.getElementById('exitModal').classList.remove('active');
+            document.body.style.overflow='';
+        }
+        async function exitPractice(){
+            closeExitModal();
+            await savePracticeResults();
+            window.location.href='courses.html?course='+practiceState.courseId;
+        }
+
+        // ============================================
+        // RESULTS
+        // ============================================
+        async function showResults(){
+            await savePracticeResults();
+
+            const total=practiceState.questions.length;
+            const correct=practiceState.correctCount;
+            const incorrect=practiceState.incorrectCount;
+            const skipped=total-correct-incorrect;
+            const percent=total>0?Math.round((correct/total)*100):0;
+            const timeUsed=Math.round((Date.now()-practiceState.startTime)/1000);
+            const minutes=Math.floor(timeUsed/60);
+            const seconds=timeUsed%60;
+
+            // Determine performance
+            let emoji='🎉',title='Great Job!',subtitle='';
+            if(percent>=90){emoji='🏆';title='Outstanding!';subtitle='You really know your stuff!';}
+            else if(percent>=70){emoji='🎉';title='Great Job!';subtitle='Keep up the excellent work!';}
+            else if(percent>=50){emoji='💪';title='Good Effort!';subtitle='A little more practice will get you there.';}
+            else{emoji='📚';title='Keep Practicing!';subtitle="Don't give up - review the topics and try again.";}
+
+            document.getElementById('practiceScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.add('active');
+
+            document.getElementById('resultsEmoji').textContent=emoji;
+            document.getElementById('resultsTitle').textContent=title;
+            document.getElementById('resultsSubtitle').textContent=subtitle;
+
+            // Score ring
+            const circumference=2*Math.PI*56;
+            const offset=circumference-(percent/100)*circumference;
+            const cls=percent>=70?'good':percent>=50?'medium':'bad';
+            document.getElementById('scoreRingContainer').innerHTML=`
+                <svg viewBox="0 0 128 128"><circle class="ring-bg" cx="64" cy="64" r="56"/><circle class="ring-fill ${cls}" cx="64" cy="64" r="56" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" style="--ring-circumference:${circumference};animation:ringFill 1.5s ease both;animation-delay:.5s;stroke-dashoffset:${circumference}" id="ringFillEl"/></svg>
+                <div class="ring-value"><div class="ring-percent" id="ringPercent">0%</div><div class="ring-label">Score</div></div>
+            `;
+            // Animate percent counter
+            setTimeout(()=>{
+                document.getElementById('ringFillEl').style.strokeDashoffset=offset;
+                animateNumber('ringPercent',0,percent,'%',1200);
+            },600);
+
+            // Stats
+            document.getElementById('resultsStats').innerHTML=`
+                <div class="result-stat anim-popIn s3"><div class="result-stat-value correct-val">${correct}</div><div class="result-stat-label">Correct</div></div>
+                <div class="result-stat anim-popIn s4"><div class="result-stat-value incorrect-val">${incorrect}</div><div class="result-stat-label">Incorrect</div></div>
+                <div class="result-stat anim-popIn s5"><div class="result-stat-value">${minutes}:${String(seconds).padStart(2,'0')}</div><div class="result-stat-label">Time</div></div>
+            `;
+
+            // Topic breakdown
+            const topics=Object.entries(practiceState.topicPerformance);
+            if(topics.length>0){
+                let barsHTML=topics.map(([key,t],i)=>{
+                    const pct=t.total>0?Math.round(t.correct/t.total*100):0;
+                    const c=pct>=70?'good':pct>=50?'medium':'bad';
+                    return`<div class="topic-bar anim-slideInLeft" style="animation-delay:${.6+i*.1}s"><div class="topic-bar-name">${t.name}</div><div class="topic-bar-track"><div class="topic-bar-fill ${c}" style="width:${pct}%;animation:barGrow 1s ease both;animation-delay:${.8+i*.1}s"></div></div><div class="topic-bar-percent">${pct}%</div></div>`;
+                }).join('');
+                document.getElementById('topicBreakdown').innerHTML=`<div class="topic-breakdown-title anim-fadeInUp s6"><i data-lucide="bar-chart-2" width="18" height="18" style="color:var(--primary)"></i> Topic Performance</div>${barsHTML}`;
+            }else{
+                document.getElementById('topicBreakdown').innerHTML='';
+            }
+
+            // Actions
+            document.getElementById('resultsActions').innerHTML=`
+                <button class="btn btn-primary anim-fadeInUp s7" onclick="retryPractice()"><i data-lucide="rotate-ccw" width="18" height="18"></i><span class="btn-text">Practice Again</span></button>
+                <button class="btn btn-secondary anim-fadeInUp s8" onclick="reviewAnswers()"><i data-lucide="eye" width="18" height="18"></i><span class="btn-text">Review Answers</span></button>
+                <button class="btn btn-secondary anim-fadeInUp" style="animation-delay:.4s" onclick="window.location.href='courses.html?course=${practiceState.courseId}'"><i data-lucide="arrow-left" width="18" height="18"></i><span class="btn-text">Back to Course</span></button>
+            `;
+            lucide.createIcons();
+
+            // Confetti for good scores
+            if(percent>=70)launchConfetti();
+        }
+
+        function animateNumber(elId,from,to,suffix,dur){
+            const el=document.getElementById(elId);
+            if(!el)return;
+            const start=performance.now();
+            function update(now){
+                const progress=Math.min((now-start)/dur,1);
+                const eased=1-Math.pow(1-progress,3);
+                const val=Math.round(from+(to-from)*eased);
+                el.textContent=val+suffix;
+                if(progress<1)requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+
+        // ============================================
+        // CONFETTI
+        // ============================================
+        function launchConfetti(){
+            const container=document.getElementById('confettiContainer');
+            const colors=['#6366F1','#F97316','#10B981','#F59E0B','#EF4444','#EC4899','#3B82F6'];
+            for(let i=0;i<60;i++){
+                const piece=document.createElement('div');
+                piece.className='confetti-piece';
+                piece.style.cssText=`left:${Math.random()*100}%;top:${-10-Math.random()*20}%;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*2}s;animation-duration:${2+Math.random()*2}s;border-radius:${Math.random()>.5?'50%':'2px'}`;
+                container.appendChild(piece);
+            }
+            setTimeout(()=>container.innerHTML='',5000);
+        }
+
+        // ============================================
+        // SAVE RESULTS TO FIREBASE
+        // ============================================
+        async function savePracticeResults(){
+            if(!currentUser)return;
+            const total=practiceState.questions.length;
+            const correct=practiceState.correctCount;
+            const accuracy=total>0?Math.round((correct/total)*100):0;
+
+            try{
+                // Save attempt
+                await db.collection('attempts').add({
+                    userId:currentUser.uid,
+                    courseId:practiceState.courseId,
+                    topicId:practiceState.topicId||null,
+                    type:'practice',
+                    testName:`${practiceState.courseCode} Practice`,
+                    score:correct,
+                    totalQuestions:total,
+                    accuracy:accuracy,
+                    timeUsed:Math.round((Date.now()-practiceState.startTime)/1000),
+                    completedAt:firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Update user stats
+                const userRef=db.collection('users').doc(currentUser.uid);
+                await userRef.update({
+                    totalQuestionsAttempted:firebase.firestore.FieldValue.increment(total),
+                    totalCorrect:firebase.firestore.FieldValue.increment(correct),
+                    updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Update course performance
+                const perfRef=db.collection('user_course_performance').doc(`${currentUser.uid}_${practiceState.courseId}`);
+                const perfDoc=await perfRef.get();
+                if(perfDoc.exists){
+                    const prev=perfDoc.data();
+                    const newTotal=(prev.questionsAttempted||0)+total;
+                    const newCorrect=(prev.totalCorrect||0)+correct;
+                    const newAccuracy=newTotal>0?Math.round(newCorrect/newTotal*100):0;
+                    await perfRef.update({
+                        questionsAttempted:newTotal,
+                        totalCorrect:newCorrect,
+                        accuracy:newAccuracy,
+                        lastPracticed:firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }else{
+                    await perfRef.set({
+                        userId:currentUser.uid,
+                        courseId:practiceState.courseId,
+                        questionsAttempted:total,
+                        totalCorrect:correct,
+                        accuracy:accuracy,
+                        progress:0,
+                        lastPracticed:firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+
+                // Update topic performance
+                for(const[topicId,tPerf]of Object.entries(practiceState.topicPerformance)){
+                    if(topicId==='general')continue;
+                    const tRef=db.collection('user_topic_performance').doc(`${currentUser.uid}_${topicId}`);
+                    const tDoc=await tRef.get();
+                    if(tDoc.exists){
+                        const prev=tDoc.data();
+                        const nt=(prev.questionsAttempted||0)+tPerf.total;
+                        const nc=(prev.totalCorrect||0)+tPerf.correct;
+                        await tRef.update({
+                            questionsAttempted:nt,
+                            totalCorrect:nc,
+                            accuracy:nt>0?Math.round(nc/nt*100):0,
+                            lastPracticed:firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }else{
+                        await tRef.set({
+                            userId:currentUser.uid,
+                            topicId:topicId,
+                            topicName:tPerf.name,
+                            courseId:practiceState.courseId,
+                            courseCode:practiceState.courseCode,
+                            questionsAttempted:tPerf.total,
+                            totalCorrect:tPerf.correct,
+                            accuracy:tPerf.total>0?Math.round(tPerf.correct/tPerf.total*100):0,
+                            lastPracticed:firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }
+                }
+
+                // Log activity
+                await db.collection('activity_log').add({
+                    userId:currentUser.uid,
+                    type:'practice',
+                    title:`Practiced ${practiceState.courseCode}`,
+                    description:`${correct}/${total} correct (${accuracy}%)`,
+                    courseId:practiceState.courseId,
+                    progress:accuracy,
+                    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }catch(e){console.error('Save results error:',e)}
+        }
+
+        // ============================================
+        // RETRY & REVIEW
+        // ============================================
+        function retryPractice(){
+            document.getElementById('resultsScreen').classList.remove('active');
+            document.getElementById('setupScreen').classList.remove('hidden');
+            window.scrollTo({top:0,behavior:'smooth'});
+        }
+
+        function reviewAnswers(){
+            document.getElementById('resultsScreen').classList.remove('active');
+            document.getElementById('practiceScreen').classList.remove('hidden');
+            practiceState.currentIndex=0;
+            renderQuestion();
+            window.scrollTo({top:0,behavior:'smooth'});
+        }
+
+        // ============================================
+        // KEYBOARD SHORTCUTS
+        // ============================================
+        document.addEventListener('keydown',e=>{
+            if(document.getElementById('practiceScreen').classList.contains('hidden'))return;
+            if(document.querySelector('.modal-overlay.active'))return;
+            if(e.key>='1'&&e.key<='6'){
+                const idx=parseInt(e.key)-1;
+                const opts=document.querySelectorAll('.option:not(.disabled)');
+                if(opts[idx])selectOption(idx,opts[idx]);
+            }
+            if(e.key==='Enter'&&!practiceState.isAnswered&&practiceState.selectedOption!==null){
+                submitAnswer();
+            }
+            if(e.key==='Enter'&&practiceState.isAnswered){
+                if(practiceState.currentIndex<practiceState.questions.length-1)nextQuestion();
+                else showResults();
+            }
+            if(e.key==='ArrowLeft')prevQuestion();
+            if(e.key==='ArrowRight'&&practiceState.isAnswered)nextQuestion();
+            if(e.key==='Escape')confirmExit();
+        });
+
+        // ============================================
+        // SWIPE GESTURE
+        // ============================================
+        let swipeStartX=0,swipeStartY=0;
+        document.addEventListener('touchstart',e=>{
+            swipeStartX=e.touches[0].clientX;
+            swipeStartY=e.touches[0].clientY;
+        },{passive:true});
+        document.addEventListener('touchend',e=>{
+            if(document.getElementById('practiceScreen').classList.contains('hidden'))return;
+            const dx=e.changedTouches[0].clientX-swipeStartX;
+            const dy=e.changedTouches[0].clientY-swipeStartY;
+            if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>60){
+                if(dx>0&&practiceState.currentIndex>0)prevQuestion();
+                else if(dx<0&&practiceState.isAnswered)nextQuestion();
+            }
+        },{passive:true});
+
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded',()=>{
+            lucide.createIcons();
+            ThemeManager.init();
+
+            auth.onAuthStateChanged(async user=>{
+                setTimeout(()=>document.getElementById('loadingScreen').classList.add('hidden'),600);
+                if(!user){window.location.href='index.html';return}
+                currentUser=user;
+                await loadUserCourses(user.uid);
+            });
+        });
+    </script>
+</body>
+</html>
